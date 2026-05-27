@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: dev-docs-mongo
+    restart: always
+    ports:
+      - '27017:27017'
+
+  redis:
+    image: redis:7
+    container_name: dev-docs-redis
+    restart: always
+    ports:
+      - '6379:6379'

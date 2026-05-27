@@ -1,0 +1,17 @@
+{
+  "name": "developer-docs-platform",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.8.0",
+    "prettier": "^3.5.0"
+  }
+}

@@ -1,0 +1,50 @@
+# dependencies
+node_modules
+
+# pnpm
+.pnpm-store
+
+# turbo
+.turbo
+
+# next
+.next
+out
+
+# nest
+dist
+
+# logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# env
+.env
+.env.*
+!.env.example
+
+# mac
+.DS_Store
+
+# vscode
+.vscode
+
+# coverage
+coverage
+
+# docker
+docker-data
+
+# uploads
+uploads
+
+# generated
+generated
+
+# cache
+.cache
+
+# typescript
+*.tsbuildinfo
