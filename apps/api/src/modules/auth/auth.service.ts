@@ -82,4 +82,12 @@ export class AuthService {
       refreshToken,
     };
   }
+
+  async logout(userId: string) {
+    await this.usersService.updateRefreshToken(userId, null);
+
+    return {
+      message: 'Logged out successfully',
+    };
+  }
 }
