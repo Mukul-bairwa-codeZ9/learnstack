@@ -32,6 +32,17 @@ async function bootstrap() {
     .setTitle('Developer Docs Platform API')
     .setDescription('Production API')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter your JWT access token',
+        in: 'header',
+      },
+      'JWT-auth', // This is the security name used to link routes
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
