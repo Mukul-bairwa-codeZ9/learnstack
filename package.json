@@ -3,14 +3,14 @@
   "private": true,
   "packageManager": "pnpm@10.0.0",
   "scripts": {
-    "dev": "turbo dev",
+   "dev": "pnpm --filter api --filter web --parallel dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "turbo": "^2.0.0",
+    "turbo": "^2.9.15",
     "typescript": "^5.8.0",
     "prettier": "^3.5.0"
   }
