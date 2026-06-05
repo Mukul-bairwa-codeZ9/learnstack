@@ -42,6 +42,7 @@ export default function SignInForm() {
       dispatch(
         setCredentials({
           accessToken: response.accessToken,
+            user: response.user,
         }),
       );
 

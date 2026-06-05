@@ -12,6 +12,8 @@ import { UsersService } from '../users/users.service';
 
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { UserDocument } from '../users/schemas/user.schema';
+import { AuthResponseDto } from './dto/auth-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +22,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(dto: SignupDto) {
+  async signup(dto: SignupDto):Promise<AuthResponseDto> {
     const existingUser = await this.usersService.findByEmail(dto.email);
 
     if (existingUser) {
@@ -35,10 +37,20 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    return this.generateTokens(user.id);
+    const tokens = await this.generateTokens(user);
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      ...tokens
+    };
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto): Promise<AuthResponseDto> {
     const user = await this.usersService.findByEmail(dto.email);
 
     if (!user) {
@@ -51,23 +63,35 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.generateTokens(user.id);
+    const tokens = await this.generateTokens(user);
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      ...tokens,
+    };
   }
 
-  async generateTokens(userId: string) {
+  async generateTokens(user: UserDocument) {
     const accessToken = this.jwtService.sign(
       {
-        sub: userId,
+        sub: user.id,
+        email: user.email,
+        role: user.role,
       },
       {
-        secret: process.env.JWT_SECRET, // 👈 Add this explicitly
+        secret: process.env.JWT_SECRET,
         expiresIn: '15m',
       },
     );
 
     const refreshToken = this.jwtService.sign(
       {
-        sub: userId,
+        sub: user.id,
       },
       {
         secret: process.env.JWT_REFRESH_SECRET,
@@ -75,7 +99,7 @@ export class AuthService {
       },
     );
 
-    await this.usersService.updateRefreshToken(userId, refreshToken);
+    await this.usersService.updateRefreshToken(user.id, refreshToken);
 
     return {
       accessToken,
