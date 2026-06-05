@@ -1,4 +1,8 @@
 import api from '@/services/api';
+import type {
+  AuthResponse,
+  AuthUser,
+} from '../types/auth.types';
 
 export const signupRequest = async (
   data: {
@@ -6,7 +10,7 @@ export const signupRequest = async (
     email: string;
     password: string;
   },
-) => {
+) :Promise<AuthResponse> => {
   const response = await api.post(
     '/auth/signup',
     data,
@@ -20,7 +24,7 @@ export const loginRequest = async (
     email: string;
     password: string;
   },
-) => {
+) :Promise<AuthResponse>=> {
   const response = await api.post(
     '/auth/login',
     data,
@@ -30,7 +34,7 @@ export const loginRequest = async (
 };
 
 export const getProfileRequest =
-  async (token: string) => {
+  async (token: string) :Promise<AuthUser> => {
     const response = await api.get(
       '/auth/me',
       {
