@@ -126,7 +126,4 @@ v1.0.0
 
 ---
 
-# Current Phase
-
-## Phase 1
-Infrastructure + Authentication Foundation# learnstack
+# Current version v0.2.1
