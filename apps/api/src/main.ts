@@ -43,6 +43,7 @@ async function bootstrap() {
       },
       'JWT-auth', // This is the security name used to link routes
     )
+    .addSecurityRequirements('JWT-auth') // Globally forces Swagger UI to send this token on all API routes
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
