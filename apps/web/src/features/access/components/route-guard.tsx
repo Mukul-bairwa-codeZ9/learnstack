@@ -68,12 +68,20 @@ export function RouteGuard({
   }, [user, role, roles, permission, permissions, router, redirectTo]);
 
   if (!isHydrated) {
-    return null;
+    return (
+    <div className="flex min-h-screen items-center justify-center">
+      Loading...
+    </div>
+  );
   }
 
   // Prevent UI flashing/rendering while unauthorized redirect handles background processing
   if (!user) {
-    return null;
+      return (
+    <div className="flex min-h-screen items-center justify-center">
+      Redirecting...
+    </div>
+  );
   }
 
   // Double check authorization constraints before painting children onto layout
