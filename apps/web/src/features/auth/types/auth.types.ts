@@ -14,7 +14,7 @@ export interface AuthResponse {
 }
 
 export interface AuthState {
-  accessToken: string | null;
+  // accessToken: string | null;
   user: AuthUser | null;
   isHydrated: boolean;
 

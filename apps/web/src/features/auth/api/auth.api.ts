@@ -34,14 +34,9 @@ export const loginRequest = async (
 };
 
 export const getProfileRequest =
-  async (token: string) :Promise<AuthUser> => {
+  async () :Promise<AuthUser> => {
     const response = await api.get(
       '/auth/me',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
     );
 
     return response.data;

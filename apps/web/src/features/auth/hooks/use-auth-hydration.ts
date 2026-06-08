@@ -9,6 +9,7 @@ import { authStorage } from "@/lib/auth-storage";
 import { setCredentials, setHydrated, logout } from "../auth.slice";
 
 import { getProfileRequest } from "../api/auth.api";
+import axios from "axios";
 
 export function useAuthHydration() {
   const dispatch = useDispatch();
@@ -23,18 +24,20 @@ export function useAuthHydration() {
       }
 
       try {
-        const user = await getProfileRequest(token);
+        const user = await getProfileRequest();
 
         dispatch(
           setCredentials({
-            accessToken: token,
+            // accessToken: token,
             user,
           }),
         );
-      } catch {
-        authStorage.clearToken();
-
-        dispatch(logout());
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          authStorage.clearToken();
+          dispatch(logout());
+          console.error("Auth hydration failed", error);
+        }
       } finally {
         dispatch(setHydrated());
       }
