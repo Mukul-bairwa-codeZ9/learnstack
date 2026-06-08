@@ -17,7 +17,6 @@ export function useLogout() {
 
   return () => {
     authStorage.clearToken();
-
     dispatch(logout());
 
     router.push(

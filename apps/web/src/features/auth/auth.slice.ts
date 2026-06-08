@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AuthState, AuthUser } from "./types/auth.types";
 
 const initialState: AuthState = {
-  accessToken: null,
+  // accessToken: null,
   user: null,
   isHydrated: false,
 };
@@ -17,11 +17,11 @@ const authSlice = createSlice({
     setCredentials: (
       state,
       action: PayloadAction<{
-        accessToken: string;
+        // accessToken: string;
         user: AuthUser;
       }>,
     ) => {
-      state.accessToken = action.payload.accessToken;
+      // state.accessToken = action.payload.accessToken;
 
       state.user = action.payload.user;
     },
@@ -34,7 +34,7 @@ const authSlice = createSlice({
     // },
 
     logout: (state) => {
-      state.accessToken = null;
+      // state.accessToken = null;
       state.user = null;
     },
   },

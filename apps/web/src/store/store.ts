@@ -13,4 +13,4 @@ export type RootState = ReturnType<
 >;
 
 export type AppDispatch =
-  typeof store.dispatch;
+  typeof store.dispatch; 

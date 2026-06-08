@@ -3,41 +3,28 @@ import api from "@/services/api";
 import { CreateWorkspaceDto, UpdateWorkspaceDto, Workspace } from "../types";
 
 export const workspaceApi = {
-  async getWorkspaces(token: string): Promise<Workspace[]> {
-    const { data } = await api.get("/workspaces", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getWorkspaces(): Promise<Workspace[]> {
+    const { data } = await api.get("/workspaces");
 
     return data;
   },
 
-  async getWorkspace(token: string, id: string): Promise<Workspace> {
-    const { data } = await api.get(`/workspaces/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getWorkspace( id: string): Promise<Workspace> {
+    const { data } = await api.get(`/workspaces/${id}`);
 
     return data;
   },
 
   async createWorkspace(
-    token: string,
     payload: CreateWorkspaceDto,
   ): Promise<Workspace> {
-    const { data } = await api.post("/workspaces", payload, {
-      headers: {
-        Authorization: `Bearer ${token}`, // 👈 Attach it safely
-      },
-    });
+    const { data } = await api.post("/workspaces", payload);
 
     return data;
   },
 
   async updateWorkspace(
-    id: string,
+    id:string,
     payload: UpdateWorkspaceDto,
   ): Promise<Workspace> {
     const { data } = await api.patch(`/workspaces/${id}`, payload);
