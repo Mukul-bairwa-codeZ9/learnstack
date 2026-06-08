@@ -34,6 +34,8 @@ export function RouteGuard({
       return;
     }
 
+    console.log(user,"check in role")
+
     if (!user) {
       router.replace(redirectTo);
       return;
@@ -65,15 +67,23 @@ export function RouteGuard({
       router.replace("/unauthorized");
       return; // FIXED: Added missing return statement here
     }
-  }, [user, role, roles, permission, permissions, router, redirectTo]);
+  }, [user, isHydrated,role, roles, permission, permissions, router, redirectTo]);
 
   if (!isHydrated) {
-    return null;
+    return (
+    <div className="flex min-h-screen items-center justify-center">
+      Loading...
+    </div>
+  );
   }
 
   // Prevent UI flashing/rendering while unauthorized redirect handles background processing
   if (!user) {
-    return null;
+      return (
+    <div className="flex min-h-screen items-center justify-center">
+      Redirecting...
+    </div>
+  );
   }
 
   // Double check authorization constraints before painting children onto layout

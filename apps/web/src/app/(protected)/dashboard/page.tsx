@@ -1,24 +1,46 @@
-'use client';
+"use client";
 
-import { useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-import { RootState } from '@/store/store';
+import { useWorkspaces } from "@/features/workspaces/hooks";
 
 export default function DashboardPage() {
-  const user = useSelector(
-    (state: RootState) =>
-      state.auth.user,
-  );
+  const router = useRouter();
+
+  const {
+    data: workspaces,
+    isLoading,
+    isError,
+  } = useWorkspaces();
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (isError) {
+      return;
+    }
+
+    if (!workspaces?.length) {
+      router.replace("/onboarding");
+      return;
+    }
+
+    router.replace(
+      `/workspaces/${workspaces[0]._id}`,
+    );
+  }, [
+    workspaces,
+    isLoading,
+    isError,
+    router,
+  ]);
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
-
-      <p>
-        Welcome {user?.name}
-      </p>
+    <div className="flex min-h-screen items-center justify-center">
+      Loading workspace...
     </div>
   );
 }
