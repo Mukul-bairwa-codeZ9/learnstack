@@ -40,6 +40,8 @@ export class PermissionsGuard
 
     const user = request.user;
 
+    
+
     if (user.role === Role.SUPER_ADMIN) {
       return true;
     }
