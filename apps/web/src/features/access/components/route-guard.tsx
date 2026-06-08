@@ -34,6 +34,8 @@ export function RouteGuard({
       return;
     }
 
+    console.log(user,"check in role")
+
     if (!user) {
       router.replace(redirectTo);
       return;
@@ -65,7 +67,7 @@ export function RouteGuard({
       router.replace("/unauthorized");
       return; // FIXED: Added missing return statement here
     }
-  }, [user, role, roles, permission, permissions, router, redirectTo]);
+  }, [user, isHydrated,role, roles, permission, permissions, router, redirectTo]);
 
   if (!isHydrated) {
     return (
