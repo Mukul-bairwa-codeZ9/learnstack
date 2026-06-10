@@ -11,7 +11,7 @@ import { formatDate } from "@/lib/utils";
 import { useDocumentEditor } from "@/features/editor/hooks";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Editor } from "@/features/editor/components";
+import { EditorShell } from "@/features/editor/components";
 import { DEFAULT_EDITOR_CONTENT } from "@/features/editor/constants";
 
 interface DocumentPageProps {
@@ -106,7 +106,7 @@ export  function DocumentDetails({ params }: DocumentPageProps) {
               </Button>
             </div>
 
-            <Editor content={content} onChange={handleChange} />
+            <EditorShell content={content} onChange={handleChange} />
           </div>
         </CardContent>
         <CardContent className="py-4">

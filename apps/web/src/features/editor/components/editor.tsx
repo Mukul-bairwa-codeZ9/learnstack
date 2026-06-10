@@ -1,75 +1,34 @@
 "use client";
 
-import { useEffect } from "react";
-
-import {
-  EditorContent,
-  useEditor,
-} from "@tiptap/react";
-
-import { editorExtensions } from "../extensions";
-import {
-  DEFAULT_EDITOR_CONTENT,
-} from "../constants";
-
-import type {
-  EditorContent as EditorContentType,
-} from "../types";
+import { EditorContent, type Editor as TipTapEditor } from "@tiptap/react";
 
 interface EditorProps {
-  content?: EditorContentType;
-  onChange: (
-    content: EditorContentType,
-  ) => void;
-  editable?: boolean;
+  editor: TipTapEditor | null;
 }
 
-export function Editor({
-  content,
-  onChange,
-  editable = true,
-}: EditorProps) {
-  const editor = useEditor({
-    extensions:
-      editorExtensions,
-
-    content:
-      content ??
-      DEFAULT_EDITOR_CONTENT,
-
-    editable,
-
-    onUpdate: ({ editor }) => {
-      onChange(editor.getJSON());
-    },
-  });
-
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    if (!content) {
-      return;
-    }
-
-    editor.commands.setContent(
-      content,
-      {
-        emitUpdate: false,
-      },
-    );
-  }, [editor, content]);
-
+export function Editor({ editor }: EditorProps) {
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="rounded-md border">
+    <div
+      className=" 
+      rounded-lg
+    border
+    bg-background
+    p-6"
+    >
       <EditorContent
         editor={editor}
-        className="min-h-[300px] p-4"
+        className="min-h-[300px] 
+          p-6
+          prose
+          prose-neutral
+        dark:prose-invert
+          max-w-none
+          min-h-[500px]
+          focus:outline-none"
       />
     </div>
   );
