@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AccessModule } from './modules/access/access.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
+import { DocumentsModule } from './modules/documents/documents.module';
 
 @Module({
   imports: [
@@ -24,6 +25,8 @@ import { WorkspacesModule } from './modules/workspaces/workspaces.module';
     AccessModule,
 
     WorkspacesModule,
+
+    DocumentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
