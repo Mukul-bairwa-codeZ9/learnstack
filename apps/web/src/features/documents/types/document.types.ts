@@ -26,3 +26,17 @@ export interface UpdateDocumentDto {
   title?: string;
   content?: Record<string, any>;
 }
+
+
+
+export interface PublishDocumentResponse {
+  _id: string;
+  slug: string;
+  status: DocumentStatus;
+  publishedAt: string;
+}
+
+export interface DocumentStatusResponse {
+  _id: string;
+  status: DocumentStatus;
+}

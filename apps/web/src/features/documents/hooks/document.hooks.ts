@@ -118,3 +118,77 @@ export function useDeleteDocument() {
     },
   });
 }
+
+
+export function usePublishDocument() {
+  const queryClient =
+    useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      documentsApi.publishDocument(id),
+
+    onSuccess: (_, documentId) => {
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.detail(
+            documentId,
+          ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.all,
+      });
+    },
+  });
+}
+
+export function useUnpublishDocument() {
+  const queryClient =
+    useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      documentsApi.unpublishDocument(id),
+
+    onSuccess: (_, documentId) => {
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.detail(
+            documentId,
+          ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.all,
+      });
+    },
+  });
+}
+
+
+export function useArchiveDocument() {
+  const queryClient =
+    useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      documentsApi.archiveDocument(id),
+
+    onSuccess: (_, documentId) => {
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.detail(
+            documentId,
+          ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey:
+          documentQueryKeys.all,
+      });
+    },
+  });
+}
