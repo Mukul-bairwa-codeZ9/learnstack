@@ -40,6 +40,31 @@ Displays workspace documents.
 
 Provides document creation workflow.
 
+### DocumentStatusBadge
+
+Displays the current publishing state of a document.
+
+Supported states:
+
+* Draft
+* Published
+* Archived
+
+### DocumentPublishActions
+
+Provides publishing controls.
+
+Supported actions:
+
+* Publish
+* Unpublish
+* Archive
+* Republish
+
+### PublishDocumentDialog
+
+Confirmation dialog shown before publishing a document.
+
 ---
 
 ## Forms
@@ -79,6 +104,18 @@ Update document mutation.
 
 Delete document mutation.
 
+### usePublishDocument
+
+Publish document mutation.
+
+### useUnpublishDocument
+
+Unpublish document mutation.
+
+### useArchiveDocument
+
+Archive document mutation.
+
 ---
 
 ## API Layer
@@ -90,9 +127,16 @@ Endpoints:
 ```text
 GET    /documents
 GET    /documents/:id
+
 POST   /documents
 PATCH  /documents/:id
 DELETE /documents/:id
+
+POST   /documents/:id/publish
+POST   /documents/:id/unpublish
+POST   /documents/:id/archive
+
+GET    /documents/public/:slug
 ```
 
 ---
@@ -107,6 +151,8 @@ Documents List
 Create Document
     ↓
 Document Detail
+    ↓
+Publish Document
 ```
 
 ---
@@ -125,17 +171,67 @@ These components promote consistency across the application.
 
 ---
 
+## Publishing Workflow
+
+Documents support a publishing lifecycle.
+
+### Lifecycle Diagram
+
+```text
+                ┌─────────────┐
+                │    DRAFT    │
+                └──────┬──────┘
+                       │
+                    Publish
+                       │
+                       ▼
+               ┌──────────────┐
+               │  PUBLISHED   │
+               └──────┬───┬───┘
+                      │   │
+             Unpublish│   │Archive
+                      │   │
+                      ▼   ▼
+                ┌─────────────┐
+                │    DRAFT    │
+                └─────────────┘
+
+                ┌─────────────┐
+                │  ARCHIVED   │
+                └──────┬──────┘
+                       │
+                    Republish
+                       │
+                       ▼
+                ┌─────────────┐
+                │    DRAFT    │
+                └─────────────┘
+```
+
+### UI Integration
+
+Publishing controls are available from the document editor page.
+
+Users can:
+
+* Publish documents
+* Unpublish documents
+* Archive documents
+* View current document status
+
+Published documents are prepared for future public content delivery workflows.
+
+---
+
 ## Future Enhancements
 
 Planned additions:
 
-* TipTap Editor
-* Autosave
-* Rich Text Formatting
-* Markdown Support
-* Code Blocks
-* Publishing
+* Public Content Pages
+* SEO Metadata
+* Read-only Published View
 * Collaboration
 * Version History
 * AI Assistance
 * Search
+* Analytics
