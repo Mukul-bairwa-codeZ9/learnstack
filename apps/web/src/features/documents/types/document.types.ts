@@ -12,6 +12,10 @@ export interface Document {
   workspaceId: string;
   createdBy: string;
   status: DocumentStatus;
+
+  publishedAt?: string | null;
+  archivedAt?: string | null;
+  
   createdAt: string;
   updatedAt: string;
 }
