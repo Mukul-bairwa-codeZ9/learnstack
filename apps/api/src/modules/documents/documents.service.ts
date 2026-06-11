@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import slugify from 'slugify';
 
@@ -8,6 +13,8 @@ import { WorkspaceRepository } from '../workspaces/repositories/workspace.reposi
 import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
 import { WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { CreateDocumentData } from './types/documents.types';
+import { DocumentEntity } from './schemas/document.schema';
+import { DocumentStatus } from './enums/document-status.enum';
 
 @Injectable()
 export class DocumentsService {
@@ -96,12 +103,9 @@ export class DocumentsService {
       throw new NotFoundException('Document not found');
     }
 
-    console.log(document,"test in in ")
-
     const workspace = await this.workspaceRepository.findById(
       document.workspaceId.toString(),
     );
-    console.log(workspace,"test in")
 
     if (!workspace) {
       throw new NotFoundException('Workspace not found');
@@ -141,6 +145,105 @@ export class DocumentsService {
     };
   }
 
+  // ==========================================
+  // Publishing Workflow Lifecycle Methods
+  // ==========================================
+
+  async publishDocument(documentId: string, userId: string) {
+    const document = await this.getDocumentWithOwnershipCheck(
+      documentId,
+      userId,
+    );
+
+    if (document.status === DocumentStatus.PUBLISHED) {
+      return document;
+    }
+
+    this.validatePublishableDocument(document);
+
+    return this.documentsRepository.publish(documentId, new Date());
+  }
+
+  async unpublishDocument(documentId: string, userId: string) {
+    const document = await this.getDocumentWithOwnershipCheck(
+      documentId,
+      userId,
+    );
+
+    if (document.status === DocumentStatus.DRAFT) {
+      return document;
+    }
+
+    return this.documentsRepository.unpublish(documentId);
+  }
+
+  async archiveDocument(documentId: string, userId: string) {
+    const document = await this.getDocumentWithOwnershipCheck(
+      documentId,
+      userId,
+    );
+
+    if (document.status === DocumentStatus.DRAFT) {
+      throw new BadRequestException('Draft documents cannot be archived');
+    }
+
+    if (document.status === DocumentStatus.ARCHIVED) {
+      return document;
+    }
+
+    return this.documentsRepository.archive(documentId, new Date());
+  }
+
+  async getPublishedDocumentBySlug(slug: string) {
+    const document = await this.documentsRepository.findBySlug(slug);
+
+    if (!document) {
+      throw new NotFoundException('Published document not found');
+    }
+
+    return document;
+  }
+
+  // ==========================================
+  // Private Domain Helper Methods
+  // ==========================================
+
+  private async getDocumentWithOwnershipCheck(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentEntity> {
+    const document = await this.documentsRepository.findById(documentId);
+
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
+
+    const workspace = await this.workspaceRepository.findById(
+      document.workspaceId.toString(),
+    );
+
+    if (!workspace) {
+      throw new NotFoundException('Workspace not found');
+    }
+
+    this.assertWorkspaceOwnership(workspace, userId);
+
+    return document;
+  }
+
+  private validatePublishableDocument(document: DocumentEntity): void {
+    if (!document.title?.trim()) {
+      throw new BadRequestException(
+        'Document title is required for publishing',
+      );
+    }
+    if (!document.content || Object.keys(document.content).length === 0) {
+      throw new BadRequestException(
+        'Document content cannot be empty when publishing',
+      );
+    }
+  }
+
   private async generateUniqueSlug(
     title: string,
     workspaceId: string,
@@ -172,9 +275,8 @@ export class DocumentsService {
     workspace: WorkspaceDocument,
     userId: string,
   ): void {
-    console.log(workspace,"tset")
     if (workspace.ownerId.toString() !== userId) {
-      throw new NotFoundException('Workspace not found');
+      throw new ForbiddenException('You do not have access to this workspace');
     }
   }
 }

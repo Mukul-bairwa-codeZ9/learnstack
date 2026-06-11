@@ -19,6 +19,7 @@ documents
 ├── schemas
 ├── types
 ├── enums
+├── constants
 ├── documents.controller.ts
 ├── documents.service.ts
 ├── documents.module.ts
@@ -48,6 +49,111 @@ Visible and available for publishing workflows.
 ### ARCHIVED
 
 Retained for history but excluded from active content workflows.
+
+---
+
+## Publishing Workflow
+
+Documents now support a controlled publishing lifecycle.
+
+Publishing operations:
+
+* Publish Document
+* Unpublish Document
+* Archive Document
+* Public Document Retrieval
+
+---
+
+### Lifecycle Diagram
+
+```text
+                ┌─────────────┐
+                │    DRAFT    │
+                └──────┬──────┘
+                       │
+                    Publish
+                       │
+                       ▼
+               ┌──────────────┐
+               │  PUBLISHED   │
+               └──────┬───┬───┘
+                      │   │
+             Unpublish│   │Archive
+                      │   │
+                      ▼   ▼
+                ┌─────────────┐
+                │    DRAFT    │
+                └─────────────┘
+
+                ┌─────────────┐
+                │  ARCHIVED   │
+                └──────┬──────┘
+                       │
+                    Restore
+                       │
+                       ▼
+                ┌─────────────┐
+                │    DRAFT    │
+                └─────────────┘
+```
+
+---
+
+### Publish Rules
+
+A document can be published only when:
+
+* Document exists
+* Workspace ownership is verified
+* Title exists
+* Content exists
+
+Successful publish actions:
+
+* Status becomes `PUBLISHED`
+* `publishedAt` is populated
+
+---
+
+### Unpublish Rules
+
+A published document may be reverted to draft.
+
+Successful unpublish actions:
+
+* Status becomes `DRAFT`
+* Public access is removed
+
+---
+
+### Archive Rules
+
+Only published documents can be archived.
+
+Successful archive actions:
+
+* Status becomes `ARCHIVED`
+* `archivedAt` is populated
+* Public access is removed
+
+---
+
+### Public Access
+
+Published documents can be accessed through:
+
+```http
+GET /documents/public/:slug
+```
+
+Only documents with:
+
+```text
+status = PUBLISHED
+```
+
+are accessible through public routes.
 
 ---
 
@@ -81,6 +187,8 @@ content
 status
 workspaceId
 createdBy
+publishedAt
+archivedAt
 createdAt
 updatedAt
 ```
@@ -137,6 +245,30 @@ PATCH /documents/:id
 DELETE /documents/:id
 ```
 
+### Publish Document
+
+```http
+POST /documents/:id/publish
+```
+
+### Unpublish Document
+
+```http
+POST /documents/:id/unpublish
+```
+
+### Archive Document
+
+```http
+POST /documents/:id/archive
+```
+
+### Public Document
+
+```http
+GET /documents/public/:slug
+```
+
 ---
 
 ## Security
@@ -159,7 +291,6 @@ Planned in future releases:
 * Rich Text Editor
 * Autosave
 * Version History
-* Publishing Workflows
 * Collaboration
 * Search
 * AI Features
