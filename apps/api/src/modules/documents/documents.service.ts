@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import slugify from 'slugify';
 
@@ -20,7 +20,9 @@ export class DocumentsService {
     const workspace = await this.workspaceRepository.findById(dto.workspaceId);
 
     if (!workspace) {
-      throw new NotFoundException('Workspace not found');
+      throw new ForbiddenException(
+  'You do not have access to this workspace',
+);
     }
 
     // workspace ownership
@@ -96,12 +98,11 @@ export class DocumentsService {
       throw new NotFoundException('Document not found');
     }
 
-    console.log(document,"test in in ")
 
     const workspace = await this.workspaceRepository.findById(
       document.workspaceId.toString(),
     );
-    console.log(workspace,"test in")
+
 
     if (!workspace) {
       throw new NotFoundException('Workspace not found');
