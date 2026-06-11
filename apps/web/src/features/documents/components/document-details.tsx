@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { EditorShell } from "@/features/editor/components";
 import { DEFAULT_EDITOR_CONTENT } from "@/features/editor/constants";
+import { DocumentStatusBadge } from "./document-status-badge";
+import { DocumentPublishActions } from "./document-publish-actions";
 
 interface DocumentPageProps {
   params: Promise<{
@@ -21,7 +23,7 @@ interface DocumentPageProps {
   }>;
 }
 
-export  function DocumentDetails({ params }: DocumentPageProps) {
+export function DocumentDetails({ params }: DocumentPageProps) {
   const { documentId } = use(params);
 
   const { data: document, isLoading } = useDocument(documentId);
@@ -90,6 +92,15 @@ export  function DocumentDetails({ params }: DocumentPageProps) {
           </Badge>
         }
       />
+
+      <div className="flex items-center justify-between">
+        <DocumentStatusBadge status={document.status} />
+
+        <DocumentPublishActions
+          documentId={document._id}
+          status={document.status}
+        />
+      </div>
 
       <Separator />
 

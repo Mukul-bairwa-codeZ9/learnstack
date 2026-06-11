@@ -3,7 +3,7 @@ import { HydratedDocument, Types } from 'mongoose';
 
 import { DocumentStatus } from '../enums/document-status.enum';
 
-export type DocumentEntity  = HydratedDocument<Document>;
+export type DocumentEntity = HydratedDocument<Document>;
 
 @Schema({
   timestamps: true,
@@ -49,17 +49,26 @@ export class Document {
   createdBy: Types.ObjectId;
 
   @Prop({
-    type:Date,
+    type: Date,
     default: null,
   })
   publishedAt?: Date | null;
+
+  @Prop({
+    type: Date,
+    default: null,
+  })
+  archivedAt?: Date | null;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Document);
 
-DocumentSchema.index({
-  workspaceId: 1,
-  slug: 1,
-}, {
-  unique: true,
-});
+DocumentSchema.index(
+  {
+    workspaceId: 1,
+    slug: 1,
+  },
+  {
+    unique: true,
+  },
+);

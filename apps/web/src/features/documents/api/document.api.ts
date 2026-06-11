@@ -1,6 +1,12 @@
 import api from "@/services/api";
 
-import { CreateDocumentDto, Document, UpdateDocumentDto } from "../types";
+import {
+  CreateDocumentDto,
+  Document,
+  DocumentStatusResponse,
+  PublishDocumentResponse,
+  UpdateDocumentDto,
+} from "../types";
 
 export const documentsApi = {
   async getDocuments(workspaceId?: string): Promise<Document[]> {
@@ -34,6 +40,24 @@ export const documentsApi = {
 
   async deleteDocument(id: string) {
     const { data } = await api.delete(`/documents/${id}`);
+
+    return data;
+  },
+
+  async publishDocument(id: string): Promise<PublishDocumentResponse> {
+    const { data } = await api.post(`/documents/${id}/publish`);
+
+    return data;
+  },
+
+  async unpublishDocument(id: string): Promise<DocumentStatusResponse> {
+    const { data } = await api.post(`/documents/${id}/unpublish`);
+
+    return data;
+  },
+
+  async archiveDocument(id: string): Promise<DocumentStatusResponse> {
+    const { data } = await api.post(`/documents/${id}/archive`);
 
     return data;
   },
