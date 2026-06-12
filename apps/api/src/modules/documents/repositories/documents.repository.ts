@@ -86,4 +86,13 @@ export class DocumentsRepository {
       archivedAt,
     });
   }
+
+  async publishedExists(slug: string): Promise<boolean> {
+    const result = await this.documentModel.exists({
+      slug,
+      status: DocumentStatus.PUBLISHED,
+    });
+
+    return !!result;
+  }
 }

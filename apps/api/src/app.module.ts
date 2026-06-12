@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AccessModule } from './modules/access/access.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 import { DocumentsModule } from './modules/documents/documents.module';
+import { PublicContentModule } from './modules/public-content/public-content.module';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { DocumentsModule } from './modules/documents/documents.module';
     WorkspacesModule,
 
     DocumentsModule,
+
+    PublicContentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
