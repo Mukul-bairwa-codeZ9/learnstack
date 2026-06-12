@@ -14,7 +14,7 @@ import { useEffect } from "react";
 interface EditorShellProps {
   content?: EditorContent;
   onChange: (content: EditorContent) => void;
-  editable?: boolean;
+  editable?: boolean; 
 }
 
 export function EditorShell({
@@ -48,7 +48,7 @@ export function EditorShell({
 
   return (
     <div className="space-y-4">
-      <EditorToolbar editor={editor} />
+      {editable && <EditorToolbar editor={editor} />}
 
       <Editor editor={editor} />
     </div>
