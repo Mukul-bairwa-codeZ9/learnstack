@@ -41,6 +41,8 @@ export class DocumentsService {
       content: dto.content,
       slug,
       createdBy: userId,
+      excerpt: dto.excerpt ?? '',
+      category: dto.category ?? '',
     };
 
     return this.documentsRepository.create(documentData);

@@ -2,132 +2,118 @@
 
 ## Purpose
 
-The Public Content Module exposes published LearnStack documents to unauthenticated visitors.
+The Public Content Module exposes published LearnStack content to public users.
 
-This module acts as the public-facing content delivery layer between the Publishing domain and the Learn Platform.
-
-It is intentionally separated from the Documents module to ensure content management concerns remain isolated from content consumption concerns.
+This module powers the public learning experience and discoverability features.
 
 ---
 
-## Responsibilities
+## Features
 
-### Public Content Retrieval
+### Published Document Access
 
 Retrieve published documents by slug.
 
-### Content Delivery
-
-Expose published content through public API endpoints.
-
-### SEO Metadata Delivery
-
-Provide SEO metadata for frontend metadata generation.
-
-### Public Response Mapping
-
-Transform internal document entities into public-safe response models.
-
----
-
-## Non-Responsibilities
-
-The Public Content Module does not:
-
-* Create documents
-* Update documents
-* Delete documents
-* Manage workspaces
-* Manage permissions
-* Handle publishing workflows
-
-Those responsibilities belong to their respective domains.
-
----
-
-## API Endpoints
-
-### Get Published Document
+Route:
 
 ```http
 GET /public-content/:slug
 ```
 
-Example:
+---
+
+### Public Content Listing
+
+Retrieve published documents with pagination, search, sorting, and category filtering.
+
+Route:
 
 ```http
-GET /public-content/getting-started
+GET /public-content
 ```
 
 ---
 
-## Response Model
+## Query Parameters
+
+| Parameter | Type                      | Description                   |
+| --------- | ------------------------- | ----------------------------- |
+| page      | number                    | Current page number           |
+| limit     | number                    | Number of items per page      |
+| search    | string                    | Search title and SEO metadata |
+| category  | string                    | Filter by category            |
+| sort      | newest | oldest | updated | Sorting strategy              |
+
+---
+
+## Response Structure
 
 ```json
 {
-  "id": "document-id",
-  "title": "Getting Started",
-  "slug": "getting-started",
-  "content": {},
-  "publishedAt": "2026-06-12T10:00:00.000Z",
-  "seo": {
-    "title": "",
-    "description": "",
-    "keywords": []
+  "items": [],
+  "meta": {
+    "page": 1,
+    "limit": 12,
+    "total": 0,
+    "totalPages": 0
   }
 }
 ```
 
 ---
 
-## Validation Rules
+## Search Strategy
 
-A document is accessible only when:
+Search currently supports:
 
-* Document exists
-* Status = PUBLISHED
+* Document title
+* SEO title
+* SEO description
 
-Otherwise:
+MongoDB regex matching is used for v0.9.0.
 
-```http
-404 Not Found
-```
+Future releases may introduce:
 
----
-
-## Architecture
-
-```text
-Documents
-    ↓
-Publishing
-    ↓
-Public Content
-    ↓
-Learn Platform
-```
+* Text indexes
+* Relevance scoring
+* Full-text search
 
 ---
 
-## Future Enhancements
+## Category Foundation
 
-Planned support:
+Published content supports optional categorization.
 
-* Sitemap generation
-* Search indexing
-* Categories
-* Tags
-* Learning paths
-* Related content
-* RSS feeds
-* OpenGraph images
+Example:
+
+```json
+{
+  "category": "NestJS"
+}
+```
+
+This enables future category browsing and filtering experiences.
 
 ---
 
-## Release
+## Dependencies
 
-Introduced in:
+* Documents Module
+* Documents Repository
 
-```text
-v0.8.0 Public Content Foundation
-```
+---
+
+## Version History
+
+### v0.8.0
+
+* Public document retrieval
+* SEO metadata support
+
+### v0.9.0
+
+* Public content listing
+* Search
+* Pagination
+* Sorting
+* Category foundation

@@ -80,6 +80,20 @@ export class Document {
     default: () => ({}),
   })
   seo?: SeoMetadata;
+
+  @Prop({
+  type: String,
+  trim: true,
+  default: '',
+})
+excerpt?: string;
+
+@Prop({
+  type: String,
+  trim: true,
+  default: '',
+})
+category?: string;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Document);

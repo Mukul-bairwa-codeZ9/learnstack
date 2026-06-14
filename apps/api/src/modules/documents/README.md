@@ -184,13 +184,38 @@ Core fields:
 title
 slug
 content
+
+excerpt
+category
+
+seo
+
 status
 workspaceId
 createdBy
+
 publishedAt
 archivedAt
+
 createdAt
 updatedAt
+```
+
+---
+
+
+## Discoverability Metadata
+
+v0.9.0 introduces document metadata used by public discovery experiences.
+
+### Excerpt
+
+A short summary describing the document.
+
+Example:
+
+```text
+Learn how NestJS Guards work and when to use them.
 ```
 
 ---
@@ -266,7 +291,8 @@ POST /documents/:id/archive
 ### Public Document
 
 ```http
-GET /documents/public/:slug
+GET /public-content/:slug
+GET /public-content
 ```
 
 ---
