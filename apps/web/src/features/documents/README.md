@@ -46,9 +46,9 @@ Displays the current publishing state of a document.
 
 Supported states:
 
-* Draft
-* Published
-* Archived
+- Draft
+- Published
+- Archived
 
 ### DocumentPublishActions
 
@@ -56,10 +56,16 @@ Provides publishing controls.
 
 Supported actions:
 
-* Publish
-* Unpublish
-* Archive
-* Republish
+- Publish
+- Unpublish
+- Archive
+- Republish
+
+Public Content metadata can also be managed:
+
+- Excerpt
+- Category
+- SEO Metadata
 
 ### PublishDocumentDialog
 
@@ -75,10 +81,10 @@ Used to create a new document.
 
 Features:
 
-* React Hook Form
-* Zod Validation
-* React Query Mutations
-* Toast Notifications
+- React Hook Form
+- Zod Validation
+- React Query Mutations
+- Toast Notifications
 
 ---
 
@@ -136,7 +142,11 @@ POST   /documents/:id/publish
 POST   /documents/:id/unpublish
 POST   /documents/:id/archive
 
-GET    /documents/public/:slug
+
+// they are in public content module we just refer them here 
+
+GET /public-content/:slug  
+GET /public-content
 ```
 
 ---
@@ -152,7 +162,12 @@ Create Document
     ↓
 Document Detail
     ↓
+Manage Metadata
+    ↓
 Publish Document
+    ↓
+Public Content Discovery
+
 ```
 
 ---
@@ -214,24 +229,51 @@ Publishing controls are available from the document editor page.
 
 Users can:
 
-* Publish documents
-* Unpublish documents
-* Archive documents
-* View current document status
+- Publish documents
+- Unpublish documents
+- Archive documents
+- View current document status
 
 Published documents are prepared for future public content delivery workflows.
 
+---
+
+
+## Discoverability Support
+
+v0.9.0 introduces metadata used by public content discovery.
+
+### Excerpt
+
+Provides a short preview shown in public listings.
+
+### Category
+
+Used for content classification and filtering.
+
+### SEO Metadata
+
+Used for public page metadata generation.
+
+### Public Discovery
+
+Published documents can now appear in:
+
+```text
+/learn
+
+```
 ---
 
 ## Future Enhancements
 
 Planned additions:
 
-* Public Content Pages
-* SEO Metadata
-* Read-only Published View
 * Collaboration
 * Version History
 * AI Assistance
-* Search
 * Analytics
+* Related Content
+* Featured Content
+* Content Recommendations
+* Category Experiences
