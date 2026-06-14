@@ -2,139 +2,127 @@
 
 ## Purpose
 
-The Public Content Feature provides the frontend experience for viewing published LearnStack content.
+The Public Content Feature provides the public learning experience for LearnStack.
 
-It powers the public learning platform and allows visitors to consume published documentation without authentication.
+Users can discover, browse, search, and read published content.
 
 ---
 
-## Feature Structure
+## Routes
+
+### Content Listing
 
 ```text
-public-content
-├── api
-├── hooks
-├── types
-├── components
-└── README.md
+/learn
 ```
 
----
+Features:
 
-## Responsibilities
-
-### Public Document Retrieval
-
-Fetch published documents from the Public Content API.
-
-### Read-Only Rendering
-
-Render TipTap content without editing capabilities.
-
-### SEO Support
-
-Provide metadata generation for public pages.
-
-### Public Content Experience
-
-Display published content in a clean reading experience.
+* Content listing
+* Search
+* Sorting
+* Pagination
+* Empty states
 
 ---
 
-## Components
-
-### DocumentRenderer
-
-Responsible for:
-
-* Rendering TipTap content
-* Read-only mode
-* Reusing editor extensions
-
-### PublicDocumentPage
-
-Responsible for:
-
-* Page layout
-* Metadata display
-* Published date display
-* Content presentation
-
----
-
-## API Layer
-
-### getPublicDocument
-
-```http
-GET /public-content/:slug
-```
-
-Returns:
-
-```json
-{
-  "id": "",
-  "title": "",
-  "slug": "",
-  "content": {},
-  "publishedAt": "",
-  "seo": {}
-}
-```
-
----
-
-## Route Integration
-
-Public documents are available through:
+### Content Detail
 
 ```text
 /learn/[slug]
 ```
 
-Examples:
+Features:
+
+* Read-only TipTap rendering
+* SEO metadata
+* Public access
+
+---
+
+## Components
 
 ```text
-/learn/getting-started
-/learn/react-query-guide
-/learn/nestjs-authentication
+components
+├── content-card.tsx
+├── contents.tsx
+├── contents-page-toolbar.tsx
+├── public-document-page.tsx
+├── search-content.tsx
+├── document-renderer.tsx
 ```
 
 ---
 
-## SEO
-
-Supports:
-
-* Page title
-* Description
-* Keywords
-* OpenGraph metadata
-* Twitter metadata
-
-SEO values fall back to document content when explicit SEO metadata is not available.
-
----
-
-## Future Enhancements
-
-Planned support:
-
-* Table of contents
-* Reading time
-* Share actions
-* Related content
-* Search integration
-* Category navigation
-* Learning paths
-
----
-
-## Release
-
-Introduced in:
+## Shared Dependencies
 
 ```text
-v0.8.0 Public Content Foundation
+components/shared
+├── app-pagination.tsx
+├── app-select.tsx
 ```
+
+---
+
+## API Integration
+
+### List Content
+
+```http
+GET /public-content
+```
+
+### Get Content
+
+```http
+GET /public-content/:slug
+```
+
+---
+
+## Discoverability Features
+
+### Search
+
+Searches:
+
+* Title
+* SEO title
+* SEO description
+
+### Sorting
+
+Supported values:
+
+* newest
+* oldest
+* updated
+
+### Pagination
+
+Server-side pagination with URL state.
+
+Example:
+
+```text
+/learn?page=2
+```
+
+---
+
+## Version History
+
+### v0.8.0
+
+* Public document page
+* SEO metadata
+* Read-only rendering
+
+### v0.9.0
+
+* Discoverability foundation
+* Content listing
+* Search
+* Pagination
+* Sorting
+* Category support

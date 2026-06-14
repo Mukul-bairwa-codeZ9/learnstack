@@ -7,10 +7,13 @@ export interface CreateDocumentData {
   createdBy: string;
   content?: Record<string, any>;
   status?: DocumentStatus;
+  excerpt?: string;
+  category?: string;
 }
 
 export interface DocumentFilters {
   workspaceId?: string;
   createdBy?: string;
   status?: DocumentStatus;
+  category?: string;
 }

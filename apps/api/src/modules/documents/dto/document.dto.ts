@@ -4,8 +4,8 @@ import {
   IsOptional,
   IsString,
   MinLength,
-  IsObject, 
-  MaxLength
+  IsObject,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateDocumentDto {
@@ -20,13 +20,21 @@ export class CreateDocumentDto {
   @IsOptional()
   @IsObject()
   content?: Record<string, any>;
-}
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  excerpt?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  category?: string;
+}
 
 export class UpdateDocumentDto extends PartialType(CreateDocumentDto) {}
 
-
-export class DocumentQueryDto  {
+export class DocumentQueryDto {
   @IsOptional()
   @IsMongoId()
   workspaceId?: string;
