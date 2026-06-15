@@ -1,13 +1,13 @@
 export const layout = {
   sidebar: {
-    expandedWidth: 280,
-    collapsedWidth: 72,
+    expanded: 280,
+    collapsed: 72,
   },
 
-  container: {
-    marketing: "1280px",
-    dashboard: "1440px",
-    editor: "900px",
+  content: {
     reading: "768px",
+    editor: "900px",
+    dashboard: "1440px",
+    marketing: "1280px",
   },
 } as const;
