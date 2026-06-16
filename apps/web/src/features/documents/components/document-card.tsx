@@ -15,7 +15,7 @@ interface DocumentCardProps {
 export function DocumentCard({ document, onSelect }: DocumentCardProps) {
 
 
-  const formatedDate = formatDate(document.createdAt);
+  const formatedDate = formatDate(document.updatedAt);
 
   return (
     <Card
@@ -45,7 +45,7 @@ export function DocumentCard({ document, onSelect }: DocumentCardProps) {
           <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarDays className="h-4 w-4" />
 
-            <span>Created {formatedDate}</span>
+            <span>Updated {formatedDate}</span>
           </div>
         </div>
 

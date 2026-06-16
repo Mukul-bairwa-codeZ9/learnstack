@@ -10,6 +10,7 @@ import {
 
 export const documentsApi = {
   async getDocuments(workspaceId?: string): Promise<Document[]> {
+    console.log(workspaceId)
     const { data } = await api.get("/documents", {
       params: workspaceId ? { workspaceId } : undefined,
     });

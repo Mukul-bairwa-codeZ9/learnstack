@@ -7,6 +7,7 @@ import { LayoutDashboard, BookOpen, FolderKanban } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { ThemeToggle } from "./theme-toggle";
+import { LogoutButton } from "@/features/auth/components/logout-button";
 
 const navigation = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -61,6 +62,7 @@ export function SidebarContent() {
           </span>
           <ThemeToggle />
         </div>
+        <LogoutButton />
       </div>
     </>
   );

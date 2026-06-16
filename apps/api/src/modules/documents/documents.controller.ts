@@ -7,6 +7,7 @@ import {
   Patch,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../access/guards/permissions.guard';
@@ -23,9 +24,9 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
   @Get()
   @Permissions(Permission.DOCUMENT_VIEW)
-  async findAll(@CurrentUser() user: CurrentUserType) {
-    // Assuming you want to fetch documents belonging to the user's context or workspace
-    return this.documentsService.findAllForUser(user.id);
+  async findAll(@CurrentUser() user: CurrentUserType, @Query('workspaceId') workspaceId?: string) {
+ 
+    return this.documentsService.findAllForUser(user.id,workspaceId);
   }
 
   @Get('public/:slug')

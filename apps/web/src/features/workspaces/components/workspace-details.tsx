@@ -43,19 +43,24 @@ export function WorkspaceDetails() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <PageHeader
         title={workspace.name}
         description={workspace.description || "No description available."}
       />
-      <section className="space-y-4">
-        <div>
-          <h2 className={`${typography.h3} tracking-tight`}>
-            Workspace Documents
-          </h2>
-          <p className={typography.psmall}>
-            {documents.length} document{documents.length !== 1 ? "s" : ""}
-          </p>
+      <section className="space-y-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <h2 className={typography.h3}>
+              Documents
+            </h2>
+
+            <p className={typography.psmall}>
+              {documents.length} document
+              {documents.length !== 1 ? "s" : ""}
+                {" "}in this workspace
+            </p>
+          </div>
         </div>
 
         <DataToolbar
@@ -71,7 +76,7 @@ export function WorkspaceDetails() {
           // }
           actions={<CreateDocumentDialog workspaceId={workspace._id} />}
         />
-        <DocumentList documents={documents} />
+        <DocumentList documents={documents} workspaceId ={workspaceId} />
       </section>
     </div>
   );
