@@ -9,11 +9,11 @@ export function AppShell({
   children,
 }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="flex h-screen overflow-hidden">
+ 
+      <div className="flex h-screen overflow-hidden bg-background">
         <AppSidebar />
 
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col min-w-0">
           <AppHeader />
 
           <main className="flex-1 overflow-y-auto p-6">
@@ -21,6 +21,10 @@ export function AppShell({
           </main>
         </div>
       </div>
-    </div>
   );
 }
+
+
+
+
+

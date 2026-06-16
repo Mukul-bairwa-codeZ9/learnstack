@@ -9,29 +9,16 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 
 const navigation = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Workspaces",
-    href: "/workspaces",
-    icon: FolderKanban,
-  },
-  {
-    label: "Learn",
-    href: "/learn",
-    icon: BookOpen,
-  },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Workspaces", href: "/workspaces", icon: FolderKanban },
+  { label: "Learn", href: "/learn", icon: BookOpen },
 ];
 
-export function AppSidebar() {
+export function SidebarContent() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex flex-col w-72 border-r border-border bg-card h-screen sticky top-0">
-      {/* Brand Header */}
+    <>
       <div className="h-16 flex items-center px-6 border-b border-border">
         <Link
           href="/dashboard"
@@ -41,33 +28,33 @@ export function AppSidebar() {
         </Link>
       </div>
 
-      {/* Main Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {navigation.map((item) => {
-          const Icon = item.icon;
-          const active =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
+      <div className="flex-1 overflow-y-auto">
+        <nav className="p-4 space-y-1">
+          {navigation.map((item) => {
+            const Icon = item.icon;
+            const active =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                active
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              <Icon className="h-4 w-4 shrink-0" />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
-      {/* Profile & Settings Footer Area */}
-      <div className="p-4 border-t border-border flex flex-col gap-2 bg-card/50">
+      <div className="mt-auto border-t border-border p-4">
         <div className="flex items-center gap-2 justify-between px-2 py-1">
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
             Interface Theme
@@ -75,6 +62,14 @@ export function AppSidebar() {
           <ThemeToggle />
         </div>
       </div>
+    </>
+  );
+}
+
+export function AppSidebar() {
+  return (
+    <aside className="hidden lg:flex h-full w-64 shrink-0 flex-col border-r border-border bg-card">
+      <SidebarContent />
     </aside>
   );
 }

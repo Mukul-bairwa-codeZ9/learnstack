@@ -1,6 +1,5 @@
 import { AppShell } from "@/components/shared";
 import { RouteGuard } from "@/features/access";
-import { LogoutButton } from "@/features/auth/components/logout-button";
 
 export default function ProtectedLayout({
   children,
