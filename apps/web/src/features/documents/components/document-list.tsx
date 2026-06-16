@@ -27,7 +27,7 @@ export function DocumentList({ documents }: DocumentListProps) {
   }
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {documents.map((document) => (
         <DocumentCard
           key={document._id}

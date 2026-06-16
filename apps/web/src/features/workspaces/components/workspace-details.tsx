@@ -14,6 +14,10 @@ import { useDocuments } from "@/features/documents/hooks";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/shared/loading-state";
+import { typography } from "@/design-system";
+import { AppSelect, DataToolbar } from "@/components/shared";
+import { Input } from "@/components/ui/input";
+import { DOCUMENT_SORT_OPTIONS } from "@/constants";
 
 export function WorkspaceDetails() {
   const params = useParams();
@@ -43,16 +47,32 @@ export function WorkspaceDetails() {
       <PageHeader
         title={workspace.name}
         description={workspace.description || "No description available."}
-        actions={<CreateDocumentDialog workspaceId={workspaceId} />}
       />
-      <Separator />
+      <section className="space-y-4">
+        <div>
+          <h2 className={`${typography.h3} tracking-tight`}>
+            Workspace Documents
+          </h2>
+          <p className={typography.psmall}>
+            {documents.length} document{documents.length !== 1 ? "s" : ""}
+          </p>
+        </div>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">
-          Workspace Documents
-        </h2>
+        <DataToolbar
+          search={
+            <Input placeholder="Search documents..." className="max-w-md" />
+          }
+          // controls={
+          //   <AppSelect
+          //     options={DOCUMENT_SORT_OPTIONS}
+          //     placeholder="Sort"
+          //     className="w-[220px]"
+          //   />
+          // }
+          actions={<CreateDocumentDialog workspaceId={workspace._id} />}
+        />
         <DocumentList documents={documents} />
-      </div>
+      </section>
     </div>
   );
 }

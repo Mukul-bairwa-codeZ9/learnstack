@@ -10,3 +10,4 @@ export * from "./app-sidebar"
 export * from "./theme-toggle"
 export * from "./app-mobile-nav"
 export * from "./app-data-toolbar";
+export * from "./search-input"
