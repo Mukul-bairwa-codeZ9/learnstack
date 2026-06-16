@@ -19,7 +19,7 @@ export function PageHeader({
         </h1>
 
         {description && (
-          <p className="text-muted-foreground">
+          <p className="mt-2 text-base text-muted-foreground">
             {description}
           </p>
         )}

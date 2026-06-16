@@ -2,9 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AppSelect } from "@/components/shared/app-select";
+import { AppSelect, DataToolbar } from "@/components/shared";
 
 import { PUBLIC_CONTENT_SORT_OPTIONS } from "@/constants";
+
 import { SearchBar } from "./search-content";
 
 interface LearnToolbarProps {
@@ -27,18 +28,21 @@ export function ContentsToolbar({ search, sort }: LearnToolbarProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div className="w-full max-w-md">
-        <SearchBar initialValue={search} />
-      </div>
-
-      <AppSelect
-        value={sort}
-        options={PUBLIC_CONTENT_SORT_OPTIONS}
-        placeholder="Sort By"
-        className="w-[220px]"
-        onValueChange={handleSortChange}
-      />
-    </div>
+    <DataToolbar
+      search={
+        <div className="w-full max-w-md">
+          <SearchBar initialValue={search} />
+        </div>
+      }
+      controls={
+        <AppSelect
+          value={sort}
+          options={PUBLIC_CONTENT_SORT_OPTIONS}
+          placeholder="Sort By"
+          className="w-[220px]"
+          onValueChange={handleSortChange}
+        />
+      }
+    />
   );
 }
