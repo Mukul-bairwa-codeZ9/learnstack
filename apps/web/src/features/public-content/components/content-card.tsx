@@ -4,6 +4,7 @@ import { PublicDocumentSummary } from "../types/public-document.types";
 import { formatDate } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { typography } from "@/design-system";
 
 interface ContentCardProps {
   document: PublicDocumentSummary;
@@ -23,14 +24,14 @@ export function ContentCard({ document }: ContentCardProps) {
             </Badge>
           )}
 
-          <CardTitle className="line-clamp-2 text-xl">
+          <CardTitle className={`line-clamp-2 ${typography.h4}`}>
             {document.title}
           </CardTitle>
         </CardHeader>
 
         <CardContent>
           {document.excerpt ? (
-            <p className="line-clamp-3 text-sm text-muted-foreground">
+            <p className={`line-clamp-3 ${typography.muted}`}>
               {document.excerpt}
             </p>
           ) : (
@@ -40,7 +41,7 @@ export function ContentCard({ document }: ContentCardProps) {
           )}
         </CardContent>
 
-        <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
+        <CardFooter className={`flex items-center justify-between ${typography.caption} `}>
           <span>
             {document.publishedAt
               ? formatDate(document.publishedAt)

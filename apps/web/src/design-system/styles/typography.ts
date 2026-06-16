@@ -8,5 +8,6 @@ export const typography = {
   body: "text-base leading-7",
   small: "text-sm leading-6",
   caption: "text-xs text-muted-foreground",
-  psmall:"text-sm text-muted-foreground"
+  muted:"text-sm text-muted-foreground"
 } as const;
+

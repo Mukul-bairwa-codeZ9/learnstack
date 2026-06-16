@@ -55,7 +55,7 @@ export function WorkspaceDetails() {
               Documents
             </h2>
 
-            <p className={typography.psmall}>
+            <p className={typography.muted}>
               {documents.length} document
               {documents.length !== 1 ? "s" : ""}
                 {" "}in this workspace

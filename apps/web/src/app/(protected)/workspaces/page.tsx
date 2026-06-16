@@ -43,7 +43,7 @@ export default function WorkspacesPage() {
       <div className="space-y-6">
         <div>
           <h2 className={`${typography.h3} tracking-tight`}>Your Collections</h2>
-          <p className={typography.psmall}>
+          <p className={typography.muted}>
             You have access to {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}
           </p>
         </div>

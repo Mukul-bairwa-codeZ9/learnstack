@@ -1,22 +1,23 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { EditorContent, type Editor as TipTapEditor } from "@tiptap/react";
 
 interface EditorProps {
   editor: TipTapEditor | null;
+  className?: string;
 }
 
-export function Editor({ editor }: EditorProps) {
+export function Editor({ editor, className }: EditorProps) {
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="bg-background">
-      <div className="mx-auto max-w-4xl px-6 py-8">
-        <EditorContent
-          editor={editor}
-          className="
+    <div className={cn("rounded-lg border bg-background p-6", className)}>
+      <EditorContent
+        editor={editor}
+        className="
           prose
           prose-neutral
           dark:prose-invert
@@ -27,8 +28,7 @@ export function Editor({ editor }: EditorProps) {
           min-h-[70vh]
           focus:outline-none
         "
-        />
-      </div>
+      />
     </div>
   );
 }
