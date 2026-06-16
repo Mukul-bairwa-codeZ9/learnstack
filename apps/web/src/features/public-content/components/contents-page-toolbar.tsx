@@ -67,7 +67,7 @@ export function ContentsToolbar({
           >
             <SearchInput
               value={searchValue}
-              placeholder="Search content..."
+              placeholder="Search guides, docs, and tutorials..."
               onChange={setSearchValue}
             />
           </form>

@@ -13,7 +13,7 @@ interface ContentCardProps {
 export function ContentCard({ document }: ContentCardProps) {
   return (
    <Link href={`/learn/${document.slug}`} className="group block h-full">
-      <Card className="h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30">
+      <Card className=" flex flex-col h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30 group-hover:-translate-y-1">
         <CardHeader className="space-y-3">
           {document.category && (
             <Badge
@@ -29,7 +29,7 @@ export function ContentCard({ document }: ContentCardProps) {
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="flex-1">
           {document.excerpt ? (
             <p className={`line-clamp-3 ${typography.muted}`}>
               {document.excerpt}
@@ -46,10 +46,6 @@ export function ContentCard({ document }: ContentCardProps) {
             {document.publishedAt
               ? formatDate(document.publishedAt)
               : "Draft"}
-          </span>
-
-          <span className="transition-transform group-hover:translate-x-1">
-            Read More →
           </span>
         </CardFooter>
       </Card>

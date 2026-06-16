@@ -18,8 +18,8 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
     return (
       <EmptyState
         icon={TableOfContents}
-        title="No published content found"
-        description=" Try a different search term or come back later."
+        title="No learning content found"
+        description="Try adjusting your search or check back for newly published guides and documentation."
       />
     );
   }
@@ -38,7 +38,7 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
     <div className="space-y-8">
       <PageHeader
         title="Learn"
-        description="Explore published content from LearnStack."
+        description="Developer guides, documentation, tutorials, and engineering knowledge from LearnStack."
       />
       <ContentsToolbar search={search as string} sort={sort} />
       <p className={typography.muted}>

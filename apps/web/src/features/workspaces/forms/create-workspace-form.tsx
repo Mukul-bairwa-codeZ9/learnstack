@@ -14,7 +14,13 @@ import { useCreateWorkspace } from "../hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function CreateWorkspaceForm() {
   const {
@@ -55,14 +61,18 @@ export function CreateWorkspaceForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create a New Workspace</CardTitle>
+        <CardTitle>Create your first workspace</CardTitle>
+        <CardDescription>
+          Workspaces help you organize documents, notes, and learning resources
+          in one place.
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Workspace Name Field */}
           <div>
-            <Input placeholder="Workspace Name" {...register("name")} />
+            <Input placeholder="e.g. React Learning Path" {...register("name")} />
             {errors.name && (
               <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
             )}
@@ -71,7 +81,7 @@ export function CreateWorkspaceForm() {
           {/* Workspace Description Field */}
           <div>
             <Textarea
-              placeholder="Description (Optional)"
+              placeholder="What will you use this workspace for?"
               {...register("description")}
             />
             {errors.description && (
@@ -88,8 +98,8 @@ export function CreateWorkspaceForm() {
             disabled={createWorkspaceMutation.isPending}
           >
             {createWorkspaceMutation.isPending
-              ? "Creating..."
-              : "Create Workspace"}
+              ? "Creating Workspace..."
+              : "Get Started"}
           </Button>
         </form>
       </CardContent>

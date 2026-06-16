@@ -8,12 +8,20 @@ import { loginSchema } from "../schemas/signin.schema";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { loginRequest } from "../api/auth.api";
 import { authStorage } from "@/lib/auth-storage";
 import { setCredentials } from "../auth.slice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { typography } from "@/design-system";
 
 type LoginFormData = {
   email: string;
@@ -42,7 +50,7 @@ export default function SignInForm() {
       dispatch(
         setCredentials({
           // accessToken: response.accessToken,
-            user: response.user,
+          user: response.user,
         }),
       );
 
@@ -55,9 +63,12 @@ export default function SignInForm() {
   }
 
   return (
-    <Card>
+    <Card className="border-border/50 shadow-lg">
       <CardHeader>
-        <CardTitle>Welcome back</CardTitle>
+        <CardTitle className="text-2xl" >Welcome back</CardTitle>
+        <CardDescription>
+          Continue building your learning workspace.
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -87,8 +98,18 @@ export default function SignInForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            Sign In
+            {isSubmitting ? "Signing In..." : "Sign in "}
           </Button>
+
+          <div className={`text-center ${typography.muted} `}>
+            Don't have an account?
+            <Link
+              href="/sign-up"
+              className="font-medium text-primary hover:underline"
+            >
+              Sign up
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>
