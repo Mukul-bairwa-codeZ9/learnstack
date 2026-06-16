@@ -12,18 +12,23 @@ export function Editor({ editor }: EditorProps) {
   }
 
   return (
-    <div className="rounded-lg border bg-background p-6">
-      <EditorContent
-        editor={editor}
-        className="min-h-[300px] 
-          p-6
+    <div className="bg-background">
+      <div className="mx-auto max-w-4xl px-6 py-8">
+        <EditorContent
+          editor={editor}
+          className="
           prose
           prose-neutral
           dark:prose-invert
+          prose-headings:font-semibold
+          prose-p:text-base
+          prose-p:leading-7
           max-w-none
-          min-h-[500px]
-          focus:outline-none"
-      />
+          min-h-[70vh]
+          focus:outline-none
+        "
+        />
+      </div>
     </div>
   );
 }

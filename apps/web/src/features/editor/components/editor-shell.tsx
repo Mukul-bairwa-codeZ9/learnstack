@@ -47,7 +47,7 @@ export function EditorShell({
   }, [editor, content]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 overflow-hidden rounded-xl border bg-card shadow-sm">
       {editable && <EditorToolbar editor={editor} />}
 
       <Editor editor={editor} />
