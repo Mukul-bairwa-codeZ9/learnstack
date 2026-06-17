@@ -11,13 +11,17 @@ import {
 } from "@/features/documents/components";
 
 import { useDocuments } from "@/features/documents/hooks";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/shared/loading-state";
 import { typography } from "@/design-system";
 import { AppSelect, DataToolbar } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { DOCUMENT_SORT_OPTIONS } from "@/constants";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { DocumentStatus } from "@/features/documents/types";
+import { useMemo } from "react";
+import { WorkspaceCard } from "./workspace-card";
+import { WorkspaceOverviewCard } from "./workspace-overview-card";
 
 export function WorkspaceDetails() {
   const params = useParams();
@@ -42,23 +46,51 @@ export function WorkspaceDetails() {
     );
   }
 
+const documentStats = useMemo(() => {
+  const published = documents.filter(
+    (document) =>
+      document.status ===
+      DocumentStatus.PUBLISHED,
+  ).length;
+
+  const drafts = documents.filter(
+    (document) =>
+      document.status ===
+      DocumentStatus.DRAFT,
+  ).length;
+
+  return {
+    total: documents.length,
+    published,
+    drafts,
+  };
+}, [documents]);
+
   return (
     <div className="space-y-8">
       <PageHeader
         title={workspace.name}
-        description={workspace.description || "No description available."}
+        description={
+          workspace.description ||
+          "Organize documentation, notes, and learning resources."
+        }
       />
+
+<WorkspaceOverviewCard 
+  total={documentStats.total}
+  published={documentStats.published}
+  drafts={documentStats.drafts}
+
+
+/>
       <section className="space-y-6">
         <div className="flex items-end justify-between">
           <div>
-            <h2 className={typography.h3}>
-              Documents
-            </h2>
+            <h2 className={typography.h3}>Knowledge Base</h2>
 
             <p className={typography.muted}>
-              {documents.length} document
-              {documents.length !== 1 ? "s" : ""}
-                {" "}in this workspace
+              {documentStats.total} document
+              {documentStats.total !== 1 ? "s" : ""} stored in this workspace
             </p>
           </div>
         </div>
@@ -76,7 +108,7 @@ export function WorkspaceDetails() {
           // }
           actions={<CreateDocumentDialog workspaceId={workspace._id} />}
         />
-        <DocumentList documents={documents} workspaceId ={workspaceId} />
+        <DocumentList documents={documents} workspaceId={workspaceId} />
       </section>
     </div>
   );

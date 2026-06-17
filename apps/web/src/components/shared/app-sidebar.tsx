@@ -10,7 +10,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 
 const navigation = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  // { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Workspaces", href: "/workspaces", icon: FolderKanban },
   { label: "Learn", href: "/learn", icon: BookOpen },
 ];
