@@ -3,5 +3,3 @@ export * from "./public-document-page"
 export * from "./content-card"
 export * from "./contents"
 export * from "./contents-page-toolbar"
-export * from "./search-content"
-

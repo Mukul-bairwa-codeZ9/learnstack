@@ -54,7 +54,7 @@ export default function AuthShell({
     <div className="min-h-screen grid lg:grid-cols-2">
       <AuthBrandPanel />
 
-      <div className="flex items-center justify-center p-6 lg:p-12">
+      <div className="flex items-center justify-center p-6 lg:p-16">
         <div className="w-full max-w-md">
           {children}
         </div>

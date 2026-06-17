@@ -5,6 +5,7 @@ import { AuthProvider } from "@/providers/auth-provider";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/providers/query-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -19,8 +20,10 @@ export default function RootLayout({
         <StoreProvider>
           <AuthProvider>
             <QueryProvider>
-              {children}
-              <Toaster richColors position="top-right" />
+              <ThemeProvider>
+                {children}
+                <Toaster richColors position="top-right" />
+              </ThemeProvider>
             </QueryProvider>
           </AuthProvider>
         </StoreProvider>

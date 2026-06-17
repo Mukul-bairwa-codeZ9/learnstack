@@ -4,6 +4,7 @@ import { PublicDocumentSummary } from "../types/public-document.types";
 import { formatDate } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { typography } from "@/design-system";
 
 interface ContentCardProps {
   document: PublicDocumentSummary;
@@ -12,7 +13,7 @@ interface ContentCardProps {
 export function ContentCard({ document }: ContentCardProps) {
   return (
    <Link href={`/learn/${document.slug}`} className="group block h-full">
-      <Card className="h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30">
+      <Card className=" flex flex-col h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30 group-hover:-translate-y-1">
         <CardHeader className="space-y-3">
           {document.category && (
             <Badge
@@ -23,14 +24,14 @@ export function ContentCard({ document }: ContentCardProps) {
             </Badge>
           )}
 
-          <CardTitle className="line-clamp-2 text-xl">
+          <CardTitle className={`line-clamp-2 ${typography.h4}`}>
             {document.title}
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="flex-1">
           {document.excerpt ? (
-            <p className="line-clamp-3 text-sm text-muted-foreground">
+            <p className={`line-clamp-3 ${typography.muted}`}>
               {document.excerpt}
             </p>
           ) : (
@@ -40,15 +41,11 @@ export function ContentCard({ document }: ContentCardProps) {
           )}
         </CardContent>
 
-        <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
+        <CardFooter className={`flex items-center justify-between ${typography.caption} `}>
           <span>
             {document.publishedAt
               ? formatDate(document.publishedAt)
               : "Draft"}
-          </span>
-
-          <span className="transition-transform group-hover:translate-x-1">
-            Read More →
           </span>
         </CardFooter>
       </Card>

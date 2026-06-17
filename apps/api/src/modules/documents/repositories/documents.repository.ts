@@ -20,9 +20,31 @@ export class DocumentsRepository {
       createdBy: new Types.ObjectId(data.createdBy),
     });
   }
+  async find(filter: Record<string, any> = {}): Promise<DocumentEntity[]> {
+    const queryFilter = { ...filter };
 
-  async find(filter = {}): Promise<DocumentEntity[]> {
-    return this.documentModel.find(filter).sort({ createdAt: -1 }).exec();
+    // If a string-based workspaceId is provided, safely cast it to a native ObjectId
+    if (
+      queryFilter.workspaceId &&
+      typeof queryFilter.workspaceId === 'string'
+    ) {
+      try {
+        queryFilter.workspaceId = new Types.ObjectId(queryFilter.workspaceId);
+      } catch (error) {
+        console.error(
+          'Invalid ObjectId string passed to find query:',
+          queryFilter.workspaceId,
+        );
+        return []; // Return early if the string format is broken
+      }
+    }
+
+    const res = await this.documentModel
+      .find(queryFilter)
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res;
   }
 
   async findById(id: string): Promise<DocumentEntity | null> {

@@ -1,3 +1,4 @@
+import { layout } from "@/design-system";
 import { getPublicDocuments } from "@/features/public-content/api/public-content.api";
 import { Contents } from "@/features/public-content/components";
 import { PublicDocumentsQuery } from "@/features/public-content/types";
@@ -29,7 +30,7 @@ export default async function LearnHomepage({
   });
 
   return (
-    <div className="container mx-auto py-10">
+    <div className={layout.content.marketing}>
       <Contents
         documents={documents}
         search={params.search ?? ""}

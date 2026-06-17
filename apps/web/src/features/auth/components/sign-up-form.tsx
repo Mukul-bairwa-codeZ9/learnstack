@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { typography } from "@/design-system";
 
 type SignUpFormData = {
   name: string;
@@ -64,15 +65,16 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card className="border-border/50 shadow-lg">
+    <Card className="border-border/50 shadow-lg backdrop-blur">
+           <p className="text-sm font-medium text-primary px-4">LearnStack</p>
       <CardHeader>
         <CardTitle className="text-2xl">
-          Create Account
+          Create your account
         </CardTitle>
 
         <CardDescription>
-          Start building your developer
-          knowledge base.
+        Start creating workspaces, documents,
+and learning resources with LearnStack.
         </CardDescription>
       </CardHeader>
 
@@ -85,7 +87,7 @@ export default function SignUpForm() {
         >
           <div>
             <Input
-              placeholder="Full Name"
+              placeholder="Enter your name"
               {...register("name")}
             />
 
@@ -98,7 +100,7 @@ export default function SignUpForm() {
 
           <div>
             <Input
-              placeholder="Email"
+              placeholder="Enter your email"
               {...register("email")}
             />
 
@@ -111,7 +113,7 @@ export default function SignUpForm() {
 
           <div>
             <Input
-              type="password"
+              type="Enter your Password"
               placeholder="Password"
               {...register(
                 "password",
@@ -130,7 +132,7 @@ export default function SignUpForm() {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full h-12"
             disabled={
               isSubmitting
             }
@@ -140,7 +142,7 @@ export default function SignUpForm() {
               : "Create Account"}
           </Button>
 
-          <div className="text-center text-sm text-muted-foreground">
+          <div className={`border-t pt-4 text-center ${typography.muted} `}>
             Already have an account?{" "}
             <Link
               href="/sign-in"

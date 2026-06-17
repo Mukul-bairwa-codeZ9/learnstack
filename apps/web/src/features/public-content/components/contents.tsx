@@ -1,11 +1,11 @@
 import { ContentCard } from "./content-card";
+import { TableOfContents } from "lucide-react";
 
 import { PublicDocumentsResponse } from "../types/public-document.types";
 import { EmptyState } from "@/components/shared/empty-state";
-import { TableOfContents } from "lucide-react";
-import { SearchBar } from "./search-content";
-import { AppPagination } from "@/components/shared";
+import { AppPagination, PageHeader } from "@/components/shared";
 import { ContentsToolbar } from "./contents-page-toolbar";
+import { typography } from "@/design-system";
 
 interface LearnPageProps {
   documents: PublicDocumentsResponse;
@@ -18,8 +18,8 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
     return (
       <EmptyState
         icon={TableOfContents}
-        title="No published content found"
-        description=" Try a different search term or come back later."
+        title="No learning content found"
+        description="Try adjusting your search or check back for newly published guides and documentation."
       />
     );
   }
@@ -36,15 +36,12 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold">Learn</h1>
-
-        <p className="mt-2 text-muted-foreground">
-          Explore published content from LearnStack.
-        </p>
-      </div>
+      <PageHeader
+        title="Learn"
+        description="Developer guides, documentation, tutorials, and engineering knowledge from LearnStack."
+      />
       <ContentsToolbar search={search as string} sort={sort} />
-      <p className="text-sm text-muted-foreground">
+      <p className={typography.muted}>
         {documents.meta.total} result
         {documents.meta.total !== 1 ? "s" : ""}
       </p>

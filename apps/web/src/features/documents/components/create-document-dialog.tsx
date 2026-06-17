@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 
 import { CreateDocumentForm } from "../forms";
 import { useState } from "react";
+import { Plus } from "lucide-react";
 
 interface CreateDocumentDialogProps {
   workspaceId: string;
@@ -23,9 +24,12 @@ export function CreateDocumentDialog({
   const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>New Document</Button>
+        <Button size="default">
+          <Plus className="h-4 w-4" />
+          New Document
+        </Button>
       </DialogTrigger>
 
       <DialogContent>

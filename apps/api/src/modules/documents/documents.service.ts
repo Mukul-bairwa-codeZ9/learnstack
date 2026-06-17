@@ -49,11 +49,12 @@ export class DocumentsService {
   }
 
   async findAllForUser(userId: string, workspaceId?: string) {
+    console.log(workspaceId,"test")
     if (workspaceId) {
       const workspace = await this.workspaceRepository.findById(workspaceId);
 
       if (!workspace) {
-        throw new NotFoundException('Workspace not found');
+        throw new NotFoundException('Workspace not found'); 
       }
 
       this.assertWorkspaceOwnership(workspace, userId);

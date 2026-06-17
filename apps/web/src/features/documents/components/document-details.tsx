@@ -1,17 +1,14 @@
 "use client";
 
 import { use, useEffect } from "react";
+import { toast } from "sonner";
 import { useDocument, useUpdateDocument } from "@/features/documents/hooks";
 import { PageHeader } from "@/components/shared/page-header";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { LoadingState } from "@/components/shared/loading-state";
-import { formatDate } from "@/lib/utils";
 import { useDocumentEditor } from "@/features/editor/hooks";
-import { toast } from "sonner";
+import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { EditorShell } from "@/features/editor/components";
+import { EditorShell, EditorStatus } from "@/features/editor/components";
 import { DEFAULT_EDITOR_CONTENT } from "@/features/editor/constants";
 import { DocumentStatusBadge } from "./document-status-badge";
 import { DocumentPublishActions } from "./document-publish-actions";
@@ -55,8 +52,6 @@ export function DocumentDetails({ params }: DocumentPageProps) {
     );
   }
 
-  const formattedDate = formatDate(document.createdAt);
-
   async function handleSave() {
     if (!document) {
       return;
@@ -80,54 +75,41 @@ export function DocumentDetails({ params }: DocumentPageProps) {
 
   return (
     <div className="space-y-6">
-      {/* 3. Reusable PageHeader with metadata status badge */}
       <PageHeader
         title={document.title}
-        description={`Slug: ${document.slug}`}
-        actions={
-          <Badge
-            variant={document.status === "PUBLISHED" ? "default" : "secondary"}
-          >
-            {document.status}
-          </Badge>
-        }
+        description={`Published URL slug: ${document.slug}`}
       />
 
-      <div className="flex items-center justify-between">
-        <DocumentStatusBadge status={document.status} />
+      <div className="flex flex-col gap-4 rounded-xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <DocumentStatusBadge status={document.status} />
 
-        <DocumentPublishActions
-          documentId={document._id}
-          status={document.status}
-        />
+          <EditorStatus
+            isDirty={isDirty}
+            isSaving={updateDocumentMutation.isPending}
+          />
+
+          <span className="text-sm text-muted-foreground">
+            Updated {formatDate(document.updatedAt)}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <DocumentPublishActions
+            documentId={document._id}
+            status={document.status}
+          />
+
+          <Button
+            onClick={handleSave}
+            disabled={!isDirty || updateDocumentMutation.isPending}
+          >
+            {updateDocumentMutation.isPending ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </div>
 
-      <Separator />
-
-      {/* 4. Document Canvas / Content Area placeholder */}
-      <Card className="min-h-[400px]">
-        <CardContent className="py-6">
-          <div className="space-y-4">
-            <div className="flex justify-end">
-              <Button
-                onClick={handleSave}
-                disabled={!isDirty || updateDocumentMutation.isPending}
-              >
-                {updateDocumentMutation.isPending ? "Saving..." : "Save"}
-              </Button>
-            </div>
-
-            <EditorShell content={content} onChange={handleChange} />
-          </div>
-        </CardContent>
-        <CardContent className="py-4">
-          <div className="flex gap-6 text-sm text-muted-foreground">
-            <span>Created: {formattedDate}</span>
-
-            <span>Status: {document.status}</span>
-          </div>
-        </CardContent>
-      </Card>
+      <EditorShell content={content} onChange={handleChange} />
     </div>
   );
 }

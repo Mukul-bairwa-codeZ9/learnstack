@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { CreateWorkspaceForm } from "@/features/workspaces/forms";
 import { useWorkspaces } from "@/features/workspaces/hooks";
+import { layout, typography } from "@/design-system";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -43,7 +44,18 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl py-12">
+<div 
+      className="mx-auto flex min-h-screen flex-col justify-center py-12 px-4 md:px-6"
+      style={{ maxWidth: layout.content.reading }}
+    >
+      <div className="mb-8 text-center space-y-3">
+        <h1 className={`${typography.h1} tracking-tight font-bold`}>
+          Welcome to LearnStack
+        </h1>
+        <p className={`${typography.bodyLg} text-muted-foreground max-w-md mx-auto`}>
+          Let&apos;s build your initial setup. A workspace acts as your primary hub for organizing documentation, notes, and technical knowledge guides.
+        </p>
+      </div>
       <CreateWorkspaceForm />
     </div>
   );

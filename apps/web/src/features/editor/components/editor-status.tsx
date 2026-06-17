@@ -3,29 +3,22 @@ interface EditorStatusProps {
   isSaving: boolean;
 }
 
-export function EditorStatus({
-  isDirty,
-  isSaving,
-}: EditorStatusProps) {
+export function EditorStatus({ isDirty, isSaving }: EditorStatusProps) {
   if (isSaving) {
-    return (
-      <span className="text-sm text-muted-foreground">
-        Saving...
-      </span>
-    );
+    return <span className="text-xs text-muted-foreground">Saving...</span>;
   }
 
   if (isDirty) {
     return (
-      <span className="text-sm text-amber-500">
-        Unsaved Changes
+      <span className="text-sm text-amber-600 dark:text-amber-400">
+        Unsaved changes
       </span>
     );
   }
 
   return (
-    <span className="text-sm text-green-500">
-      Saved
+    <span className="text-sm text-emerald-600 dark:text-emerald-400">
+      All changes saved
     </span>
   );
 }
