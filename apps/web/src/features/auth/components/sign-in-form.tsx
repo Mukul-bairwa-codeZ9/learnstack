@@ -104,7 +104,7 @@ export default function SignInForm() {
           </Button>
 
           <div className={`border-t pt-4 text-center ${typography.muted} `}>
-            Don't have an account?
+          Don&apos;t have an account?
             <Link
               href="/sign-up"
               className="font-medium text-primary hover:underline"

@@ -1,2 +1,2 @@
 
-export type EditorContent = Record<string,any>;
+export type EditorContent = Record<string,unknown>;

@@ -18,6 +18,6 @@ import { AccessModule } from '../access/access.module';
   ],
   providers: [WorkspacesService, WorkspaceRepository],
   controllers: [WorkspacesController],
-  exports: [WorkspacesService,WorkspaceRepository,MongooseModule],
+  exports: [WorkspacesService, WorkspaceRepository, MongooseModule],
 })
 export class WorkspacesModule {}

@@ -7,7 +7,6 @@ import {
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-
 import { WorkspaceVisibility } from '../enums/workspace.enums';
 
 export class CreateWorkspaceDto {
@@ -26,7 +25,4 @@ export class CreateWorkspaceDto {
   visibility?: WorkspaceVisibility;
 }
 
-
-export class UpdateWorkspaceDto extends PartialType(
-  CreateWorkspaceDto,
-) {}
+export class UpdateWorkspaceDto extends PartialType(CreateWorkspaceDto) {}

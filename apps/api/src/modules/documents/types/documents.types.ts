@@ -17,3 +17,25 @@ export interface DocumentFilters {
   status?: DocumentStatus;
   category?: string;
 }
+
+export interface PublishedDocumentListItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string;
+  publishedAt: Date | null;
+  updatedAt: Date | null;
+}
+
+export interface PublishedDocumentsAggregateResult {
+  items: PublishedDocumentListItem[];
+  totalCount: Array<{
+    count: number;
+  }>;
+}
+
+export interface PublishedDocumentsResult {
+  items: PublishedDocumentListItem[];
+  total: number;
+}

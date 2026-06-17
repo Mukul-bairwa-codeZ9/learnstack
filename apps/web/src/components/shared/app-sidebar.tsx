@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, BookOpen, FolderKanban } from "lucide-react";
+import { BookOpen, FolderKanban } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 

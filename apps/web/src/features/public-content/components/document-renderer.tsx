@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import { editorExtensions } from "@/features/editor/extensions";
 import { Editor } from "@/features/editor/components/editor";
 import type { EditorContent as Content } from "@/features/editor/types";

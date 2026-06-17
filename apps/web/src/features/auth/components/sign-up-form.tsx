@@ -56,11 +56,11 @@ export default function SignUpForm() {
       reset();
 
       router.push("/sign-in");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const apiError = error as { response?: { data?: { message?: string } } };
       toast.error(
-        error?.response?.data?.message ||
-          "Unable to create account",
-      );
+      apiError.response?.data?.message || "Unable to create account"
+    );
     }
   }
 

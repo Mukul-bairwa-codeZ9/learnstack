@@ -28,7 +28,10 @@ export class WorkspaceRepository {
   }
 
   async findByOwner(ownerId: string): Promise<WorkspaceDocument[]> {
-    return this.workspaceModel.find({ ownerId :new Types.ObjectId(ownerId)}).sort({ createdAt: -1 }).exec();
+    return this.workspaceModel
+      .find({ ownerId: new Types.ObjectId(ownerId) })
+      .sort({ createdAt: -1 })
+      .exec();
   }
 
   async update(

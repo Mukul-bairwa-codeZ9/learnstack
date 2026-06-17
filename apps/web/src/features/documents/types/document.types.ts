@@ -8,7 +8,7 @@ export interface Document {
   _id: string;
   title: string;
   slug: string;
-  content?: Record<string, any>;
+  content?: Record<string, unknown>;
   workspaceId: string;
   createdBy: string;
   status: DocumentStatus;
@@ -23,12 +23,12 @@ export interface Document {
 export interface CreateDocumentDto {
   title: string;
   workspaceId: string;
-  content?: Record<string, any>;
+  content?: Record<string, unknown>;
 }
 
 export interface UpdateDocumentDto {
   title?: string;
-  content?: Record<string, any>;
+  content?: Record<string, unknown>;
 }
 
 

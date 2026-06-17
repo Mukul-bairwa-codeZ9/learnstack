@@ -22,7 +22,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(dto: SignupDto):Promise<AuthResponseDto> {
+  async signup(dto: SignupDto): Promise<AuthResponseDto> {
     const existingUser = await this.usersService.findByEmail(dto.email);
 
     if (existingUser) {
@@ -46,7 +46,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
       },
-      ...tokens
+      ...tokens,
     };
   }
 

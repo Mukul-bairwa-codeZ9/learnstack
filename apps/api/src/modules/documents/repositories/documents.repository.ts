@@ -3,7 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Document, DocumentEntity } from '../schemas/document.schema';
 
-import { CreateDocumentData } from './../types/documents.types';
+import {
+  CreateDocumentData,
+  PublishedDocumentsAggregateResult,
+  PublishedDocumentsResult,
+} from './../types/documents.types';
 import { DocumentStatus } from '../enums/document-status.enum';
 
 @Injectable()
@@ -20,7 +24,7 @@ export class DocumentsRepository {
       createdBy: new Types.ObjectId(data.createdBy),
     });
   }
-  async find(filter: Record<string, any> = {}): Promise<DocumentEntity[]> {
+  async find(filter: Record<string, unknown> = {}): Promise<DocumentEntity[]> {
     const queryFilter = { ...filter };
 
     // If a string-based workspaceId is provided, safely cast it to a native ObjectId
@@ -30,11 +34,7 @@ export class DocumentsRepository {
     ) {
       try {
         queryFilter.workspaceId = new Types.ObjectId(queryFilter.workspaceId);
-      } catch (error) {
-        console.error(
-          'Invalid ObjectId string passed to find query:',
-          queryFilter.workspaceId,
-        );
+      } catch {
         return []; // Return early if the string format is broken
       }
     }
@@ -122,10 +122,10 @@ export class DocumentsRepository {
     search?: string;
     category?: string;
     sort?: 'newest' | 'oldest' | 'updated';
-  }) {
+  }): Promise<PublishedDocumentsResult> {
     const { page, limit, search, category, sort = 'newest' } = options;
 
-    const matchStage: Record<string, any> = {
+    const matchStage: Record<string, unknown> = {
       status: DocumentStatus.PUBLISHED,
     };
 
@@ -171,45 +171,46 @@ export class DocumentsRepository {
 
     const skip = (page - 1) * limit;
 
-    const [result] = await this.documentModel.aggregate([
-      {
-        $match: matchStage,
-      },
-
-      {
-        $facet: {
-          items: [
-            {
-              $sort: sortStage,
-            },
-            {
-              $skip: skip,
-            },
-            {
-              $limit: limit,
-            },
-            {
-              $project: {
-                _id: 0, // Exclude the raw original _id object
-                id: { $toString: '$_id' }, // Safely cast ObjectId to a clean string
-                title: { $ifNull: ['$title', ''] },
-                slug: { $ifNull: ['$slug', ''] },
-                excerpt: { $ifNull: ['$excerpt', ''] },
-                category: { $ifNull: ['$category', ''] },
-                publishedAt: { $ifNull: ['$publishedAt', null] },
-                updatedAt: { $ifNull: ['$updatedAt', null] },
-              },
-            },
-          ],
-
-          totalCount: [
-            {
-              $count: 'count',
-            },
-          ],
+    const [result] =
+      await this.documentModel.aggregate<PublishedDocumentsAggregateResult>([
+        {
+          $match: matchStage,
         },
-      },
-    ]);
+
+        {
+          $facet: {
+            items: [
+              {
+                $sort: sortStage,
+              },
+              {
+                $skip: skip,
+              },
+              {
+                $limit: limit,
+              },
+              {
+                $project: {
+                  _id: 0, // Exclude the raw original _id object
+                  id: { $toString: '$_id' }, // Safely cast ObjectId to a clean string
+                  title: { $ifNull: ['$title', ''] },
+                  slug: { $ifNull: ['$slug', ''] },
+                  excerpt: { $ifNull: ['$excerpt', ''] },
+                  category: { $ifNull: ['$category', ''] },
+                  publishedAt: { $ifNull: ['$publishedAt', null] },
+                  updatedAt: { $ifNull: ['$updatedAt', null] },
+                },
+              },
+            ],
+
+            totalCount: [
+              {
+                $count: 'count',
+              },
+            ],
+          },
+        },
+      ]);
 
     return {
       items: result?.items ?? [],

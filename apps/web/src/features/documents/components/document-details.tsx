@@ -38,7 +38,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
     setContent(document.content ?? DEFAULT_EDITOR_CONTENT);
 
     setIsDirty(false);
-  }, [document]);
+  }, [document, setIsDirty, setContent]);
 
   if (isLoading) {
     return <LoadingState message="Loading Document..." />;

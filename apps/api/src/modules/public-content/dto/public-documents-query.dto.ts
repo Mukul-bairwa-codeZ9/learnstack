@@ -21,7 +21,7 @@ export class PublicDocumentsQueryDto {
   @Min(1)
   @Max(50)
   limit: number = 12;
-  
+
   @ApiPropertyOptional({
     description: 'Search term matching title or SEO fields',
   })

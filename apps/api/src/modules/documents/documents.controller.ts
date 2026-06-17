@@ -24,9 +24,11 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
   @Get()
   @Permissions(Permission.DOCUMENT_VIEW)
-  async findAll(@CurrentUser() user: CurrentUserType, @Query('workspaceId') workspaceId?: string) {
- 
-    return this.documentsService.findAllForUser(user.id,workspaceId);
+  async findAll(
+    @CurrentUser() user: CurrentUserType,
+    @Query('workspaceId') workspaceId?: string,
+  ) {
+    return this.documentsService.findAllForUser(user.id, workspaceId);
   }
 
   @Get('public/:slug')

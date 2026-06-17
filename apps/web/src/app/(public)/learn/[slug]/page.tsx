@@ -53,12 +53,14 @@ export async function generateMetadata({
 
 export default async function LearnPage({ params }: LearnPageProps) {
   const { slug } = await params;
+  
+  let document;
 
   try {
-    const document = await getPublicDocument(slug);
-
-    return <PublicDocumentPage document={document} />;
+    document = await getPublicDocument(slug);
   } catch {
     notFound();
   }
+
+  return <PublicDocumentPage document={document} />;
 }

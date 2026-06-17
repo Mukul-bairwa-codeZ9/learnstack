@@ -1,10 +1,9 @@
 import { CalendarDays, ArrowRight } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 import { Document } from "../types";
-import { cn, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { DocumentStatusBadge } from "./document-status-badge";
 
 interface DocumentCardProps {
@@ -13,8 +12,6 @@ interface DocumentCardProps {
 }
 
 export function DocumentCard({ document, onSelect }: DocumentCardProps) {
-
-
   const formatedDate = formatDate(document.updatedAt);
 
   return (
@@ -39,7 +36,7 @@ export function DocumentCard({ document, onSelect }: DocumentCardProps) {
           </h3>
 
           <div className="mt-3 flex items-center gap-2">
-          <DocumentStatusBadge status={document.status} />
+            <DocumentStatusBadge status={document.status} />
           </div>
 
           <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">

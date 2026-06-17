@@ -11,7 +11,6 @@ interface WorkspaceCardProps {
 }
 
 export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
-  const createdon = formatDate(workspace.createdAt);
   const updatedon = formatDate(workspace.updatedAt);
 
   return (

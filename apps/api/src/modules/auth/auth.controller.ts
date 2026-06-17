@@ -7,7 +7,6 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import type { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
-import { UserDocument } from '../users/schemas/user.schema';
 import { UserResponseDto } from '../users/dto/user-response.dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -41,7 +40,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  logout(@CurrentUser() user: any) {
+  logout(@CurrentUser() user: CurrentUserType) {
     return this.authService.logout(user.id);
   }
 
