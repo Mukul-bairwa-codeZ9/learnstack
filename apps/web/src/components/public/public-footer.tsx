@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { layout, typography } from "@/design-system";
+import { typography } from "@/design-system";
 import { PublicContainer } from "./public-container";
 
 const links = [
