@@ -77,7 +77,7 @@ export default function MarketingHomePage() {
           </div>
         </section>
 
-        <section className="mt-32">
+        <section id="features" className="mt-32">
           <div className="text-center">
             <h2 className={typography.h2}>
               Everything you need to build and share knowledge
@@ -99,7 +99,7 @@ export default function MarketingHomePage() {
           </div>
         </section>
 
-        <section className="mt-32">
+        <section id="about" className="mt-32">
           <div className="text-center">
             <h2 className={typography.h2}>How LearnStack Works</h2>
           </div>

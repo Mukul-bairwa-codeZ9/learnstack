@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { layout, typography } from "@/design-system";
+import { PublicContainer } from "./public-container";
 
 const links = [
   {
@@ -19,7 +20,7 @@ const links = [
     label: "Contact",
     href: "/contact",
   },
-    {
+  {
     label: "Sign In",
     href: "/sign-in",
   },
@@ -28,11 +29,11 @@ const links = [
 export function PublicFooter() {
   return (
     <footer className="border-t">
-      <div
-        className="mx-auto flex flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between"
-        style={{
-          maxWidth: layout.content.marketing,
-        }}
+      <PublicContainer
+        className="
+    flex flex-col gap-8 py-12
+    md:flex-row md:items-start md:justify-between
+  "
       >
         <div className="space-y-2">
           <h3 className="font-bold tracking-tight">LearnStack</h3>
@@ -51,7 +52,7 @@ export function PublicFooter() {
             </Link>
           ))}
         </div>
-      </div>
+      </PublicContainer>
     </footer>
   );
 }

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getPublicDocument } from "@/features/public-content/api/public-content.api";
 
 import { PublicDocumentPage } from "@/features/public-content/components/public-document-page";
+import { layout } from "@/design-system";
+import { PublicContainer } from "@/components/public";
 
 interface LearnPageProps {
   params: Promise<{
@@ -53,7 +55,7 @@ export async function generateMetadata({
 
 export default async function LearnPage({ params }: LearnPageProps) {
   const { slug } = await params;
-  
+
   let document;
 
   try {
@@ -62,5 +64,9 @@ export default async function LearnPage({ params }: LearnPageProps) {
     notFound();
   }
 
-  return <PublicDocumentPage document={document} />;
+  return (
+    <PublicContainer>
+      <PublicDocumentPage document={document} />
+    </PublicContainer>
+  );
 }
