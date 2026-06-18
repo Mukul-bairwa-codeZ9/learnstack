@@ -1,4 +1,4 @@
-import { WorkspaceVisibility } from "../enums/workspace.enums";
+import { WorkspaceVisibility } from '../enums/workspace.enums';
 
 export interface CreateWorkspaceData {
   name: string;
@@ -6,5 +6,4 @@ export interface CreateWorkspaceData {
   description?: string;
   visibility?: WorkspaceVisibility;
   ownerId: string;
-};
-
+}

@@ -45,5 +45,4 @@ export class Workspace {
   visibility: WorkspaceVisibility;
 }
 
-export const WorkspaceSchema =
-  SchemaFactory.createForClass(Workspace);
+export const WorkspaceSchema = SchemaFactory.createForClass(Workspace);

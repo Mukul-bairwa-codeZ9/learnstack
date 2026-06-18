@@ -10,12 +10,7 @@ export class AccessService {
     return ROLE_PERMISSIONS[role] ?? [];
   }
 
-  hasPermission(
-    role: Role,
-    permission: Permission,
-  ): boolean {
-    return this.getPermissions(role).includes(
-      permission,
-    );
+  hasPermission(role: Role, permission: Permission): boolean {
+    return this.getPermissions(role).includes(permission);
   }
 }

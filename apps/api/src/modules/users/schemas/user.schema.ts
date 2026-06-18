@@ -32,11 +32,11 @@ export class User {
   refreshToken?: string;
 
   @Prop({
-  type: String,
-  enum: Role,
-  default: Role.ADMIN,
-})
-role: Role;
+    type: String,
+    enum: Role,
+    default: Role.ADMIN,
+  })
+  role: Role;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

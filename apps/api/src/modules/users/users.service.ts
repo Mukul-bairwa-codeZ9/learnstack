@@ -3,10 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
-import {
-  User,
-  UserDocument,
-} from './schemas/user.schema';
+import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
@@ -20,19 +17,14 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    return this.userModel
-      .findOne({ email })
-      .select('+password +refreshToken');
+    return this.userModel.findOne({ email }).select('+password +refreshToken');
   }
 
   async findById(id: string) {
     return this.userModel.findById(id);
   }
 
-  async updateRefreshToken(
-    userId: string,
-    refreshToken: string | null,
-  ) {
+  async updateRefreshToken(userId: string, refreshToken: string | null) {
     return this.userModel.findByIdAndUpdate(userId, {
       refreshToken,
     });

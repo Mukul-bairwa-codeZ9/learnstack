@@ -20,7 +20,7 @@ import { WorkspaceRepository } from '../workspaces/repositories/workspace.reposi
     AccessModule,
   ],
   controllers: [DocumentsController],
-  providers: [DocumentsService,DocumentsRepository,WorkspaceRepository],
-  exports: [DocumentsService,DocumentsRepository],
+  providers: [DocumentsService, DocumentsRepository, WorkspaceRepository],
+  exports: [DocumentsService, DocumentsRepository],
 })
 export class DocumentsModule {}

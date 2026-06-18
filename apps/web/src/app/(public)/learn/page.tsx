@@ -1,3 +1,4 @@
+import { PublicContainer } from "@/components/public";
 import { getPublicDocuments } from "@/features/public-content/api/public-content.api";
 import { Contents } from "@/features/public-content/components";
 import { PublicDocumentsQuery } from "@/features/public-content/types";
@@ -29,12 +30,12 @@ export default async function LearnHomepage({
   });
 
   return (
-    <div className="container mx-auto py-10">
+    <PublicContainer className="py-12">
       <Contents
         documents={documents}
         search={params.search ?? ""}
         sort={params.sort ?? ""}
       />
-    </div>
+    </PublicContainer>
   );
 }

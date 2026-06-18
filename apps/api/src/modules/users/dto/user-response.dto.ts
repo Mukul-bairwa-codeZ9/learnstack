@@ -1,8 +1,15 @@
 import { Expose, Transform } from 'class-transformer';
 
+type UserTransformSource = {
+  _id?: { toString(): string };
+  id?: string;
+};
 export class UserResponseDto {
   @Expose()
-  @Transform(({ obj }) => obj._id?.toString() || obj.id)
+  @Transform(
+    ({ obj }: { obj: UserTransformSource }) =>
+      obj._id?.toString() ?? obj.id ?? '',
+  )
   id: string;
 
   @Expose()
@@ -12,7 +19,7 @@ export class UserResponseDto {
   email: string;
 
   @Expose()
-  role:string;
+  role: string;
 
   @Expose()
   createdAt: Date;

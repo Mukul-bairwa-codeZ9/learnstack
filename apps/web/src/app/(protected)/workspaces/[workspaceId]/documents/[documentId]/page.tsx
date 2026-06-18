@@ -1,6 +1,14 @@
 import {DocumentDetails} from "@/features/documents/components";
 
-export default function page(props:any) {
+interface Props {
+  params:Promise<{
+    workspaceId:string;
+    documentId:string;
+  }>
+}
+
+
+export default function page(props:Props) {
   return (
     <DocumentDetails {...props} />
   )

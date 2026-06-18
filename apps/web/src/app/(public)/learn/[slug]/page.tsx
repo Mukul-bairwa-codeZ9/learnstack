@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getPublicDocument } from "@/features/public-content/api/public-content.api";
 
 import { PublicDocumentPage } from "@/features/public-content/components/public-document-page";
+import { PublicContainer } from "@/components/public";
 
 interface LearnPageProps {
   params: Promise<{
@@ -54,11 +55,17 @@ export async function generateMetadata({
 export default async function LearnPage({ params }: LearnPageProps) {
   const { slug } = await params;
 
-  try {
-    const document = await getPublicDocument(slug);
+  let document;
 
-    return <PublicDocumentPage document={document} />;
+  try {
+    document = await getPublicDocument(slug);
   } catch {
     notFound();
   }
+
+  return (
+    <PublicContainer>
+      <PublicDocumentPage document={document} />
+    </PublicContainer>
+  );
 }

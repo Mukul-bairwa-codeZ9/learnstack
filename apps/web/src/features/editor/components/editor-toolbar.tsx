@@ -24,48 +24,43 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2  rounded-lg border-b p-2">
-     <Button
-  size="icon"
-  variant={
-    editor.isActive("bold")
-      ? "default"
-      : "outline"
-  }
-  onClick={() =>
-    editor.chain().focus().toggleBold().run()
-  }
->
-  <Bold className="h-4 w-4" />
-</Button>
+    <div
+      className="
+    sticky
+    top-16
+    z-20
+    flex
+    flex-wrap
+    gap-2
+    border-b
+    bg-card
+    p-3
+    backdrop-blur
+  "
+    >
+      <Button
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("bold") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleBold().run()}
+      >
+        <Bold className="h-4 w-4" />
+      </Button>
 
-    <Button
-        size="icon"
-        variant={
-          editor.isActive("italic")
-            ? "default"
-            : "outline"
-        }
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .toggleItalic()
-            .run()
-        }
+      <Button
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("italic") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleItalic().run()}
       >
         <Italic className="h-4 w-4" />
       </Button>
 
-
-      <Separator
-        orientation="vertical"
-        className="h-6"
-      />
-
+      <Separator orientation="vertical" className="h-6" />
 
       <Button
-        size="icon"
+        size="sm"
+        className="h-9 w-9"
         variant={
           editor.isActive("heading", {
             level: 2,
@@ -86,84 +81,42 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
         <Heading2 className="h-4 w-4" />
       </Button>
 
-      <Separator
-        orientation="vertical"
-        className="h-6"
-      />
+      <Separator orientation="vertical" className="h-6" />
 
       <Button
-        size="icon"
-        variant={
-          editor.isActive("bulletList")
-            ? "default"
-            : "outline"
-        }
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .toggleBulletList()
-            .run()
-        }
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("bulletList") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
       >
         <List className="h-4 w-4" />
       </Button>
 
       <Button
-        size="icon"
-        variant={
-          editor.isActive("orderedList")
-            ? "default"
-            : "outline"
-        }
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .toggleOrderedList()
-            .run()
-        }
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("orderedList") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered className="h-4 w-4" />
       </Button>
 
-      <Separator
-        orientation="vertical"
-        className="h-6"
-      />
+      <Separator orientation="vertical" className="h-6" />
 
       <Button
-        size="icon"
-        variant={
-          editor.isActive("codeBlock")
-            ? "default"
-            : "outline"
-        }
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .toggleCodeBlock()
-            .run()
-        }
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("codeBlock") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         <Code2 className="h-4 w-4" />
       </Button>
 
       <Button
-        size="icon"
-        variant={
-          editor.isActive("blockquote")
-            ? "default"
-            : "outline"
-        }
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .toggleBlockquote()
-            .run()
-        }
+        size="sm"
+        className="h-9 w-9"
+        variant={editor.isActive("blockquote") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <Quote className="h-4 w-4" />
       </Button>

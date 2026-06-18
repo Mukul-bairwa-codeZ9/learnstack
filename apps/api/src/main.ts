@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import compression from 'compression';
+
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
@@ -12,8 +12,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.use(helmet());
-
-  // app.use(compression());
 
   app.enableCors({
     origin: ['http://localhost:3000'],
@@ -55,4 +53,4 @@ async function bootstrap() {
   console.log(`API running on http://localhost:4000/api`);
 }
 
-bootstrap();
+void bootstrap();

@@ -5,15 +5,7 @@ import { PermissionsGuard } from './guards/permissions.guard';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({
-  providers: [
-    AccessService,
-    RolesGuard,
-    PermissionsGuard,
-  ],
-  exports: [
-    AccessService,
-    RolesGuard,
-    PermissionsGuard,
-  ],
+  providers: [AccessService, RolesGuard, PermissionsGuard],
+  exports: [AccessService, RolesGuard, PermissionsGuard],
 })
 export class AccessModule {}

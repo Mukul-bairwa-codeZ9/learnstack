@@ -11,10 +11,7 @@ import {
 
 import { WorkspacesService } from './workspaces.service';
 
-import {
-  CreateWorkspaceDto,
-  UpdateWorkspaceDto,
-} from './dto/workspace.dto';
+import { CreateWorkspaceDto, UpdateWorkspaceDto } from './dto/workspace.dto';
 
 import { CurrentUser } from '../access/decorators/current-user.decorator';
 import { Permissions } from '../access/decorators/permissions.decorator';
@@ -26,11 +23,9 @@ import { CurrentUser as CurrentUserType } from '../access/interfaces/current-use
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('workspaces')
-@UseGuards(JwtAuthGuard,PermissionsGuard)
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 export class WorkspacesController {
-  constructor(
-    private readonly workspacesService: WorkspacesService,
-  ) {}
+  constructor(private readonly workspacesService: WorkspacesService) {}
 
   @Post()
   @Permissions(Permission.WORKSPACE_CREATE)
@@ -38,20 +33,13 @@ export class WorkspacesController {
     @CurrentUser() user: CurrentUserType,
     @Body() dto: CreateWorkspaceDto,
   ) {
-    return this.workspacesService.create(
-      user.id,
-      dto,
-    );
+    return this.workspacesService.create(user.id, dto);
   }
 
   @Get()
   @Permissions(Permission.WORKSPACE_VIEW)
-  findAll(
-    @CurrentUser() user: CurrentUserType,
-  ) {
-    return this.workspacesService.findAllForUser(
-      user.id,
-    );
+  findAll(@CurrentUser() user: CurrentUserType) {
+    return this.workspacesService.findAllForUser(user.id);
   }
 
   @Get(':id')
@@ -60,10 +48,7 @@ export class WorkspacesController {
     @Param('id') workspaceId: string,
     @CurrentUser() user: CurrentUserType,
   ) {
-    return this.workspacesService.findOneForUser(
-      workspaceId,
-      user.id,
-    );
+    return this.workspacesService.findOneForUser(workspaceId, user.id);
   }
 
   @Patch(':id')
@@ -73,11 +58,7 @@ export class WorkspacesController {
     @CurrentUser() user: CurrentUserType,
     @Body() dto: UpdateWorkspaceDto,
   ) {
-    return this.workspacesService.updateWorkspace(
-      workspaceId,
-      user.id,
-      dto,
-    );
+    return this.workspacesService.updateWorkspace(workspaceId, user.id, dto);
   }
 
   @Delete(':id')
@@ -86,9 +67,6 @@ export class WorkspacesController {
     @Param('id') workspaceId: string,
     @CurrentUser() user: CurrentUserType,
   ) {
-    return this.workspacesService.deleteWorkspace(
-      workspaceId,
-      user.id,
-    );
+    return this.workspacesService.deleteWorkspace(workspaceId, user.id);
   }
 }

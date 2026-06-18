@@ -4,8 +4,8 @@ import { PublicContentService } from './public-content.service';
 import { DocumentsModule } from '../documents/documents.module';
 
 @Module({
-   imports: [DocumentsModule],
+  imports: [DocumentsModule],
   controllers: [PublicContentController],
-  providers: [PublicContentService]
+  providers: [PublicContentService],
 })
 export class PublicContentModule {}
