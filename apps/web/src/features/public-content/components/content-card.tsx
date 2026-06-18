@@ -2,7 +2,13 @@ import Link from "next/link";
 
 import { PublicDocumentSummary } from "../types/public-document.types";
 import { formatDate } from "@/lib/utils";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { typography } from "@/design-system";
 
@@ -12,14 +18,11 @@ interface ContentCardProps {
 
 export function ContentCard({ document }: ContentCardProps) {
   return (
-   <Link href={`/learn/${document.slug}`} className="group block h-full">
+    <Link href={`/learn/${document.slug}`} className="group block h-full">
       <Card className=" flex flex-col h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30 group-hover:-translate-y-1">
         <CardHeader className="space-y-3">
           {document.category && (
-            <Badge
-              variant="secondary"
-              className="w-fit"
-            >
+            <Badge variant="secondary" className="w-fit">
               {document.category}
             </Badge>
           )}
@@ -41,12 +44,24 @@ export function ContentCard({ document }: ContentCardProps) {
           )}
         </CardContent>
 
-        <CardFooter className={`flex items-center justify-between ${typography.caption} `}>
-          <span>
-            {document.publishedAt
-              ? formatDate(document.publishedAt)
-              : "Draft"}
-          </span>
+        <CardFooter className={`flex items-center justify-between`}>
+          <>
+            <span className={typography.caption}>
+              {document.publishedAt
+                ? formatDate(document.publishedAt)
+                : "Draft"}
+            </span>
+
+            <span
+              className="
+      text-sm font-medium text-primary
+      opacity-0 transition-opacity
+      group-hover:opacity-100
+    "
+            >
+              Read Article →
+            </span>
+          </>
         </CardFooter>
       </Card>
     </Link>

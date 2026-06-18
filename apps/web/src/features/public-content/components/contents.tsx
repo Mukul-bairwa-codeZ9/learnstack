@@ -3,7 +3,7 @@ import { TableOfContents } from "lucide-react";
 
 import { PublicDocumentsResponse } from "../types/public-document.types";
 import { EmptyState } from "@/components/shared/empty-state";
-import { AppPagination, PageHeader } from "@/components/shared";
+import { AppPagination } from "@/components/shared";
 import { ContentsToolbar } from "./contents-page-toolbar";
 import { typography } from "@/design-system";
 
@@ -35,16 +35,40 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
   };
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title="Learn"
-        description="Developer guides, documentation, tutorials, and engineering knowledge from LearnStack."
-      />
-      <ContentsToolbar search={search as string} sort={sort} />
-      <p className={typography.muted}>
-        {documents.meta.total} result
-        {documents.meta.total !== 1 ? "s" : ""}
-      </p>
+    <div className="space-y-10">
+      <div className="space-y-6 border-b pb-10">
+        <div className="space-y-4">
+          <p className="text-sm font-medium text-primary">LearnStack Learn</p>
+
+          <h1 className={`${typography.display} max-w-4xl`}>
+            Developer guides, documentation, and tutorials.
+          </h1>
+
+          <p className={`${typography.bodyLg} max-w-3xl text-muted-foreground`}>
+            Explore published learning resources, engineering knowledge, and
+            technical documentation from LearnStack.
+          </p>
+        </div>
+
+        <ContentsToolbar
+    search={search as string}
+    sort={sort}
+  />
+
+  <p className={typography.muted}>
+    {documents.meta.total} result
+    {documents.meta.total !== 1 ? "s" : ""}
+  </p>
+      </div>
+    
+
+      <div className="space-y-1">
+        <h2 className={typography.h3}>Browse Resources</h2>
+
+        <p className={typography.muted}>
+          Latest published content from LearnStack.
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {documents.items.map((document) => (
