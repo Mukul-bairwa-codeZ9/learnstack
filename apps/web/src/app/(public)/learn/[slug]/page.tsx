@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { getPublicDocument } from "@/features/public-content/api/public-content.api";
 
 import { PublicDocumentPage } from "@/features/public-content/components/public-document-page";
-import { layout } from "@/design-system";
 import { PublicContainer } from "@/components/public";
 
 interface LearnPageProps {
