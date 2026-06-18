@@ -10,6 +10,8 @@ import { ThemeToggle } from "@/components/shared";
 
 import { PublicMobileNav } from "./public-mobile-nav";
 import { PublicContainer } from "./public-container";
+import { useAccess } from "@/features/access/hooks/use-access";
+import { PublicUserMenu } from "./public-user-menu";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -20,6 +22,10 @@ const navigation = [
 
 export function PublicHeader() {
   const pathname = usePathname();
+
+  const { user, isHydrated } = useAccess();
+
+  console.log(user);
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
@@ -51,9 +57,17 @@ export function PublicHeader() {
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
 
-          <Button asChild>
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
+          {isHydrated ? (
+            user ? (
+              <PublicUserMenu />
+            ) : (
+              <Button asChild>
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
+            )
+          ) : (
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
+          )}
         </div>
       </PublicContainer>
     </header>
