@@ -1,129 +1,59 @@
-# Developer Documentation Platform
+# LearnStack
 
-Production-grade developer documentation and learning platform inspired by Notion, Hashnode, and GitBook.
+LearnStack is a modern Developer Knowledge Management and Documentation Platform built for developers, engineering teams, technical writers, and learners.
 
----
+The platform combines content creation, workspace collaboration, documentation publishing, and public learning experiences into a single unified ecosystem.
 
-# Tech Stack
+Whether you're documenting project architecture, creating learning materials, publishing technical guides, or managing internal knowledge, LearnStack provides the tools needed to organize and scale technical content efficiently.
 
-## Frontend
-- Next.js
-- TypeScript
-- Tailwind CSS
-- HeroUI
-- Redux Toolkit
-- Framer Motion
+## Vision
 
-## Backend
-- NestJS
-- MongoDB
-- Redis
+LearnStack aims to become the central hub where developers can:
 
-## DevOps
-- Docker
-- GitHub Actions
-- Turborepo
-- PNPM Workspaces
+* Learn technical concepts
+* Create structured documentation
+* Organize knowledge in workspaces
+* Publish content to the web
+* Share expertise with teams and communities
 
----
+## Key Features
 
-# Architecture
+* Authentication & Authorization
+* Workspace-Based Content Management
+* Rich Text Editor powered by TipTap
+* Document Publishing Workflow
+* Public Learning Platform
+* SEO-Optimized Content Delivery
+* Design System Built with ShadCN UI
+* Scalable Monorepo Architecture
 
-```txt
-apps/
-  web/        -> Next.js frontend
-  api/        -> NestJS backend
+## Tech Stack
 
-packages/
-  ui/         -> shared UI components
-  types/      -> shared TS types
-  constants/  -> shared constants
-  config/     -> shared configurations
-```
+### Frontend
 
----
+* Next.js
+* React
+* TypeScript
+* Redux Toolkit
+* Tailwind CSS
+* ShadCN UI
+* TipTap Editor
 
-# Setup
+### Backend
 
-## Install Dependencies
+* NestJS
+* MongoDB
 
-```bash
-pnpm install
-```
+### Monorepo & Tooling
 
----
+* Turborepo
+* PNPM Workspace
 
-# Run Docker Services
+## Target Audience
 
-```bash
-docker compose up -d
-```
+* Developers
+* Engineering Teams
+* Technical Writers
+* Students
 
-Services:
-- MongoDB
-- Redis
-
----
-
-# Run Applications
-
-## Frontend
-
-```bash
-pnpm --filter web dev
-```
-
-## Backend
-
-```bash
-pnpm --filter api start:dev
-```
-
----
-
-# Build
-
-```bash
-pnpm build
-```
-
----
-
-# Lint
-
-```bash
-pnpm lint
-```
-
----
-
-# Git Workflow
-
-```txt
-feature/* → develop → main
-```
-
-Rules:
-- PR required before merge
-- CI checks required
-- squash merge preferred
-
----
-
-# Versioning
-
-Semantic Versioning:
-
-```txt
-MAJOR.MINOR.PATCH
-```
-
-Example:
-
-```txt
-v1.0.0
-```
-
----
-
-# Current version v0.2.1
+LearnStack is built with scalability, maintainability, and developer experience at its core.
