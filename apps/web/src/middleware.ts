@@ -18,8 +18,6 @@ export function middleware(
     [
       "/dashboard",
       "/workspaces",
-      "/docs",
-      "/settings",
     ];
 
   const isProtected =
