@@ -1,12 +1,14 @@
-import { ContentCard } from "./content-card";
-import { TableOfContents } from "lucide-react";
 
-import { PublicDocumentsResponse } from "../types/public-document.types";
-import { EmptyState } from "@/components/shared/empty-state";
-import { AppPagination } from "@/components/shared";
+import { EmptyState ,AppPagination} from "@/components/shared";
+
+import { PublicDocumentsResponse } from "../types";
+
+import { ContentCard } from "./content-card";
 import { ContentsToolbar } from "./contents-page-toolbar";
+
 import { typography } from "@/design-system";
 
+import { TableOfContents } from "lucide-react";
 interface LearnPageProps {
   documents: PublicDocumentsResponse;
   search?: string;

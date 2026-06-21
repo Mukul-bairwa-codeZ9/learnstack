@@ -6,7 +6,6 @@ import { FileText } from "lucide-react";
 import { EmptyState } from "@/components/shared/empty-state";
 
 import { Document } from "../types";
-
 import { DocumentCard } from "./document-card";
 import { CreateDocumentDialog } from "./create-document-dialog";
 

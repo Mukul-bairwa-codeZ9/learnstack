@@ -1,22 +1,24 @@
 "use client";
 
+import { useMemo } from "react";
 import { useParams } from "next/navigation";
-
-import { useWorkspace } from "@/features/workspaces/hooks";
-import { PageHeader } from "@/components/shared/page-header";
 
 import {
   CreateDocumentDialog,
   DocumentList,
-} from "@/features/documents/components";
+  useDocuments,DocumentStatus
+} from "@/features/documents";
 
-import { useDocuments } from "@/features/documents/hooks";
-import { LoadingState } from "@/components/shared/loading-state";
-import { typography } from "@/design-system";
+import { PageHeader } from "@/components/shared/page-header";
 import { DataToolbar } from "@/components/shared";
+import { LoadingState } from "@/components/shared/loading-state";
+
+
 import { Input } from "@/components/ui/input";
-import { DocumentStatus } from "@/features/documents/types";
-import { useMemo } from "react";
+
+import { typography } from "@/design-system";
+
+import { useWorkspace } from "../hooks";
 import { WorkspaceOverviewCard } from "./workspace-overview-card";
 
 export function WorkspaceDetails() {

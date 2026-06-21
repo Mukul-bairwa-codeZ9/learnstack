@@ -1,9 +1,9 @@
 "use client";
 
 import { useEditor } from "@tiptap/react";
-import { editorExtensions } from "@/features/editor/extensions";
-import { Editor } from "@/features/editor/components/editor";
-import type { EditorContent as Content } from "@/features/editor/types";
+
+import { editorExtensions ,Editor } from "@/features/editor";
+import type { EditorContent as Content } from "@/features/editor";
 
 interface DocumentRendererProps {
   content: Content;

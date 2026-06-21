@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-
 import {
   usePublishDocument,
   useUnpublishDocument,
@@ -11,8 +9,9 @@ import {
 } from "../hooks";
 
 import { DocumentStatus } from "../types";
-
 import { PublishDocumentDialog } from "./publish-document-dialog";
+
+import { Button } from "@/components/ui/button";
 
 interface DocumentPublishActionsProps {
   documentId: string;
