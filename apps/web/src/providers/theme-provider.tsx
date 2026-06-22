@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import dynamic from "next/dynamic";
-
-// Dynamically import the real provider only on the client side
-const NextThemesProvider = dynamic(
-  () => import("next-themes").then((mod) => mod.ThemeProvider),
-  { ssr: false }
-);
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
