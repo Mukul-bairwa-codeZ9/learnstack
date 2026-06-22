@@ -6,4 +6,4 @@ export * from "./tokens/typography";
 export * from "./constants/layout";
 export * from "./constants/breakpoints";
 
-export * from "./styles/typography";
+export * from "./styles/typography-styles";
