@@ -27,10 +27,6 @@ export const FOOTER_LINKS = [
     href: "/about",
   },
   {
-    label: "Contact",
-    href: "/contact",
-  },
-  {
     label: "Sign In",
     href: "/sign-in",
   },

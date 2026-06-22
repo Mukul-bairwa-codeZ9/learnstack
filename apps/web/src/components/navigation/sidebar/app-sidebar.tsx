@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_LINKS } from "@/constants";
 
-import { ThemeToggle } from "../../theme/theme-toggle";
+import { ThemeToggle } from "../../theme";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 
 export function SidebarContent() {
