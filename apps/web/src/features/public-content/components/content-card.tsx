@@ -1,7 +1,11 @@
 import Link from "next/link";
 
-import { PublicDocumentSummary } from "../types/public-document.types";
 import { formatDate } from "@/lib/utils";
+
+import { PublicDocumentSummary } from "../types";
+
+import { typography } from "@/design-system";
+
 import {
   Card,
   CardContent,
@@ -10,7 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { typography } from "@/design-system";
 
 interface ContentCardProps {
   document: PublicDocumentSummary;

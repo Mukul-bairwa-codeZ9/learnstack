@@ -2,16 +2,20 @@
 
 import { use, useEffect } from "react";
 import { toast } from "sonner";
-import { useDocument, useUpdateDocument } from "@/features/documents/hooks";
-import { PageHeader } from "@/components/shared/page-header";
-import { LoadingState } from "@/components/shared/loading-state";
-import { useDocumentEditor } from "@/features/editor/hooks";
 import { formatDate } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { EditorShell, EditorStatus } from "@/features/editor/components";
-import { DEFAULT_EDITOR_CONTENT } from "@/features/editor/constants";
+
+
+import { useDocumentEditor } from "@/features/editor";
+import { EditorShell, EditorStatus } from "@/features/editor";
+import { DEFAULT_EDITOR_CONTENT } from "@/features/editor";
+
 import { DocumentStatusBadge } from "./document-status-badge";
 import { DocumentPublishActions } from "./document-publish-actions";
+import { useDocument, useUpdateDocument } from "../hooks";
+
+import { PageHeader } from "@/components/data-display/headers/page-header";
+import { LoadingState } from "@/components/feedback/loading-state";
+import { Button } from "@/components/ui/button";
 
 interface DocumentPageProps {
   params: Promise<{

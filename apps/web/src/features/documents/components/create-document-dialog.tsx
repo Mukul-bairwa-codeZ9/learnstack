@@ -1,4 +1,10 @@
 "use client";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+
+import { CreateDocumentForm } from "../forms";
 
 import {
   Dialog,
@@ -7,12 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { Button } from "@/components/ui/button";
-
-import { CreateDocumentForm } from "../forms";
-import { useState } from "react";
-import { Plus } from "lucide-react";
 
 interface CreateDocumentDialogProps {
   workspaceId: string;

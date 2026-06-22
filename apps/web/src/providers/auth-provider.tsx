@@ -2,7 +2,7 @@
 
 import {
   useAuthHydration,
-} from "@/features/auth/hooks/use-auth-hydration";
+} from "@/features/auth";
 
 interface Props {
   children: React.ReactNode;

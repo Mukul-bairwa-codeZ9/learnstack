@@ -1,10 +1,13 @@
 import { CalendarDays, ArrowRight } from "lucide-react";
 
+import { formatDate } from "@/lib/utils";
+
+import { DocumentStatusBadge } from "./document-status-badge";
+import { Document } from "../types";
+
+
 import { Card } from "@/components/ui/card";
 
-import { Document } from "../types";
-import { formatDate } from "@/lib/utils";
-import { DocumentStatusBadge } from "./document-status-badge";
 
 interface DocumentCardProps {
   document: Document;

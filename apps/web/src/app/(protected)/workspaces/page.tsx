@@ -2,10 +2,14 @@
 
 import { FolderKanban } from "lucide-react";
 
-import { PageHeader, EmptyState, LoadingState } from "@/components/shared";
 import { WorkspaceList } from "@/features/workspaces/components";
-import { CreateWorkspaceDialog } from "@/features/workspaces/components/create-workspace-dialog"; // Adjust import path if needed
+import { CreateWorkspaceDialog } from "@/features/workspaces";
+
+import { PageHeader } from "@/components/data-display";
+import { EmptyState, LoadingState } from "@/components/feedback";
+
 import { useWorkspaces } from "@/features/workspaces/hooks";
+
 import { typography } from "@/design-system";
 
 export default function WorkspacesPage() {
@@ -42,9 +46,12 @@ export default function WorkspacesPage() {
 
       <div className="space-y-6">
         <div>
-          <h2 className={`${typography.h3} tracking-tight`}>Your Collections</h2>
+          <h2 className={`${typography.h3} tracking-tight`}>
+            Your Collections
+          </h2>
           <p className={typography.muted}>
-            You have access to {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}
+            You have access to {workspaces.length} workspace
+            {workspaces.length !== 1 ? "s" : ""}
           </p>
         </div>
         <WorkspaceList workspaces={workspaces} />

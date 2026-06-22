@@ -1,10 +1,19 @@
 "use client";
 
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { loginSchema } from "../schemas/signin.schema";
+import { authStorage } from "@/lib/auth-storage";
+
+import { loginRequest } from "../api";
+import { setCredentials } from "../auth.slice";
+import { loginSchema } from "../schemas";
+
+import { typography } from "@/design-system";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,13 +24,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { loginRequest } from "../api/auth.api";
-import { authStorage } from "@/lib/auth-storage";
-import { setCredentials } from "../auth.slice";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { typography } from "@/design-system";
+
+
 
 type LoginFormData = {
   email: string;

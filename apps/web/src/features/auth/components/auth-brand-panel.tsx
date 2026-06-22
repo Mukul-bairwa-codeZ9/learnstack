@@ -3,12 +3,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 
-const features = [
-  "Create learning workspaces",
-  "Write and organize documents",
-  "Publish public learning resources",
-  "Share technical knowledge",
-];
+import {FEATURES} from "../constants"
 
 export default function AuthBrandPanel() {
   return (
@@ -35,7 +30,7 @@ export default function AuthBrandPanel() {
       </motion.div>
 
       <div className="space-y-4">
-        {features.map((feature) => (
+        {FEATURES.map((feature) => (
           <div
             key={feature}
             className="flex items-center gap-3 text-sm text-muted-foreground"

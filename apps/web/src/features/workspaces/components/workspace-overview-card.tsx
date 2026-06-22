@@ -1,9 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card";
 import {
   CheckCircle2,
   FileEdit,
   FileText,
 } from "lucide-react";
+
+import { Card, CardContent } from "@/components/ui/card";
+
 
 interface WorkspaceOverviewCardsProps {
   total: number;

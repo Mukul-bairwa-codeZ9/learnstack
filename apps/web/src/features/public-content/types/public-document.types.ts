@@ -1,4 +1,4 @@
-import type { EditorContent } from "@/features/editor/types";
+import type { EditorContent } from "@/features/editor";
 
 export interface SeoMetadata {
   title?: string;
