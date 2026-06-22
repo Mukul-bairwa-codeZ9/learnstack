@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Menu } from "lucide-react";
@@ -6,7 +5,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { SidebarContent } from "./app-sidebar";
+import { SidebarContent } from "../sidebar";
 
 export function MobileSidebar() {
   return (

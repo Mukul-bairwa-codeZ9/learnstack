@@ -21,19 +21,13 @@ export function EmptyState({
         <Icon className="h-14 w-14 text-muted-foreground" />
       </div>
 
-      <h3 className="text-xl font-semibold tracking-tight">
-        {title}
-      </h3>
+      <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
 
       <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
         {description}
       </p>
 
-      {action && (
-        <div className="mt-8">
-          {action}
-        </div>
-      )}
+      {action && <div className="mt-8">{action}</div>}
     </Card>
   );
 }

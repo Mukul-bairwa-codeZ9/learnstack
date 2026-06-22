@@ -3,50 +3,30 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { NAVIGATION_LINKS } from "@/constants";
 
-const navigation = [
-  { label: "Home", href: "/" },
-  { label: "Features", href: "/features" },
-  { label: "Learn", href: "/learn" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function PublicMobileNav() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
-        >
+        <Button variant="ghost" size="icon" className="lg:hidden">
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation</span>
         </Button>
       </SheetTrigger>
 
-      <SheetContent
-        side="left"
-        className="w-72 p-0"
-      >
+      <SheetContent side="left" className="w-72 p-0">
         <div className="border-b px-6 py-4">
-          <Link
-            href="/"
-            className="text-lg font-bold tracking-tight"
-          >
+          <Link href="/" className="text-lg font-bold tracking-tight">
             LearnStack
           </Link>
         </div>
 
         <nav className="flex flex-col p-4">
-          {navigation.map((item) => (
+          {NAVIGATION_LINKS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -59,9 +39,7 @@ export function PublicMobileNav() {
 
         <div className="mt-auto border-t p-4">
           <Button asChild className="w-full">
-            <Link href="/sign-in">
-              Sign In
-            </Link>
+            <Link href="/sign-in">Sign In</Link>
           </Button>
         </div>
       </SheetContent>

@@ -2,18 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, FolderKanban } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { SIDEBAR_LINKS } from "@/constants";
 
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "../../theme/theme-toggle";
 import { LogoutButton } from "@/features/auth/components/logout-button";
-
-const navigation = [
-  // { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Workspaces", href: "/workspaces", icon: FolderKanban },
-  { label: "Learn", href: "/learn", icon: BookOpen },
-];
 
 export function SidebarContent() {
   const pathname = usePathname();
@@ -31,7 +25,7 @@ export function SidebarContent() {
 
       <div className="flex-1 overflow-y-auto">
         <nav className="p-4 space-y-1">
-          {navigation.map((item) => {
+          {SIDEBAR_LINKS.map((item) => {
             const Icon = item.icon;
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);

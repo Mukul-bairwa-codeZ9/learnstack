@@ -17,9 +17,7 @@ export function SearchInput({
     <Input
       value={value}
       placeholder={placeholder}
-      onChange={(e) =>
-        onChange(e.target.value)
-      }
+      onChange={(e) => onChange(e.target.value)}
     />
   );
 }

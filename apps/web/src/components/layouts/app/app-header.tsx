@@ -1,5 +1,4 @@
-// app-header.tsx
-import { MobileSidebar } from "./app-mobile-nav";
+import { MobileSidebar } from "../../navigation";
 
 export function AppHeader() {
   return (

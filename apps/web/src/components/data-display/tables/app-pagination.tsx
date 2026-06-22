@@ -26,22 +26,16 @@ export function AppPagination({
     <ShadPagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
-            href={buildHref(Math.max(currentPage - 1, 1))}
-          />
+          <PaginationPrevious href={buildHref(Math.max(currentPage - 1, 1))} />
         </PaginationItem>
 
         <PaginationItem>
-          <PaginationLink isActive>
-            {currentPage}
-          </PaginationLink>
+          <PaginationLink isActive>{currentPage}</PaginationLink>
         </PaginationItem>
 
         <PaginationItem>
           <PaginationNext
-            href={buildHref(
-              Math.min(currentPage + 1, totalPages),
-            )}
+            href={buildHref(Math.min(currentPage + 1, totalPages))}
           />
         </PaginationItem>
       </PaginationContent>

@@ -13,8 +13,8 @@ import { DocumentStatusBadge } from "./document-status-badge";
 import { DocumentPublishActions } from "./document-publish-actions";
 import { useDocument, useUpdateDocument } from "../hooks";
 
-import { PageHeader } from "@/components/shared/page-header";
-import { LoadingState } from "@/components/shared/loading-state";
+import { PageHeader } from "@/components/data-display/headers/page-header";
+import { LoadingState } from "@/components/feedback/loading-state";
 import { Button } from "@/components/ui/button";
 
 interface DocumentPageProps {

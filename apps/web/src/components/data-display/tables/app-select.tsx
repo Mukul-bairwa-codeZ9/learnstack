@@ -29,20 +29,14 @@ export function AppSelect({
   className,
 }: AppSelectProps) {
   return (
-    <Select
-      value={value}
-      onValueChange={onValueChange}
-    >
+    <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
 
       <SelectContent>
         {options.map((option) => (
-          <SelectItem
-            key={option.value}
-            value={option.value}
-          >
+          <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>
         ))}

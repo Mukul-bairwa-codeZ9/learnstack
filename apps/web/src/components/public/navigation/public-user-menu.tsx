@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+
+import { useAccess } from "@/features/access";
+
+import { authStorage } from "@/lib/auth-storage";
+import { logout } from "@/features/auth";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,9 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAccess } from "@/features/access/hooks/use-access";
-import { logout } from "@/features/auth/auth.slice"; // Adjust path based on your exact slice location
-import { authStorage } from "@/lib/auth-storage"; // Adjust path based on your token storage helper
 
 export function PublicUserMenu() {
   const router = useRouter();
@@ -62,20 +65,20 @@ export function PublicUserMenu() {
             </p>
           </div>
         </DropdownMenuLabel>
-        
+
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/dashboard">Dashboard</Link>
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/workspaces">Workspaces</Link>
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem 
+
+        <DropdownMenuItem
           onClick={handleLogout}
           className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
         >

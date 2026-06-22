@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import {
-  AppSelect,
-  DataToolbar,
-  SearchInput,
-} from "@/components/shared";
+import { AppSelect, DataToolbar, SearchInput } from "@/components/data-display";
 
 import { PUBLIC_CONTENT_SORT_OPTIONS } from "@/constants";
 
@@ -16,20 +12,14 @@ interface LearnToolbarProps {
   sort: string;
 }
 
-export function ContentsToolbar({
-  search,
-  sort,
-}: LearnToolbarProps) {
+export function ContentsToolbar({ search, sort }: LearnToolbarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [searchValue, setSearchValue] =
-    useState(search);
+  const [searchValue, setSearchValue] = useState(search);
 
   const handleSearch = () => {
-    const params = new URLSearchParams(
-      searchParams,
-    );
+    const params = new URLSearchParams(searchParams);
 
     if (searchValue.trim()) {
       params.set("search", searchValue);
@@ -42,12 +32,8 @@ export function ContentsToolbar({
     router.push(`/learn?${params.toString()}`);
   };
 
-  const handleSortChange = (
-    value: string,
-  ) => {
-    const params = new URLSearchParams(
-      searchParams,
-    );
+  const handleSortChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
 
     params.set("sort", value);
     params.delete("page");

@@ -1,30 +1,10 @@
 import Link from "next/link";
 
-import { typography } from "@/design-system";
-import { PublicContainer } from "./public-container";
+import { FOOTER_LINKS } from "@/constants";
 
-const links = [
-  {
-    label: "Features",
-    href: "/features",
-  },
-  {
-    label: "Learn",
-    href: "/learn",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-  {
-    label: "Sign In",
-    href: "/sign-in",
-  },
-];
+import { typography } from "@/design-system";
+
+import { PublicContainer } from "../layout";
 
 export function PublicFooter() {
   return (
@@ -42,7 +22,7 @@ export function PublicFooter() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {links.map((link) => (
+          {FOOTER_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}

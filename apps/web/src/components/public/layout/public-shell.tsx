@@ -1,5 +1,5 @@
-import { PublicFooter } from "./public-footer";
-import { PublicHeader } from "./public-header";
+import { PublicFooter } from "../footer";
+import { PublicHeader } from "../navigation";
 
 interface PublicShellProps {
   children: React.ReactNode;

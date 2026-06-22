@@ -3,22 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { typography } from "@/design-system";
+import { useAccess } from "@/features/access";
+import { NAVIGATION_LINKS } from "@/constants";
 
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/shared";
+import { ThemeToggle } from "@/components/theme";
 
 import { PublicMobileNav } from "./public-mobile-nav";
-import { PublicContainer } from "./public-container";
-import { useAccess } from "@/features/access/hooks/use-access";
+import { PublicContainer } from "../layout/public-container";
 import { PublicUserMenu } from "./public-user-menu";
 
-const navigation = [
-  { label: "Home", href: "/" },
-  { label: "Features", href: "/#features" },
-  { label: "Learn", href: "/learn" },
-  { label: "About", href: "/#about" },
-];
+import { Button } from "@/components/ui/button";
+
+import { typography } from "@/design-system";
 
 export function PublicHeader() {
   const pathname = usePathname();
@@ -38,7 +34,7 @@ export function PublicHeader() {
           </Link>
         </div>
         <nav className="hidden items-center gap-8 lg:flex">
-          {navigation.map((item) => {
+          {NAVIGATION_LINKS.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
 

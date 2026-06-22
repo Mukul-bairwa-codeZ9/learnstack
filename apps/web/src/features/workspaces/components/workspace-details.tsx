@@ -9,9 +9,9 @@ import {
   useDocuments,DocumentStatus
 } from "@/features/documents";
 
-import { PageHeader } from "@/components/shared/page-header";
-import { DataToolbar } from "@/components/shared";
-import { LoadingState } from "@/components/shared/loading-state";
+import { PageHeader } from "@/components/data-display/headers/page-header";
+import { DataToolbar } from "@/components/data-display";
+import { LoadingState } from "@/components/feedback/loading-state";
 
 
 import { Input } from "@/components/ui/input";
