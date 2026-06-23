@@ -9,12 +9,16 @@ import { AccessModule } from './modules/access/access.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 import { DocumentsModule } from './modules/documents/documents.module';
 import { PublicContentModule } from './modules/public-content/public-content.module';
+import { configurations } from './config';
+import { validationSchema } from './config/validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: configurations,
+      validationSchema,
     }),
 
     MongooseModule.forRoot(process.env.MONGO_URI as string),
