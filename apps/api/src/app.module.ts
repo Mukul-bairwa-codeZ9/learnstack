@@ -11,6 +11,7 @@ import { PublicContentModule } from './modules/public-content/public-content.mod
 import { configurations } from './config';
 import { validationSchema } from './config/validation';
 import { DatabaseModule } from './database/database.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { DatabaseModule } from './database/database.module';
     DocumentsModule,
 
     PublicContentModule,
+
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
