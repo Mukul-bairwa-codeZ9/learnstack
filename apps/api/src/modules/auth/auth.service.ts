@@ -1,8 +1,13 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+
+import { ConfigType } from '@nestjs/config';
+
+import jwtConfig from '../../config/jwt.config';
 
 import { JwtService } from '@nestjs/jwt';
 
@@ -20,6 +25,9 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
   async signup(dto: SignupDto): Promise<AuthResponseDto> {
@@ -84,8 +92,9 @@ export class AuthService {
         role: user.role,
       },
       {
-        secret: process.env.JWT_SECRET,
-        expiresIn: '3h',
+        secret: this.jwtConfiguration.secret,
+
+        expiresIn: this.jwtConfiguration.accessTokenExpiresIn as never,
       },
     );
 
@@ -94,8 +103,9 @@ export class AuthService {
         sub: user.id,
       },
       {
-        secret: process.env.JWT_REFRESH_SECRET,
-        expiresIn: '7d',
+        secret: this.jwtConfiguration.refreshSecret,
+
+        expiresIn: this.jwtConfiguration.refreshTokenExpiresIn as never,
       },
     );
 
