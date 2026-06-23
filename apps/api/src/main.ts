@@ -1,13 +1,23 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigType } from '@nestjs/config';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { appConfig } from './config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+  const logger = new Logger('Bootstrap');
+
+  const appConfiguration = app.get<ConfigType<typeof appConfig>>(appConfig.KEY);
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.setGlobalPrefix('api');
 
@@ -48,9 +58,10 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(4000);
+  const port = appConfiguration.port;
 
-  console.log(`API running on http://localhost:4000/api`);
+  await app.listen(port);
+  logger.log(`API running on http://localhost:${port}/api`);
 }
 
 void bootstrap();

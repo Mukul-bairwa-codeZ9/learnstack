@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import {
-  ConfigModule,
-  ConfigType,
-} from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 
 import databaseConfig from '../config/database.config';
 
@@ -13,16 +10,12 @@ import databaseConfig from '../config/database.config';
     ConfigModule.forFeature(databaseConfig),
 
     MongooseModule.forRootAsync({
-      imports: [
-        ConfigModule.forFeature(databaseConfig),
-      ],
+      imports: [ConfigModule.forFeature(databaseConfig)],
 
       inject: [databaseConfig.KEY],
 
       useFactory: (
-        databaseConfiguration: ConfigType<
-          typeof databaseConfig
-        >,
+        databaseConfiguration: ConfigType<typeof databaseConfig>,
       ) => ({
         uri: databaseConfiguration.uri,
       }),
