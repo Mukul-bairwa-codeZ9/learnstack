@@ -17,12 +17,17 @@ import { Permissions } from '../access/decorators/permissions.decorator'; // Fix
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
 import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Documents')
 @Controller('documents')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
   @Get()
+  @ApiOperation({
+    summary: 'Get all documents of user in a workspace',
+  })
   @Permissions(Permission.DOCUMENT_VIEW)
   async findAll(
     @CurrentUser() user: CurrentUserType,
@@ -32,17 +37,26 @@ export class DocumentsController {
   }
 
   @Get('public/:slug')
+  @ApiOperation({
+    summary: 'Get published document by slug value',
+  })
   async getPublishedDocument(@Param('slug') slug: string) {
     return this.documentsService.getPublishedDocumentBySlug(slug);
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'Get document details of user by id ',
+  })
   @Permissions(Permission.DOCUMENT_VIEW)
   async findOne(@Param('id') id: string, @CurrentUser() user: CurrentUserType) {
     return this.documentsService.findOneForUser(id, user.id);
   }
 
   @Post()
+  @ApiOperation({
+    summary: 'Create new document in a workspace',
+  })
   @Permissions(Permission.DOCUMENT_CREATE)
   async create(
     @CurrentUser() user: CurrentUserType,
@@ -52,6 +66,9 @@ export class DocumentsController {
   }
 
   @Post(':id/publish')
+  @ApiOperation({
+    summary: 'Publish document by documentId for a user',
+  })
   async publishDocument(
     @Param('id') documentId: string,
     @CurrentUser() user: CurrentUserType,
@@ -60,6 +77,9 @@ export class DocumentsController {
   }
 
   @Post(':id/unpublish')
+  @ApiOperation({
+    summary: 'Un-Publish document by documentId for a user',
+  })
   async unpublishDocument(
     @Param('id') documentId: string,
     @CurrentUser() user: CurrentUserType,
@@ -67,6 +87,9 @@ export class DocumentsController {
     return this.documentsService.unpublishDocument(documentId, user.id);
   }
   @Post(':id/archive')
+  @ApiOperation({
+    summary: 'Archive document by documentId for a user',
+  })
   async archiveDocument(
     @Param('id') documentId: string,
     @CurrentUser() user: CurrentUserType,
@@ -75,6 +98,9 @@ export class DocumentsController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update document by documentId for a user',
+  })
   @Permissions(Permission.DOCUMENT_UPDATE)
   async update(
     @Param('id') id: string,
@@ -85,6 +111,9 @@ export class DocumentsController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete document by documentId for a user',
+  })
   @Permissions(Permission.DOCUMENT_DELETE)
   async remove(@Param('id') id: string, @CurrentUser() user: CurrentUserType) {
     return this.documentsService.deleteDocument(id, user.id);

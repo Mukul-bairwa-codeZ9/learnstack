@@ -9,27 +9,37 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import type { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
 import { UserResponseDto } from '../users/dto/user-response.dto';
 import { plainToInstance } from 'class-transformer';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '../access/guards/roles.guard';
 import { Role } from '../access/enums/role.enum';
 import { Roles } from '../access/decorators/roles.decorator';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
+  @ApiTags('Workspaces')
   @Post('signup')
+  @ApiOperation({
+    summary: 'Register new user',
+  })
   signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
   }
 
   @Post('login')
+  @ApiOperation({
+    summary: 'Login user',
+  })
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  @ApiOperation({
+    summary: 'Get current authenticated user',
+  })
   me(@CurrentUser() user: CurrentUserType): UserResponseDto {
     // plainToInstance automatically filters out fields not decorated with @Expose()
     // in your DTO (like the password or refresh token if they were attached)
@@ -40,6 +50,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
+  @ApiOperation({
+    summary: 'Logout user',
+  })
   logout(@CurrentUser() user: CurrentUserType) {
     return this.authService.logout(user.id);
   }

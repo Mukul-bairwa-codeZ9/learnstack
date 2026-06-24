@@ -1,3 +1,5 @@
+import { PaginationMetaDto } from 'src/common/dto';
+
 export class PublicDocumentSummaryDto {
   id: string;
 
@@ -15,10 +17,5 @@ export class PublicDocumentSummaryDto {
 export class PublicDocumentsResponseDto {
   items: PublicDocumentSummaryDto[];
 
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+  meta: PaginationMetaDto;
 }
