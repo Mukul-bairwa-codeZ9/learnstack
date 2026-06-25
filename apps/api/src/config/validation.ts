@@ -5,7 +5,15 @@ export const validationSchema = Joi.object({
     .valid('development', 'production', 'test')
     .default('development'),
 
+  APP_NAME: Joi.string().default('learnstack-api'),
+
+  HOST: Joi.string().default('0.0.0.0'),
+
   PORT: Joi.number().default(4000),
+
+  LOG_LEVEL: Joi.string()
+    .valid('error', 'warn', 'info', 'debug')
+    .default('info'),
 
   FRONTEND_URL: Joi.string().required(),
 

@@ -1,16 +1,42 @@
-version: '3.9'
-
 services:
-  mongodb:
-    image: mongo:7
-    container_name: dev-docs-mongo
-    restart: always
-    ports:
-      - '27017:27017'
 
-  redis:
-    image: redis:7
-    container_name: dev-docs-redis
-    restart: always
+  mongo:
+    image: mongo:8
+    container_name: learnstack-mongo
+
     ports:
-      - '6379:6379'
+      - "27017:27017"
+
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    image: learnstack-api
+
+    container_name: learnstack-api
+
+    depends_on:
+      - mongo
+
+    ports:
+      - "4000:4000"
+
+    env_file:
+      - apps/api/.env.docker
+
+  web:
+    image: learnstack-web
+
+    container_name: learnstack-web
+
+    depends_on:
+      - api
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - apps/web/.env.docker
+
+volumes:
+  mongo_data:

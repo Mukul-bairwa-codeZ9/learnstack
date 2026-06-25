@@ -1,0 +1,27 @@
+# Block all node_modules everywhere (root and sub-apps)
+node_modules
+**/node_modules
+
+# Block all build outputs and temporary directories
+dist
+**/dist
+.next
+**/.next
+out
+**/out
+.turbo
+**/.turbo
+coverage
+**/coverage
+
+# Block package stores and local logs
+.pnpm-store
+*.log
+*.tsbuildinfo
+
+# Block Git history and configuration metadata
+.git
+.github
+.env
+.env.*
+README.md
