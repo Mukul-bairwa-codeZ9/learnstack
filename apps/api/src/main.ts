@@ -29,7 +29,7 @@ async function bootstrap() {
   app.use(helmet());
 
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [appConfiguration.frontendUrl],
     credentials: true,
   });
 
@@ -41,32 +41,35 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('Developer Docs Platform API')
-    .setDescription('Production API')
-    .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter your JWT access token',
-        in: 'header',
-      },
-      'JWT-auth', // This is the security name used to link routes
-    )
-    .addSecurityRequirements('JWT-auth') // Globally forces Swagger UI to send this token on all API routes
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('docs', app, document);
-
   const port = appConfiguration.port;
 
+  if (appConfiguration.nodeEnv !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Developer Docs Platform API')
+      .setDescription('Production API')
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter your JWT access token',
+          in: 'header',
+        },
+        'JWT-auth', // This is the security name used to link routes
+      )
+      .addSecurityRequirements('JWT-auth') // Globally forces Swagger UI to send this token on all API routes
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+
+    SwaggerModule.setup('docs', app, document);
+    logger.log(`Swagger UI available at http://localhost:${port}/docs`);
+  }
+
   await app.listen(port);
-  logger.log(`API running on http://localhost:${port}/api`);
+  logger.log(`API running on http://localhost:${port}/api/v1`);
 }
 
 void bootstrap();
