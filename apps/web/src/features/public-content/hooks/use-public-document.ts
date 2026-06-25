@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getPublicDocument } from "../api/public-content.api";
+import { getPublicDocument } from "../api";
 
 export const PUBLIC_DOCUMENT_QUERY_KEY = "public-document";
 

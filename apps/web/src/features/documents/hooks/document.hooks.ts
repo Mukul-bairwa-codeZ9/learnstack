@@ -4,8 +4,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { documentsApi } from '../api';
-import { documentQueryKeys } from '../utils';
+import { documentsApi ,documentQueryKeys } from '../api';
 
 import {
   CreateDocumentDto,

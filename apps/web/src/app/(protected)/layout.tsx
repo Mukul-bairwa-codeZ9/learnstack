@@ -1,4 +1,4 @@
-import { AppShell } from "@/components/shared";
+import { AppShell } from "@/components/layouts";
 import { RouteGuard } from "@/features/access";
 
 export default function ProtectedLayout({

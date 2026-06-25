@@ -18,7 +18,6 @@ export const PUBLIC_CONTENT_SORT_OPTIONS: SortOption[] = [
   { value: "updated", label: "Recently Updated" },
 ];
 
-
 export const DOCUMENT_SORT_OPTIONS: SortOption[] = [
   ...SORT_DIRECTION_OPTIONS,
   {

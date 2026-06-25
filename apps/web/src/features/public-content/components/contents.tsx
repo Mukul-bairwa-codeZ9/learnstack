@@ -1,10 +1,13 @@
-import { ContentCard } from "./content-card";
 import { TableOfContents } from "lucide-react";
 
-import { PublicDocumentsResponse } from "../types/public-document.types";
-import { EmptyState } from "@/components/shared/empty-state";
-import { AppPagination } from "@/components/shared";
+import { EmptyState } from "@/components/feedback";
+import { AppPagination } from "@/components/data-display";
+
+import { ContentCard } from "./content-card";
 import { ContentsToolbar } from "./contents-page-toolbar";
+
+import { PublicDocumentsResponse } from "../types";
+
 import { typography } from "@/design-system";
 
 interface LearnPageProps {
@@ -50,17 +53,13 @@ export function Contents({ documents, search, sort }: LearnPageProps) {
           </p>
         </div>
 
-        <ContentsToolbar
-    search={search as string}
-    sort={sort}
-  />
+        <ContentsToolbar search={search as string} sort={sort} />
 
-  <p className={typography.muted}>
-    {documents.meta.total} result
-    {documents.meta.total !== 1 ? "s" : ""}
-  </p>
+        <p className={typography.muted}>
+          {documents.meta.total} result
+          {documents.meta.total !== 1 ? "s" : ""}
+        </p>
       </div>
-    
 
       <div className="space-y-1">
         <h2 className={typography.h3}>Browse Resources</h2>

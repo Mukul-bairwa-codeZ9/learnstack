@@ -49,7 +49,6 @@ export class DocumentsService {
   }
 
   async findAllForUser(userId: string, workspaceId?: string) {
-    console.log(workspaceId, 'test');
     if (workspaceId) {
       const workspace = await this.workspaceRepository.findById(workspaceId);
 

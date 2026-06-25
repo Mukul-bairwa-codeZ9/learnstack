@@ -1,11 +1,15 @@
-import { layout, typography } from "@/design-system";
+import Link from "next/link";
 import { formatDate } from "@/lib/utils";
+
+
 import { DocumentRenderer } from "./document-renderer";
 import { PublicDocument } from "../types";
-import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
-import { ArrowLeft } from "lucide-react";
 
+import { layout, typography } from "@/design-system";
+
+import { Separator } from "@/components/ui/separator";
+
+import { ArrowLeft } from "lucide-react";
 interface Props {
   document: PublicDocument;
 }

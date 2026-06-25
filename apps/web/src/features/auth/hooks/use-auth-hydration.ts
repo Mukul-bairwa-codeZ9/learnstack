@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 import { authStorage } from "@/lib/auth-storage";
 
 import { setCredentials, setHydrated, logout } from "../auth.slice";
 
-import { getProfileRequest } from "../api/auth.api";
-import axios from "axios";
+import { getProfileRequest } from "../api";
 
 export function useAuthHydration() {
   const dispatch = useDispatch();

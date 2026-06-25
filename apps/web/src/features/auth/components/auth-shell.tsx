@@ -1,8 +1,8 @@
 "use client";
-
-import { useAccess } from "../../access/hooks/use-access";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
+import { useAccess } from "@/features/access";
 
 import AuthBrandPanel from "./auth-brand-panel";
 
@@ -10,12 +10,8 @@ interface AuthShellProps {
   children: React.ReactNode;
 }
 
-export default function AuthShell({
-  children,
-}: AuthShellProps) {
-
-
-    const router = useRouter();
+export default function AuthShell({ children }: AuthShellProps) {
+  const router = useRouter();
 
   const { user, isHydrated } = useAccess();
 
@@ -27,11 +23,7 @@ export default function AuthShell({
     if (user) {
       router.replace("/dashboard");
     }
-  }, [
-    user,
-    isHydrated,
-    router,
-  ]);
+  }, [user, isHydrated, router]);
 
   if (!isHydrated) {
     return (
@@ -49,15 +41,12 @@ export default function AuthShell({
     );
   }
 
-
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       <AuthBrandPanel />
 
       <div className="flex items-center justify-center p-6 lg:p-16">
-        <div className="w-full max-w-md">
-          {children}
-        </div>
+        <div className="w-full max-w-md">{children}</div>
       </div>
     </div>
   );

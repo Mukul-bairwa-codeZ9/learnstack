@@ -1,5 +1,7 @@
 export enum Permission {
-  // Workspace
+  // =====================================
+  // Workspace Permissions
+  // =====================================
 
   WORKSPACE_CREATE = 'workspace:create',
   WORKSPACE_VIEW = 'workspace:view',
@@ -7,7 +9,9 @@ export enum Permission {
   WORKSPACE_DELETE = 'workspace:delete',
   WORKSPACE_MANAGE_MEMBERS = 'workspace:manage_members',
 
-  // Documents
+  // =====================================
+  // Document Permissions
+  // =====================================
 
   DOCUMENT_CREATE = 'document:create',
   DOCUMENT_VIEW = 'document:view',
@@ -15,8 +19,9 @@ export enum Permission {
   DOCUMENT_DELETE = 'document:delete',
   DOCUMENT_PUBLISH = 'document:publish',
 
-  // Platform
-
+  // =====================================
+  // Platform Permissions
+  // =====================================
   USER_MANAGE = 'user:manage',
   CONTENT_MODERATE = 'content:moderate',
   SYSTEM_MANAGE = 'system:manage',

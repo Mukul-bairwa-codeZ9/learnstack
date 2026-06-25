@@ -21,6 +21,7 @@ import { PermissionsGuard } from '../access/guards/permissions.guard';
 import { Permission } from '../access/enums/permission.enum';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('workspaces')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -28,6 +29,9 @@ export class WorkspacesController {
   constructor(private readonly workspacesService: WorkspacesService) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Create new workspace',
+  })
   @Permissions(Permission.WORKSPACE_CREATE)
   create(
     @CurrentUser() user: CurrentUserType,
@@ -37,12 +41,18 @@ export class WorkspacesController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Get all workspaces for a user',
+  })
   @Permissions(Permission.WORKSPACE_VIEW)
   findAll(@CurrentUser() user: CurrentUserType) {
     return this.workspacesService.findAllForUser(user.id);
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'Get  workspace by a workspace id ',
+  })
   @Permissions(Permission.WORKSPACE_VIEW)
   findOne(
     @Param('id') workspaceId: string,
@@ -52,6 +62,9 @@ export class WorkspacesController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update workspace details by workspace id  ',
+  })
   @Permissions(Permission.WORKSPACE_UPDATE)
   update(
     @Param('id') workspaceId: string,
@@ -62,6 +75,9 @@ export class WorkspacesController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete workspace ',
+  })
   @Permissions(Permission.WORKSPACE_DELETE)
   remove(
     @Param('id') workspaceId: string,
