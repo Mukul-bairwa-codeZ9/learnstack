@@ -1,5 +1,5 @@
 {
-  "name": "developer-docs-platform",
+  "name": "learnstack",
   "private": true,
   "packageManager": "pnpm@10.0.0",
   "scripts": {
