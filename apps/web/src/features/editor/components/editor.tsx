@@ -18,15 +18,15 @@ export function Editor({ editor, className }: EditorProps) {
       <EditorContent
         editor={editor}
         className="
-          prose
+       prose
           prose-neutral
           dark:prose-invert
-          prose-headings:font-semibold
-          prose-p:text-base
-          prose-p:leading-7
           max-w-none
           min-h-[70vh]
           focus:outline-none
+          prose-headings:font-semibold
+          prose-p:text-base
+          prose-p:leading-7
         "
       />
     </div>
