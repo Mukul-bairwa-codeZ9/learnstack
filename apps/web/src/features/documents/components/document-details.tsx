@@ -4,7 +4,6 @@ import { use, useEffect } from "react";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/utils";
 
-
 import { useDocumentEditor } from "@/features/editor";
 import { EditorShell, EditorStatus } from "@/features/editor";
 import { DEFAULT_EDITOR_CONTENT } from "@/features/editor";
@@ -29,7 +28,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
 
   const { data: document, isLoading } = useDocument(documentId);
 
-  const { content, handleChange, isDirty, setContent, setIsDirty } =
+  const { getContent, handleChange, isDirty, setContent, setIsDirty } =
     useDocumentEditor();
 
   const updateDocumentMutation = useUpdateDocument();
@@ -40,7 +39,6 @@ export function DocumentDetails({ params }: DocumentPageProps) {
     }
 
     setContent(document.content ?? DEFAULT_EDITOR_CONTENT);
-
     setIsDirty(false);
   }, [document, setIsDirty, setContent]);
 
@@ -65,7 +63,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
       await updateDocumentMutation.mutateAsync({
         id: document._id,
         payload: {
-          content,
+          content: getContent(),
         },
       });
 
@@ -113,7 +111,10 @@ export function DocumentDetails({ params }: DocumentPageProps) {
         </div>
       </div>
 
-      <EditorShell content={content} onChange={handleChange} />
+      <EditorShell
+        initialContent={document.content ?? DEFAULT_EDITOR_CONTENT}
+        onChange={handleChange}
+      />
     </div>
   );
 }

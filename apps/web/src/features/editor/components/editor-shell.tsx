@@ -9,42 +9,28 @@ import { editorExtensions } from "../extensions";
 import { DEFAULT_EDITOR_CONTENT } from "../constants";
 
 import type { EditorContent } from "../types";
-import { useEffect } from "react";
 
 interface EditorShellProps {
-  content?: EditorContent;
+  initialContent?: EditorContent;
   onChange: (content: EditorContent) => void;
-  editable?: boolean; 
+  editable?: boolean;
 }
 
 export function EditorShell({
-  content,
+  initialContent,
   onChange,
   editable = true,
 }: EditorShellProps) {
   const editor = useEditor({
     extensions: editorExtensions,
-
-    content: content ?? DEFAULT_EDITOR_CONTENT,
-
+    content: initialContent ?? DEFAULT_EDITOR_CONTENT,
     editable,
+    immediatelyRender: false,
 
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON());
     },
   });
-
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    if (!content) {
-      return;
-    }
-
-    editor.commands.setContent(content, {emitUpdate:false});
-  }, [editor, content]);
 
   return (
     <div className="space-y-4 overflow-hidden rounded-xl border bg-card shadow-sm">
