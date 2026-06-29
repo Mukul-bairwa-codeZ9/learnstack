@@ -14,16 +14,23 @@ export function Editor({ editor, className }: EditorProps) {
   }
 
   return (
-    <div className={cn("rounded-lg border bg-background p-6", className)}>
+    <div className={cn("bg-background p-6", className)}>
       <EditorContent
         editor={editor}
         className="
-       prose
+          prose
           prose-neutral
           dark:prose-invert
           max-w-none
           min-h-[70vh]
+
           focus:outline-none
+          focus-visible:outline-none
+          focus:ring-0
+          focus-visible:ring-0
+          [&_.ProseMirror]:outline-none
+          [&_.ProseMirror]:focus:outline-none
+
           prose-headings:font-semibold
           prose-p:text-base
           prose-p:leading-7

@@ -33,7 +33,7 @@ export function EditorShell({
   });
 
   return (
-    <div className="space-y-4 overflow-hidden rounded-xl border bg-card shadow-sm">
+    <div className="flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
       {editable && <EditorToolbar editor={editor} />}
 
       <Editor editor={editor} />
