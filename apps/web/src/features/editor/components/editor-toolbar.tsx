@@ -15,6 +15,7 @@ import {
   Strikethrough,
   Heading1,
   Heading3,
+  ListTodo,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -45,6 +46,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       // Lists Group
       isBulletList: editor.isActive("bulletList"),
       isOrderedList: editor.isActive("orderedList"),
+      isTaskList: editor.isActive("taskList"),
 
       // Blocks Group
       isCodeBlock: editor.isActive("codeBlock"),
@@ -190,6 +192,17 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           aria-pressed={toolbarState.isOrderedList}
         >
           <ListOrdered className="h-4 w-4" />
+        </Button>
+
+        <Button
+          size="sm"
+          className="h-9 w-9"
+          variant={toolbarState.isTaskList ? "default" : "outline"}
+          onClick={() => editor?.chain().focus().toggleTaskList().run()}
+          aria-label="Tak List"
+          aria-pressed={toolbarState.isTaskList}
+        >
+          <ListTodo />
         </Button>
       </div>
 
