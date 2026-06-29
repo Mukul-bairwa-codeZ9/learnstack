@@ -44,30 +44,32 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   const toolbarState = useEditorState({
     editor,
     selector: ({ editor }) => ({
+      isFocused: editor.isFocused,
+
       // Inline Formatting Group
-      isBold: editor.isActive("bold"),
-      isItalic: editor.isActive("italic"),
-      isUnderline: editor.isActive("underline"),
-      isStrike: editor.isActive("strike"),
+      isBold: editor.isFocused && editor.isActive("bold"),
+      isItalic: editor.isFocused && editor.isActive("italic"),
+      isUnderline: editor.isFocused && editor.isActive("underline"),
+      isStrike: editor.isFocused && editor.isActive("strike"),
 
       // Headings + Paragraph Group
-      isParagraph: editor.isActive("paragraph"),
-      isH1: editor.isActive("heading", { level: 1 }),
-      isH2: editor.isActive("heading", { level: 2 }),
-      isH3: editor.isActive("heading", { level: 3 }),
+      isParagraph: editor.isFocused && editor.isActive("paragraph"),
+      isH1: editor.isFocused && editor.isActive("heading", { level: 1 }),
+      isH2: editor.isFocused && editor.isActive("heading", { level: 2 }),
+      isH3: editor.isFocused && editor.isActive("heading", { level: 3 }),
 
       // Lists Group
-      isBulletList: editor.isActive("bulletList"),
-      isOrderedList: editor.isActive("orderedList"),
-      isTaskList: editor.isActive("taskList"),
+      isBulletList: editor.isFocused && editor.isActive("bulletList"),
+      isOrderedList: editor.isFocused && editor.isActive("orderedList"),
+      isTaskList: editor.isFocused && editor.isActive("taskList"),
 
       // Blocks Group
-      isCodeBlock: editor.isActive("codeBlock"),
-      isBlockquote: editor.isActive("blockquote"),
+      isCodeBlock: editor.isFocused && editor.isActive("codeBlock"),
+      isBlockquote: editor.isFocused && editor.isActive("blockquote"),
 
       // link
 
-      isLink: editor.isActive("link"),
+      isLink: editor.isFocused && editor.isActive("link"),
 
       // color
       currentColor: editor.getAttributes("textStyle")?.color ?? "",
