@@ -34,47 +34,72 @@ interface EditorToolbarProps {
   editor: Editor | null;
 }
 
+interface ToolbarState {
+  isBold: boolean;
+  isItalic: boolean;
+  isUnderline: boolean;
+  isStrike: boolean;
+  isParagraph: boolean;
+  isH1: boolean;
+  isH2: boolean;
+  isH3: boolean;
+  isBulletList: boolean;
+  isOrderedList: boolean;
+  isTaskList: boolean;
+  isCodeBlock: boolean;
+  isBlockquote: boolean;
+  isLink: boolean;
+  currentColor: string;
+}
+
 export function EditorToolbar({ editor }: EditorToolbarProps) {
+  const [isColorMenuOpen, setIsColorMenuOpen] = useState(false);
+  const toolbarState = useEditorState<ToolbarState>({
+    editor: editor as Editor, // Safely handle null editor during initial hook setup
+    selector: ({ editor: currentEditor }) :ToolbarState=> {
+      if (!currentEditor) {
+        return {
+          isBold: false,
+          isItalic: false,
+          isUnderline: false,
+          isStrike: false,
+          isParagraph: false,
+          isH1: false,
+          isH2: false,
+          isH3: false,
+          isBulletList: false,
+          isOrderedList: false,
+          isTaskList: false,
+          isCodeBlock: false,
+          isBlockquote: false,
+          isLink: false,
+          currentColor: "",
+        };
+      }
+      return {
+        isBold: currentEditor.isActive("bold"),
+        isItalic: currentEditor.isActive("italic"),
+        isUnderline: currentEditor.isActive("underline"),
+        isStrike: currentEditor.isActive("strike"),
+        isParagraph: currentEditor.isActive("paragraph"),
+        isH1: currentEditor.isActive("heading", { level: 1 }),
+        isH2: currentEditor.isActive("heading", { level: 2 }),
+        isH3: currentEditor.isActive("heading", { level: 3 }),
+        isBulletList: currentEditor.isActive("bulletList"),
+        isOrderedList: currentEditor.isActive("orderedList"),
+        isTaskList: currentEditor.isActive("taskList"),
+        isCodeBlock: currentEditor.isActive("codeBlock"),
+        isBlockquote: currentEditor.isActive("blockquote"),
+        isLink: currentEditor.isActive("link"),
+        currentColor: currentEditor.getAttributes("textStyle")?.color ?? "",
+      };
+    },
+  });
+
   if (!editor) {
     return null;
   }
 
-  const [isColorMenuOpen, setIsColorMenuOpen] = useState(false);
-
-  const toolbarState = useEditorState({
-    editor,
-    selector: ({ editor }) => ({
-      isFocused: editor.isFocused,
-
-      // Inline Formatting Group
-      isBold: editor.isFocused && editor.isActive("bold"),
-      isItalic: editor.isFocused && editor.isActive("italic"),
-      isUnderline: editor.isFocused && editor.isActive("underline"),
-      isStrike: editor.isFocused && editor.isActive("strike"),
-
-      // Headings + Paragraph Group
-      isParagraph: editor.isFocused && editor.isActive("paragraph"),
-      isH1: editor.isFocused && editor.isActive("heading", { level: 1 }),
-      isH2: editor.isFocused && editor.isActive("heading", { level: 2 }),
-      isH3: editor.isFocused && editor.isActive("heading", { level: 3 }),
-
-      // Lists Group
-      isBulletList: editor.isFocused && editor.isActive("bulletList"),
-      isOrderedList: editor.isFocused && editor.isActive("orderedList"),
-      isTaskList: editor.isFocused && editor.isActive("taskList"),
-
-      // Blocks Group
-      isCodeBlock: editor.isFocused && editor.isActive("codeBlock"),
-      isBlockquote: editor.isFocused && editor.isActive("blockquote"),
-
-      // link
-
-      isLink: editor.isFocused && editor.isActive("link"),
-
-      // color
-      currentColor: editor.getAttributes("textStyle")?.color ?? "",
-    }),
-  });
   return (
     <div
       className="
@@ -289,7 +314,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
         </Button>
       </div>
       <Separator orientation="vertical" className="h-6" />
-      {/* <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <DropdownMenu open={isColorMenuOpen} onOpenChange={setIsColorMenuOpen}>
           <DropdownMenuTrigger asChild>
             <Button
@@ -335,7 +360,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </div> */}
+      </div>
     </div>
   );
 }
