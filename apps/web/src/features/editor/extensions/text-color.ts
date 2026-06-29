@@ -1,0 +1,7 @@
+import Color from "@tiptap/extension-color";
+import {TextStyle} from "@tiptap/extension-text-style";
+
+export const textColorExtensions = [
+  TextStyle,
+  Color,
+];

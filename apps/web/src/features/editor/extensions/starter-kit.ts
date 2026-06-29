@@ -4,6 +4,7 @@ import { EDITOR_PLACEHOLDER } from "../constants";
 import { underlineExtension } from "./underline";
 import { taskListExtensions } from "./task-list";
 import { linkExtension } from "./link";
+import { textColorExtensions } from "./text-color";
 
 export const editorExtensions = [
   StarterKit.configure({
@@ -15,6 +16,7 @@ export const editorExtensions = [
   underlineExtension,
   linkExtension,
   ...taskListExtensions,
+  ...textColorExtensions,
 
   Placeholder.configure({
     placeholder: EDITOR_PLACEHOLDER,

@@ -17,8 +17,18 @@ import {
   Heading3,
   ListTodo,
   LinkIcon,
+  Palette,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EDITOR_COLORS } from "../constants";
+import { useState } from "react";
 
 interface EditorToolbarProps {
   editor: Editor | null;
@@ -28,6 +38,8 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   if (!editor) {
     return null;
   }
+
+  const [isColorMenuOpen, setIsColorMenuOpen] = useState(false);
 
   const toolbarState = useEditorState({
     editor,
@@ -56,6 +68,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       // link
 
       isLink: editor.isActive("link"),
+
+      // color
+      currentColor: editor.getAttributes("textStyle")?.color ?? "",
     }),
   });
   return (
@@ -271,6 +286,54 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           <LinkIcon className="size-4" />
         </Button>
       </div>
+      <Separator orientation="vertical" className="h-6" />
+      {/* <div className="flex items-center gap-1">
+        <DropdownMenu open={isColorMenuOpen} onOpenChange={setIsColorMenuOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="sm"
+              className="h-9 w-9"
+              variant="outline"
+              aria-label="Text Color"
+            >
+              <Palette
+                className="h-4 w-4"
+                style={{ color: toolbarState.currentColor || "currentColor" }}
+              />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            sideOffset={4}
+            avoidCollisions
+            className="min-w-[120px]"
+          >
+            {EDITOR_COLORS.map((color) => (
+              <DropdownMenuItem
+                key={color.label}
+                className="flex items-center gap-2 cursor-pointer"
+                onSelect={() => {
+                  requestAnimationFrame(() => {
+                    if (!color.value) {
+                      editor.chain().focus().unsetColor().run();
+                    } else {
+                      editor.chain().focus().setColor(color.value).run();
+                    }
+                  });
+                }}
+              >
+                <span
+                  className="h-3 w-3 rounded-full border border-muted"
+                  style={{ backgroundColor: color.value || "transparent" }}
+                />
+                <span style={{ color: color.value || "inherit" }}>
+                  {color.label}
+                </span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div> */}
     </div>
   );
 }
