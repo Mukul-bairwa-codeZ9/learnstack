@@ -195,3 +195,9 @@ html, body {
 .ProseMirror ul[data-type="taskList"] li p {
   margin: 0;
 }
+
+.ProseMirror a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -16,6 +16,7 @@ import {
   Heading1,
   Heading3,
   ListTodo,
+  LinkIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -51,6 +52,10 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       // Blocks Group
       isCodeBlock: editor.isActive("codeBlock"),
       isBlockquote: editor.isActive("blockquote"),
+
+      // link
+
+      isLink: editor.isActive("link"),
     }),
   });
   return (
@@ -231,6 +236,39 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           aria-pressed={toolbarState.isBlockquote}
         >
           <Quote className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Separator orientation="vertical" className="h-6" />
+      <div className="flex items-center gap-1">
+        <Button
+          type="button"
+          variant={toolbarState.isLink ? "secondary" : "ghost"}
+          onClick={() => {
+            const previousUrl = editor?.getAttributes("link").href;
+
+            const url = window.prompt("Enter URL", previousUrl ?? "");
+
+            if (url === null) {
+              return;
+            }
+
+            if (url === "") {
+              editor?.chain().focus().unsetLink().run();
+
+              return;
+            }
+
+            editor
+              ?.chain()
+              .focus()
+              .setLink({
+                href: url,
+              })
+              .run();
+          }}
+        >
+          <LinkIcon className="size-4" />
         </Button>
       </div>
     </div>
