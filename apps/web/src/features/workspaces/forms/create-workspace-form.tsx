@@ -14,13 +14,6 @@ import { useCreateWorkspace } from "../hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export function CreateWorkspaceForm() {
   const {
@@ -59,50 +52,38 @@ export function CreateWorkspaceForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Create your first workspace</CardTitle>
-        <CardDescription>
-          Workspaces help you organize documents, notes, and learning resources
-          in one place.
-        </CardDescription>
-      </CardHeader>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Workspace Name Field */}
+      <div>
+        <Input placeholder="e.g. React Learning Path" {...register("name")} />
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+        )}
+      </div>
 
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Workspace Name Field */}
-          <div>
-            <Input placeholder="e.g. React Learning Path" {...register("name")} />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
-            )}
-          </div>
+      {/* Workspace Description Field */}
+      <div>
+        <Textarea
+          placeholder="What will you use this workspace for?"
+          {...register("description")}
+        />
+        {errors.description && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
 
-          {/* Workspace Description Field */}
-          <div>
-            <Textarea
-              placeholder="What will you use this workspace for?"
-              {...register("description")}
-            />
-            {errors.description && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-
-          {/* Submit Button with Loading State */}
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={createWorkspaceMutation.isPending}
-          >
-            {createWorkspaceMutation.isPending
-              ? "Creating Workspace..."
-              : "Get Started"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      {/* Submit Button with Loading State */}
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={createWorkspaceMutation.isPending}
+      >
+        {createWorkspaceMutation.isPending
+          ? "Creating Workspace..."
+          : "Get Started"}
+      </Button>
+    </form>
   );
 }
