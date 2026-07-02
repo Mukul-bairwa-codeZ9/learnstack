@@ -115,10 +115,17 @@ export class DocumentsService {
 
     this.assertWorkspaceOwnership(workspace, userId);
 
-    const updateData = {
+    const updateData :{ title?: string; content?: Record<string, unknown>; slug?: string } = {
       title: dto.title,
       content: dto.content,
     };
+
+    if (dto.title && dto.title !== document.title) {
+      updateData.slug = await this.generateUniqueSlug(
+        dto.title,
+        document.workspaceId.toString(),
+      );
+    }
 
     return this.documentsRepository.update(documentId, updateData);
   }

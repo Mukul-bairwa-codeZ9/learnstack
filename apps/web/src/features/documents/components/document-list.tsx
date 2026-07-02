@@ -1,20 +1,25 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FileText } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 import { EmptyState } from "@/components/feedback/empty-state";
 
 import { Document } from "../types";
 import { DocumentCard } from "./document-card";
-import { CreateDocumentDialog } from "./create-document-dialog";
 
 interface DocumentListProps {
   documents: Document[];
   workspaceId: string;
+  onCreateDocument: () => void;
 }
-
-export function DocumentList({ documents, workspaceId }: DocumentListProps) {
+export function DocumentList({
+  documents,
+  workspaceId,
+  onCreateDocument,
+}: DocumentListProps) {
   const router = useRouter();
 
   if (!documents.length) {
@@ -23,7 +28,11 @@ export function DocumentList({ documents, workspaceId }: DocumentListProps) {
         icon={FileText}
         title="No documents found"
         description="Create your first document and start building your knowledge base."
-        action={<CreateDocumentDialog workspaceId={workspaceId} />}
+        action={
+          <Button onClick={onCreateDocument}>
+            <Plus /> Create Document
+          </Button>
+        }
       />
     );
   }
@@ -35,7 +44,7 @@ export function DocumentList({ documents, workspaceId }: DocumentListProps) {
           key={document._id}
           document={document}
           onSelect={(doc) =>
-            router.push(`/workspaces/${doc.workspaceId}/documents/${doc._id}`)
+            router.push(`/workspaces/${workspaceId}/documents/${doc._id}`)
           }
         />
       ))}
