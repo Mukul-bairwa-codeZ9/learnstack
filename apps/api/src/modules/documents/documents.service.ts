@@ -115,7 +115,11 @@ export class DocumentsService {
 
     this.assertWorkspaceOwnership(workspace, userId);
 
-    const updateData :{ title?: string; content?: Record<string, unknown>; slug?: string } = {
+    const updateData: {
+      title?: string;
+      content?: Record<string, unknown>;
+      slug?: string;
+    } = {
       title: dto.title,
       content: dto.content,
     };

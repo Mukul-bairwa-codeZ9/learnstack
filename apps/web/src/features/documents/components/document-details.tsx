@@ -1,8 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { use, useEffect } from "react";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/utils";
+import { Settings } from "lucide-react";
+
+import { PageHeader } from "@/components/data-display/headers/page-header";
+import { LoadingState } from "@/components/feedback/loading-state";
+import { Button } from "@/components/ui/button";
 
 import { useDocumentEditor } from "@/features/editor";
 import { EditorShell, EditorStatus } from "@/features/editor";
@@ -12,9 +18,7 @@ import { DocumentStatusBadge } from "./document-status-badge";
 import { DocumentPublishActions } from "./document-publish-actions";
 import { useDocument, useUpdateDocument } from "../hooks";
 
-import { PageHeader } from "@/components/data-display/headers/page-header";
-import { LoadingState } from "@/components/feedback/loading-state";
-import { Button } from "@/components/ui/button";
+
 
 interface DocumentPageProps {
   params: Promise<{
@@ -80,6 +84,15 @@ export function DocumentDetails({ params }: DocumentPageProps) {
       <PageHeader
         title={document.title}
         description={`Published URL slug: ${document.slug}`}
+        actions={
+          <Button asChild>
+            <Link
+              href={`/workspaces/${document.workspaceId}/documents/${document._id}/settings`}
+            >
+              <Settings />
+            </Link>
+          </Button>
+        }
       />
 
       <div className="flex flex-col gap-4 rounded-xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">

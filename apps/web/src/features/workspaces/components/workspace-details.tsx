@@ -107,7 +107,7 @@ export function WorkspaceDetails() {
           open={createDocumentDialog.open}
           onOpenChange={createDocumentDialog.onOpenChange}
           title="Create Document"
-          description="Create a new document in this workspace."
+          description="Create a new document inside this workspace."
         >
           <CreateDocumentForm workspaceId={workspace._id} />
         </AppDialog>
