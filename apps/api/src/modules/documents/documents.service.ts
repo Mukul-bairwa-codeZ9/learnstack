@@ -15,6 +15,7 @@ import { WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { CreateDocumentData } from './types/documents.types';
 import { DocumentEntity } from './schemas/document.schema';
 import { DocumentStatus } from './enums/document-status.enum';
+import { isTiptapDocEmpty } from './helpers/documents.helpers';
 
 @Injectable()
 export class DocumentsService {
@@ -250,7 +251,7 @@ export class DocumentsService {
         'Document title is required for publishing',
       );
     }
-    if (!document.content || Object.keys(document.content).length === 0) {
+    if (isTiptapDocEmpty(document.content)) {
       throw new BadRequestException(
         'Document content cannot be empty when publishing',
       );

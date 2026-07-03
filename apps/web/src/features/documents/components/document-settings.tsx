@@ -26,6 +26,7 @@ import {
 
 import { DialogAction, SettingsTab } from "../types";
 import { DocumentSettingsForm } from "../forms";
+import { isDocumentEmpty } from "../helpers";
 
 interface Props {
   documentId: string;
@@ -90,6 +91,8 @@ export function DocumentSettings({ documentId }: Props) {
       </div>
     );
   }
+
+  console.log(data,"test")
 
   const handlePublishToggle = (checked: boolean) => {
     startPublishTransition(async () => {
@@ -232,7 +235,7 @@ export function DocumentSettings({ documentId }: Props) {
                       : "Only workspace members can view this document."}
                   </p>
                   {/* Changed nested <p> to a <div> to avoid HTML hydration errors */}
-                  {!data.content && (
+                  {isDocumentEmpty(data.content)&& (
                     <div className="text-destructive text-sm font-medium mt-1">
                       Please write some content before publishing
                     </div>
@@ -246,7 +249,7 @@ export function DocumentSettings({ documentId }: Props) {
                     id="publish-toggle"
                     checked={isPublished}
                     onCheckedChange={handlePublishToggle}
-                    disabled={isPublishPending || !data.content}
+                    disabled={isPublishPending || (!isPublished && isDocumentEmpty(data.content))}
                   />
                 </div>
               </div>

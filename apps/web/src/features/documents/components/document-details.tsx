@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { formatDate } from "@/lib/utils";
 import { Settings } from "lucide-react";
 
+import { typography } from "@/design-system";
+
 import { PageHeader } from "@/components/data-display/headers/page-header";
 import { LoadingState } from "@/components/feedback/loading-state";
 import { Button } from "@/components/ui/button";
@@ -17,8 +19,8 @@ import { DEFAULT_EDITOR_CONTENT } from "@/features/editor";
 import { DocumentStatusBadge } from "./document-status-badge";
 import { DocumentPublishActions } from "./document-publish-actions";
 import { useDocument, useUpdateDocument } from "../hooks";
-
-
+import { DocumentStatus } from "../types";
+import { isDocumentEmpty } from "../helpers";
 
 interface DocumentPageProps {
   params: Promise<{
@@ -36,6 +38,12 @@ export function DocumentDetails({ params }: DocumentPageProps) {
     useDocumentEditor();
 
   const updateDocumentMutation = useUpdateDocument();
+
+  const contentToCheck = isDirty ? getContent() : document?.content;
+
+  const showPublishedEmptyWarning =
+    document?.status === DocumentStatus.PUBLISHED &&
+    isDocumentEmpty(contentToCheck);
 
   useEffect(() => {
     if (!document) {
@@ -90,6 +98,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
               href={`/workspaces/${document.workspaceId}/documents/${document._id}/settings`}
             >
               <Settings />
+              Settings
             </Link>
           </Button>
         }
@@ -123,6 +132,22 @@ export function DocumentDetails({ params }: DocumentPageProps) {
           </Button>
         </div>
       </div>
+
+      {showPublishedEmptyWarning && (
+        <div className="rounded-xl text-xs border border-yellow-500/30 bg-yellow-500/10 p-4">
+          <div className="space-y-1">
+            <p className="font-medium text-yellow-700 dark:text-yellow-400">
+              Published document has no content
+            </p>
+
+            <p className={typography.muted}>
+              This document is currently published but contains no visible
+              content. Visitors will see a blank page until content is added or
+              the document is unpublished.
+            </p>
+          </div>
+        </div>
+      )}
 
       <EditorShell
         initialContent={document.content ?? DEFAULT_EDITOR_CONTENT}
