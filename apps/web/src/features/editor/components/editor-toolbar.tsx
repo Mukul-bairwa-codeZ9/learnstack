@@ -56,7 +56,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   const [isColorMenuOpen, setIsColorMenuOpen] = useState(false);
   const toolbarState = useEditorState<ToolbarState>({
     editor: editor as Editor, // Safely handle null editor during initial hook setup
-    selector: ({ editor: currentEditor }) :ToolbarState=> {
+    selector: ({ editor: currentEditor }): ToolbarState => {
       if (!currentEditor) {
         return {
           isBold: false,
@@ -104,7 +104,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
     <div
       className="
     sticky
-    top-16
+    top-0
     z-20
     flex
     flex-wrap
@@ -333,7 +333,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             align="start"
             sideOffset={4}
             avoidCollisions
-            className="min-w-[120px]"
+            className="min-w-30"
           >
             {EDITOR_COLORS.map((color) => (
               <DropdownMenuItem

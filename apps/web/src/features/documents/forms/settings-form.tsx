@@ -126,7 +126,7 @@ export function DocumentSettingsForm({ document }: DocumentSettingsFormProps) {
         <Button
           type="submit"
           disabled={!isDirty || updateMutation.isPending}
-          className="min-w-[120px]"
+          className="min-w-30"
         >
           {updateMutation.isPending ? (
             <>
