@@ -3,18 +3,23 @@
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
 
+import { Plus } from "lucide-react";
+
 import {
-  CreateDocumentDialog,
   DocumentList,
-  useDocuments,DocumentStatus
+  useDocuments,
+  DocumentStatus,
+  CreateDocumentForm,
 } from "@/features/documents";
 
+import { useDialog } from "@/hooks";
+
 import { PageHeader } from "@/components/data-display/headers/page-header";
-import { DataToolbar } from "@/components/data-display";
+import { DataToolbar, AppDialog } from "@/components/data-display";
 import { LoadingState } from "@/components/feedback/loading-state";
 
-
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 import { typography } from "@/design-system";
 
@@ -23,6 +28,7 @@ import { WorkspaceOverviewCard } from "./workspace-overview-card";
 
 export function WorkspaceDetails() {
   const params = useParams();
+  const createDocumentDialog = useDialog();
 
   const workspaceId = params.workspaceId as string;
 
@@ -91,9 +97,25 @@ export function WorkspaceDetails() {
           search={
             <Input placeholder="Search documents..." className="max-w-md" />
           }
-          actions={<CreateDocumentDialog workspaceId={workspace._id} />}
+          actions={
+            <Button onClick={createDocumentDialog.openDialog}>
+              <Plus /> New Document
+            </Button>
+          }
         />
-        <DocumentList documents={documents} workspaceId={workspaceId} />
+        <AppDialog
+          open={createDocumentDialog.open}
+          onOpenChange={createDocumentDialog.onOpenChange}
+          title="Create Document"
+          description="Create a new document inside this workspace."
+        >
+          <CreateDocumentForm workspaceId={workspace._id} />
+        </AppDialog>
+        <DocumentList
+          documents={documents}
+          workspaceId={workspaceId}
+          onCreateDocument={createDocumentDialog.openDialog}
+        />
       </section>
     </div>
   );
