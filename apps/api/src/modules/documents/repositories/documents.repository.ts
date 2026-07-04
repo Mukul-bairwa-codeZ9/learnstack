@@ -27,6 +27,13 @@ export class DocumentsRepository {
   async find(filter: Record<string, unknown> = {}): Promise<DocumentEntity[]> {
     const queryFilter = { ...filter };
 
+    const search =
+      typeof queryFilter.search === 'string'
+        ? queryFilter.search.trim()
+        : undefined;
+
+    delete queryFilter.search;
+
     // If a string-based workspaceId is provided, safely cast it to a native ObjectId
     if (
       queryFilter.workspaceId &&
@@ -37,6 +44,29 @@ export class DocumentsRepository {
       } catch {
         return []; // Return early if the string format is broken
       }
+    }
+
+    if (search) {
+      queryFilter.$or = [
+        {
+          title: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          category: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          excerpt: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+      ];
     }
 
     const res = await this.documentModel

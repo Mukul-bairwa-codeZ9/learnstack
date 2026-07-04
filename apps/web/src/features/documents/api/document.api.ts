@@ -3,16 +3,17 @@ import api from "@/services/api";
 import {
   CreateDocumentDto,
   Document,
+  DocumentFilters,
   DocumentStatusResponse,
   PublishDocumentResponse,
   UpdateDocumentDto,
 } from "../types";
 
 export const documentsApi = {
-  async getDocuments(workspaceId?: string): Promise<Document[]> {
+  async getDocuments(filters?:DocumentFilters): Promise<Document[]> {
 
     const { data } = await api.get("/documents", {
-      params: workspaceId ? { workspaceId } : undefined,
+      params: filters
     });
 
     return data;

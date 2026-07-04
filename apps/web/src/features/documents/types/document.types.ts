@@ -50,6 +50,10 @@ export interface DocumentStatusResponse {
   status: DocumentStatus;
 }
 
+export interface DocumentFilters {
+  workspaceId?: string;
+  search?: string;
+}
 
 
 export type SettingsTab = "general" | "publishing" | "seo" | "danger";

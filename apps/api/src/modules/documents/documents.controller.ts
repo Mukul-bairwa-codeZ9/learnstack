@@ -32,8 +32,9 @@ export class DocumentsController {
   async findAll(
     @CurrentUser() user: CurrentUserType,
     @Query('workspaceId') workspaceId?: string,
+    @Query('search') search?: string,
   ) {
-    return this.documentsService.findAllForUser(user.id, workspaceId);
+    return this.documentsService.findAllForUser(user.id, workspaceId, search);
   }
 
   @Get('public/:slug')

@@ -49,7 +49,7 @@ export class DocumentsService {
     return this.documentsRepository.create(documentData);
   }
 
-  async findAllForUser(userId: string, workspaceId?: string) {
+  async findAllForUser(userId: string, workspaceId?: string, search?: string) {
     if (workspaceId) {
       const workspace = await this.workspaceRepository.findById(workspaceId);
 
@@ -59,9 +59,14 @@ export class DocumentsService {
 
       this.assertWorkspaceOwnership(workspace, userId);
 
-      return this.documentsRepository.find({
+      const filter: Record<string, unknown> = {
         workspaceId,
-      });
+      };
+
+      if (search?.trim()) {
+        filter.search = search.trim();
+      }
+      return this.documentsRepository.find(filter);
     }
 
     const workspaces = await this.workspaceRepository.findByOwner(userId);
