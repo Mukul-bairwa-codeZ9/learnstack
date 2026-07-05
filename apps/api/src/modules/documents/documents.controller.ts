@@ -17,7 +17,7 @@ import { Permissions } from '../access/decorators/permissions.decorator'; // Fix
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
 import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Documents')
 @Controller('documents')
@@ -27,6 +27,18 @@ export class DocumentsController {
   @Get()
   @ApiOperation({
     summary: 'Get all documents of user in a workspace',
+  })
+  @ApiQuery({
+    name: 'workspaceId',
+    required: false,
+    type: String,
+    description: 'Filter documents by a specific workspace ID',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search string to filter documents by title',
   })
   @Permissions(Permission.DOCUMENT_VIEW)
   async findAll(

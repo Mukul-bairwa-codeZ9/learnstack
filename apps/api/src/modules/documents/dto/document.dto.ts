@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import {
   IsMongoId,
   IsOptional,
@@ -53,3 +54,4 @@ export class DocumentQueryDto extends PaginationQueryDto {
   @IsIn(['asc', 'desc'])
   sortOrder: 'asc' | 'desc' = 'desc';
 }
+

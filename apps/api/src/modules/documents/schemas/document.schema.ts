@@ -94,6 +94,10 @@ export class Document {
     default: '',
   })
   category?: string;
+
+  // for ts issues we told ts trust me this fields will be avaialable at run time so let me acces this 
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Document);
