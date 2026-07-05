@@ -4,15 +4,17 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
-
 import { Request, Response } from 'express';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
+  // Add a dedicated NestJS system logger instance
+  private readonly logger = new Logger('GlobalExceptionFilter');
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
-
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
 
@@ -43,19 +45,37 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           code = this.getErrorCode(status);
         }
       }
+    } else {
+      // PRO TIP: This block catches runtime exceptions (TypeErrors, ReferenceErrors, etc.)
+      if (exception instanceof Error) {
+        message = exception.message;
+        details = exception.stack; // Captures precise track lines during development
+      }
+    }
+
+    // CRITICAL: Always log standard engine crashes so they appear clearly in the console terminal
+    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+      this.logger.error(
+        `[${request.method}] ${request.url} - Crash: ${
+          exception instanceof Error ? exception.stack : JSON.stringify(exception)
+        }`,
+      );
     }
 
     const errorPayload: {
       code: string;
       message: string;
-      details?: unknown; // Keeps details as unknown safely
+      details?: unknown;
     } = {
       code,
       message,
     };
 
     if (details !== undefined && details !== null) {
-      errorPayload.details = details;
+      // Optional: Clean up details leakage in production environments
+      errorPayload.details = process.env.NODE_ENV === 'production' && status === 500 
+        ? 'An unexpected error occurred.' 
+        : details;
     }
 
     response.status(status).json({

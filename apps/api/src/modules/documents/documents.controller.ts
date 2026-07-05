@@ -16,7 +16,7 @@ import { Permission } from '../access/enums/permission.enum';
 import { Permissions } from '../access/decorators/permissions.decorator'; // Fixed import
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
-import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
+import { CreateDocumentDto, DocumentQueryDto, UpdateDocumentDto } from './dto/document.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Documents')
@@ -43,10 +43,9 @@ export class DocumentsController {
   @Permissions(Permission.DOCUMENT_VIEW)
   async findAll(
     @CurrentUser() user: CurrentUserType,
-    @Query('workspaceId') workspaceId?: string,
-    @Query('search') search?: string,
+   @Query() query:DocumentQueryDto
   ) {
-    return this.documentsService.findAllForUser(user.id, workspaceId, search);
+    return this.documentsService.findAllForUser(user.id, query);
   }
 
   @Get('public/:slug')

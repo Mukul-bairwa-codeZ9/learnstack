@@ -247,4 +247,38 @@ export class DocumentsRepository {
       total: result?.totalCount?.[0]?.count ?? 0,
     };
   }
+
+  async findPaginated({
+    filter,
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+  }: {
+    filter: Record<string, unknown>;
+    page: number;
+    limit: number;
+    sortBy: string;
+    sortOrder: 'asc' | 'desc';
+  }) {
+    const skip = (page - 1) * limit;
+
+    const [items, total] = await Promise.all([
+      this.documentModel
+        .find(filter)
+        .sort({
+          [sortBy]: sortOrder === 'asc' ? 1 : -1,
+        })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+
+      this.documentModel.countDocuments(filter),
+    ]);
+
+    return {
+      items,
+      total,
+    };
+  }
 }

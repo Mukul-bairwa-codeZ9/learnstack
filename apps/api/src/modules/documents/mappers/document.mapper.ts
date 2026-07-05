@@ -1,40 +1,52 @@
 import { plainToInstance } from 'class-transformer';
-
 import { DocumentEntity } from '../schemas/document.schema';
-import { DocumentResponseDto } from '../dto/document-response.dto';
-
+import { DocumentResponseDto ,DocumentSummaryResponseDto } from '../dto/document-response.dto';
 export class DocumentMapper {
-  static toResponse(
-    document: DocumentEntity,
-  ): DocumentResponseDto {
+  // Used for Detail / Mutations (POST, PATCH, GET /:id)
+  static toResponse(document: DocumentEntity): DocumentResponseDto {
     return plainToInstance(
       DocumentResponseDto,
       {
         id: document._id.toString(),
-
         title: document.title,
         slug: document.slug,
-
         excerpt: document.excerpt,
         category: document.category,
-
         content: document.content,
-
         status: document.status,
+        seo: document.seo,
         publishedAt: document.publishedAt,
-
+        archivedAt: document.archivedAt,
         createdAt: document.createdAt,
         updatedAt: document.updatedAt,
       },
-      {
-        excludeExtraneousValues: true,
-      },
+      { excludeExtraneousValues: true },
     );
   }
 
-  static toResponseList(
-    documents: DocumentEntity[],
-  ): DocumentResponseDto[] {
+  static toResponseList(documents: DocumentEntity[]): DocumentResponseDto[] {
     return documents.map(DocumentMapper.toResponse);
+  }
+
+  //  Used for Lists / Pagination / Aggregations (GET /documents)
+  static toSummary(document: DocumentEntity): DocumentSummaryResponseDto {
+    return plainToInstance(
+      DocumentSummaryResponseDto,
+      {
+        id: document._id.toString(),
+        title: document.title,
+        slug: document.slug,
+        excerpt: document.excerpt,
+        category: document.category,
+        status: document.status,
+        publishedAt: document.publishedAt,
+        updatedAt: document.updatedAt,
+      },
+      { excludeExtraneousValues: true },
+    );
+  }
+
+  static toSummaryList(documents: DocumentEntity[]): DocumentSummaryResponseDto[] {
+    return documents.map(DocumentMapper.toSummary);
   }
 }

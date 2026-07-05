@@ -10,13 +10,22 @@ import slugify from 'slugify';
 import { DocumentsRepository } from './repositories/documents.repository';
 import { WorkspaceRepository } from '../workspaces/repositories/workspace.repository';
 
-import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
+import {
+  CreateDocumentDto,
+  DocumentQueryDto,
+  UpdateDocumentDto,
+} from './dto/document.dto';
 import { WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { CreateDocumentData } from './types/documents.types';
 import { DocumentEntity } from './schemas/document.schema';
 import { DocumentStatus } from './enums/document-status.enum';
 import { isTiptapDocEmpty } from './helpers/documents.helpers';
 import { DocumentMapper } from './mappers/document.mapper';
+import { PaginatedResponseDto } from 'src/common/dto';
+import {
+  DocumentResponseDto,
+  DocumentSummaryResponseDto,
+} from './dto/document-response.dto';
 
 @Injectable()
 export class DocumentsService {
@@ -25,7 +34,10 @@ export class DocumentsService {
     private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
-  async create(userId: string, dto: CreateDocumentDto) {
+  async create(
+    userId: string,
+    dto: CreateDocumentDto,
+  ): Promise<DocumentResponseDto> {
     const workspace = await this.workspaceRepository.findById(dto.workspaceId);
 
     if (!workspace) {
@@ -51,38 +63,56 @@ export class DocumentsService {
     return DocumentMapper.toResponse(document);
   }
 
-  async findAllForUser(userId: string, workspaceId?: string, search?: string) {
+  async findAllForUser(
+    userId: string,
+    query: DocumentQueryDto,
+  ): Promise<PaginatedResponseDto<DocumentSummaryResponseDto>> {
+    const { workspaceId, search, page, limit, sortBy, sortOrder } = query;
+
+    const filter: Record<string, unknown> = {};
+
     if (workspaceId) {
       const workspace = await this.workspaceRepository.findById(workspaceId);
 
-      if (!workspace) {
-        throw new NotFoundException('Workspace not found');
-      }
+      if (!workspace) throw new NotFoundException('Workspace not found');
 
       this.assertWorkspaceOwnership(workspace, userId);
 
-      const filter: Record<string, unknown> = {
-        workspaceId,
-      };
-
-      if (search?.trim()) {
-        filter.search = search.trim();
-      }
-      return this.documentsRepository.find(filter);
+      filter.workspaceId = workspaceId;
+    } else {
+      const workspaces = await this.workspaceRepository.findByOwner(userId);
+      filter.workspaceId = { $in: workspaces.map((w) => w._id) };
     }
 
-    const workspaces = await this.workspaceRepository.findByOwner(userId);
+    if (search?.trim()) {
+      filter.search = search.trim();
+    }
 
-    const workspaceIds = workspaces.map((workspace) => workspace._id);
-
-    return this.documentsRepository.find({
-      workspaceId: {
-        $in: workspaceIds,
-      },
+    // Fetch paginated data from repository layer
+    const { items, total } = await this.documentsRepository.findPaginated({
+      filter,
+      page,
+      limit,
+      sortBy,
+      sortOrder,
     });
+    return {
+      items: DocumentMapper.toSummaryList(items),
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
 
-  async findOneForUser(documentId: string, userId: string) {
+  async findOneForUser(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -106,7 +136,7 @@ export class DocumentsService {
     documentId: string,
     userId: string,
     dto: UpdateDocumentDto,
-  ) {
+  ): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -148,7 +178,10 @@ export class DocumentsService {
     return DocumentMapper.toResponse(updatedDocument);
   }
 
-  async deleteDocument(documentId: string, userId: string) {
+  async deleteDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<{ deleted: boolean }> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -176,7 +209,10 @@ export class DocumentsService {
   // Publishing Workflow Lifecycle Methods
   // ==========================================
 
-  async publishDocument(documentId: string, userId: string) {
+  async publishDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
@@ -199,7 +235,10 @@ export class DocumentsService {
     return DocumentMapper.toResponse(publishedDocument);
   }
 
-  async unpublishDocument(documentId: string, userId: string) {
+  async unpublishDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
@@ -217,7 +256,10 @@ export class DocumentsService {
     return DocumentMapper.toResponse(unpublished);
   }
 
-  async archiveDocument(documentId: string, userId: string) {
+  async archiveDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
@@ -242,7 +284,7 @@ export class DocumentsService {
     return DocumentMapper.toResponse(archivedDocument);
   }
 
-  async getPublishedDocumentBySlug(slug: string) {
+  async getPublishedDocumentBySlug(slug: string): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findBySlug(slug);
 
     if (!document) {

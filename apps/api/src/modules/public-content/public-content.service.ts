@@ -1,11 +1,14 @@
 import { DocumentsRepository } from './../documents/repositories/documents.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { DocumentStatus } from '../documents/enums/document-status.enum';
+
 import {
   PublicDocumentResponseDto,
   PublicDocumentsQueryDto,
   PublicDocumentsResponseDto,
 } from './dto';
-import { DocumentStatus } from '../documents/enums/document-status.enum';
+import { PublicDocumentMapper } from './mapper/public-content.mapper';
+import { PublicDocumentRow } from './types/public-content.types';
 
 @Injectable()
 export class PublicContentService {
@@ -21,36 +24,31 @@ export class PublicContentService {
       throw new NotFoundException('Published document not found');
     }
 
-    return {
-      id: document._id.toString(),
-      title: document.title,
-      slug: document.slug,
-      content: document.content,
-      status: document.status,
-      publishedAt: document.publishedAt ?? null,
-
-      seo: {
-        title: document.seo?.title ?? '',
-        description: document.seo?.description ?? '',
-        keywords: document.seo?.keywords ?? [],
-      },
-    };
+    return PublicDocumentMapper.toResponse(document);
   }
   async findAll(
     query: PublicDocumentsQueryDto,
   ): Promise<PublicDocumentsResponseDto> {
-    const result = await this.documentsRepository.findPublishedDocuments(query);
+    const page = Number(query.page);
+    const limit = Number(query.limit);
 
-    const totalPages = Math.ceil(result.total / query.limit);
+    const { items, total } =
+      await this.documentsRepository.findPublishedDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+
+    const mappedItems = PublicDocumentMapper.toSummaryList(
+      items as unknown as PublicDocumentRow[],
+    );
 
     return {
-      items: result.items,
-
+      items: mappedItems,
       meta: {
-        page: Number(query.page),
-        limit: Number(query.limit),
-        total: result.total,
+        page,
+        limit,
+        total,
         totalPages,
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1,
       },
     };
   }
