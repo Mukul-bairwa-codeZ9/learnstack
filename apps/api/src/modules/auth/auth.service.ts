@@ -19,6 +19,9 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserDocument } from '../users/schemas/user.schema';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { AuthMapper } from './mapper/auth.mapper';
+import { UserResponseDto } from '../users/dto/user-response.dto';
+import { UserMapper } from '../users/mapper/user.mapper';
 
 @Injectable()
 export class AuthService {
@@ -48,12 +51,7 @@ export class AuthService {
     const tokens = await this.generateTokens(user);
 
     return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: AuthMapper.toUser(user),
       ...tokens,
     };
   }
@@ -72,14 +70,8 @@ export class AuthService {
     }
 
     const tokens = await this.generateTokens(user);
-
     return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: AuthMapper.toUser(user),
       ...tokens,
     };
   }
@@ -117,11 +109,21 @@ export class AuthService {
     };
   }
 
-  async logout(userId: string) {
+  async logout(userId: string): Promise<{ loggedOut: boolean }> {
     await this.usersService.updateRefreshToken(userId, null);
 
     return {
-      message: 'Logged out successfully',
+      loggedOut: true,
     };
+  }
+
+  async me(userId: string): Promise<UserResponseDto> {
+    const user = await this.usersService.findById(userId);
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return UserMapper.toResponse(user);
   }
 }

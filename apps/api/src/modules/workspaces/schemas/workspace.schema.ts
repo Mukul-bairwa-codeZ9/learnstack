@@ -43,6 +43,10 @@ export class Workspace {
     default: WorkspaceVisibility.PRIVATE,
   })
   visibility: WorkspaceVisibility;
+
+  // for ts issues we told ts trust me this fields will be avaialable at run time so let me acces this
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const WorkspaceSchema = SchemaFactory.createForClass(Workspace);

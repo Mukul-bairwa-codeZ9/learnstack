@@ -41,7 +41,7 @@ export function WorkspaceDetails() {
 
   const {
     data: documents = [],
-    isLoading: isDocumentsLoading,
+    // isLoading: isDocumentsLoading,
     isFetching: isDocumentsFetching,
   } = useDocuments({
     workspaceId,

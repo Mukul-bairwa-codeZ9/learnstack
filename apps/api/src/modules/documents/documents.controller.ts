@@ -16,8 +16,12 @@ import { Permission } from '../access/enums/permission.enum';
 import { Permissions } from '../access/decorators/permissions.decorator'; // Fixed import
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
-import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  CreateDocumentDto,
+  DocumentQueryDto,
+  UpdateDocumentDto,
+} from './dto/document.dto';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Documents')
 @Controller('documents')
@@ -28,13 +32,24 @@ export class DocumentsController {
   @ApiOperation({
     summary: 'Get all documents of user in a workspace',
   })
+  @ApiQuery({
+    name: 'workspaceId',
+    required: false,
+    type: String,
+    description: 'Filter documents by a specific workspace ID',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search string to filter documents by title',
+  })
   @Permissions(Permission.DOCUMENT_VIEW)
   async findAll(
     @CurrentUser() user: CurrentUserType,
-    @Query('workspaceId') workspaceId?: string,
-    @Query('search') search?: string,
+    @Query() query: DocumentQueryDto,
   ) {
-    return this.documentsService.findAllForUser(user.id, workspaceId, search);
+    return this.documentsService.findAllForUser(user.id, query);
   }
 
   @Get('public/:slug')
