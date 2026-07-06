@@ -18,7 +18,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
 
-    const status =
+    const status: HttpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -57,7 +57,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
         `[${request.method}] ${request.url} - Crash: ${
-          exception instanceof Error ? exception.stack : JSON.stringify(exception)
+          exception instanceof Error
+            ? exception.stack
+            : JSON.stringify(exception)
         }`,
       );
     }
@@ -73,9 +75,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (details !== undefined && details !== null) {
       // Optional: Clean up details leakage in production environments
-      errorPayload.details = process.env.NODE_ENV === 'production' && status === 500 
-        ? 'An unexpected error occurred.' 
-        : details;
+      errorPayload.details =
+        process.env.NODE_ENV === 'production' &&
+        status === HttpStatus.INTERNAL_SERVER_ERROR
+          ? 'An unexpected error occurred.'
+          : details;
     }
 
     response.status(status).json({

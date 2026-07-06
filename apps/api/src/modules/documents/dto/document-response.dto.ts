@@ -1,5 +1,5 @@
-import { Expose } from "class-transformer";
-import { DocumentStatus } from "../enums/document-status.enum";
+import { Expose } from 'class-transformer';
+import { DocumentStatus } from '../enums/document-status.enum';
 
 export class DocumentResponseDto {
   @Expose()
@@ -42,8 +42,6 @@ export class DocumentResponseDto {
   @Expose()
   updatedAt: Date;
 }
-
-
 
 export class DocumentSummaryResponseDto {
   @Expose()

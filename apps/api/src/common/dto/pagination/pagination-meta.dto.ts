@@ -6,7 +6,7 @@ export class PaginationMetaDto {
   total: number;
 
   totalPages: number;
-  
+
   hasNextPage: boolean;
 
   hasPreviousPage: boolean;

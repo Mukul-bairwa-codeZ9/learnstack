@@ -27,8 +27,8 @@ export class PublicDocumentResponseDto {
   @Expose()
   content!: Record<string, any>;
 
-  @Expose()
-  status!: string;
+  // @Expose()
+  // status!: string;
 
   @Expose()
   publishedAt!: Date | null;

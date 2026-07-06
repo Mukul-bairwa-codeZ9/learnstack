@@ -10,7 +10,6 @@ import {
   IsIn,
 } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/dto';
-import { DocumentStatus } from '../enums/document-status.enum';
 
 export class CreateDocumentDto {
   @IsString()
@@ -55,5 +54,3 @@ export class DocumentQueryDto extends PaginationQueryDto {
   @IsIn(['asc', 'desc'])
   sortOrder: 'asc' | 'desc' = 'desc';
 }
-
-

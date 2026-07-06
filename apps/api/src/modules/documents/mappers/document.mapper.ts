@@ -1,9 +1,12 @@
 import { plainToInstance } from 'class-transformer';
 import { DocumentEntity } from '../schemas/document.schema';
-import { DocumentResponseDto ,DocumentSummaryResponseDto } from '../dto/document-response.dto';
+import {
+  DocumentResponseDto,
+  DocumentSummaryResponseDto,
+} from '../dto/document-response.dto';
 export class DocumentMapper {
   // Used for Detail / Mutations (POST, PATCH, GET /:id)
-  static toResponse(document: DocumentEntity): DocumentResponseDto {
+  static toResponse(this: void, document: DocumentEntity): DocumentResponseDto {
     return plainToInstance(
       DocumentResponseDto,
       {
@@ -24,12 +27,18 @@ export class DocumentMapper {
     );
   }
 
-  static toResponseList(documents: DocumentEntity[]): DocumentResponseDto[] {
+  static toResponseList(
+    this: void,
+    documents: DocumentEntity[],
+  ): DocumentResponseDto[] {
     return documents.map(DocumentMapper.toResponse);
   }
 
   //  Used for Lists / Pagination / Aggregations (GET /documents)
-  static toSummary(document: DocumentEntity): DocumentSummaryResponseDto {
+  static toSummary(
+    this: void,
+    document: DocumentEntity,
+  ): DocumentSummaryResponseDto {
     return plainToInstance(
       DocumentSummaryResponseDto,
       {
@@ -46,7 +55,10 @@ export class DocumentMapper {
     );
   }
 
-  static toSummaryList(documents: DocumentEntity[]): DocumentSummaryResponseDto[] {
+  static toSummaryList(
+    this: void,
+    documents: DocumentEntity[],
+  ): DocumentSummaryResponseDto[] {
     return documents.map(DocumentMapper.toSummary);
   }
 }
