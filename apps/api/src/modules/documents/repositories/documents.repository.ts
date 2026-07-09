@@ -221,8 +221,6 @@ export class DocumentsRepository {
               },
               {
                 $project: {
-                  _id: 0, // Exclude the raw original _id object
-                  id: { $toString: '$_id' }, // Safely cast ObjectId to a clean string
                   title: { $ifNull: ['$title', ''] },
                   slug: { $ifNull: ['$slug', ''] },
                   excerpt: { $ifNull: ['$excerpt', ''] },
@@ -263,9 +261,26 @@ export class DocumentsRepository {
   }) {
     const skip = (page - 1) * limit;
 
+    const { search, ...restFilter } = filter;
+
+    const queryFilter = { ...restFilter };
+
+    // Cast workspaceId string to Mongoose ObjectId if it exists in the filter
+    if (
+      queryFilter.workspaceId &&
+      typeof queryFilter.workspaceId === 'string'
+    ) {
+      if (Types.ObjectId.isValid(queryFilter.workspaceId)) {
+        queryFilter.workspaceId = new Types.ObjectId(queryFilter.workspaceId);
+      }
+    }
+
+    if (search && typeof search === 'string') {
+      queryFilter.title = { $regex: search, $options: 'i' };
+    }
     const [items, total] = await Promise.all([
       this.documentModel
-        .find(filter)
+        .find(queryFilter)
         .sort({
           [sortBy]: sortOrder === 'asc' ? 1 : -1,
         })
@@ -273,7 +288,7 @@ export class DocumentsRepository {
         .limit(limit)
         .exec(),
 
-      this.documentModel.countDocuments(filter),
+      this.documentModel.countDocuments(queryFilter),
     ]);
 
     return {

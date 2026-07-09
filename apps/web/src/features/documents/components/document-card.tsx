@@ -3,15 +3,13 @@ import { CalendarDays, ArrowRight } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 import { DocumentStatusBadge } from "./document-status-badge";
-import { Document } from "../types";
-
+import type { DocumentSummary } from "../types";
 
 import { Card } from "@/components/ui/card";
 
-
 interface DocumentCardProps {
-  document: Document;
-  onSelect?: (document: Document) => void;
+  document: DocumentSummary;
+  onSelect?: (document: DocumentSummary) => void;
 }
 
 export function DocumentCard({ document, onSelect }: DocumentCardProps) {

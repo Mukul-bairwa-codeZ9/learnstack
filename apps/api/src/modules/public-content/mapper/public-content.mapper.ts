@@ -16,8 +16,7 @@ export class PublicDocumentMapper {
     return plainToInstance(
       PublicDocumentResponseDto,
       {
-        // Safe check for detail mapping
-        id: document?._id?.toString() ?? '',
+        id: document._id?.toString(),
         title: document.title,
         slug: document.slug,
         content: document.content,
@@ -45,8 +44,7 @@ export class PublicDocumentMapper {
     return plainToInstance(
       PublicDocumentSummaryDto,
       {
-        // FIX: Added optional chaining and safe fallback check here too!
-        id: document?._id?.toString() ?? '',
+        id: document._id?.toString(),
         title: document.title,
         slug: document.slug,
         excerpt: document.excerpt ?? '',

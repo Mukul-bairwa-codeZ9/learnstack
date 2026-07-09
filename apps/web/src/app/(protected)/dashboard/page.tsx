@@ -9,19 +9,16 @@ export default function DashboardPage() {
   const router = useRouter();
 
   const {
-    data: workspaces,
+    data,
     isLoading,
     isError,
   } = useWorkspaces();
 
   useEffect(() => {
-    if (isLoading) {
+   if (isLoading || isError) {
       return;
     }
-
-    if (isError) {
-      return;
-    }
+  const workspaces = data?.items;
 
     if (!workspaces?.length) {
       router.replace("/onboarding");
@@ -29,10 +26,10 @@ export default function DashboardPage() {
     }
 
     router.replace(
-      `/workspaces/${workspaces[0]._id}`,
+      `/workspaces/${workspaces[0].id}`,
     );
   }, [
-    workspaces,
+    data?.items,
     isLoading,
     isError,
     router,

@@ -5,18 +5,19 @@ export enum DocumentStatus {
 }
 
 export interface Document {
-  _id: string;
+  id: string;
+
   title: string;
   slug: string;
-  content?: Record<string, unknown>;
-  workspaceId: string;
-  createdBy: string;
-  status: DocumentStatus;
-  category?: string;
-  excerpt?: string;
 
-  publishedAt?: string | null;
-  archivedAt?: string | null;
+  content: Record<string, unknown>;
+
+  status: DocumentStatus;
+
+  category: string;
+  excerpt: string;
+
+  publishedAt: string | null;
 
   createdAt: string;
   updatedAt: string;
@@ -39,22 +40,44 @@ export interface UpdateDocumentDto {
 }
 
 export interface PublishDocumentResponse {
-  _id: string;
+  id: string;
   slug: string;
   status: DocumentStatus;
-  publishedAt: string;
+  publishedAt: string | null;
 }
 
 export interface DocumentStatusResponse {
-  _id: string;
+  id: string;
   status: DocumentStatus;
 }
 
 export interface DocumentFilters {
   workspaceId?: string;
   search?: string;
+
+  page?: number;
+  limit?: number;
+
+  sortBy?: "title" | "createdAt" | "updatedAt";
+  sortOrder?: "asc" | "desc";
 }
 
+export interface DocumentSummary {
+  id: string;
+
+  title: string;
+  slug: string;
+
+  excerpt: string;
+  category: string;
+
+  status: DocumentStatus;
+
+  publishedAt: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+}
 
 export type SettingsTab = "general" | "publishing" | "seo" | "danger";
 export type DialogAction = "archive" | "delete" | null;

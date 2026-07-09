@@ -42,7 +42,7 @@ export function CreateWorkspaceForm() {
       toast.success("Workspace created successfully");
 
       // Redirect straight to the new workspace home
-      router.push(`/workspaces/${workspace._id}`);
+      router.push(`/workspaces/${workspace.id}`);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to create workspace";

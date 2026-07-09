@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 
 import { EmptyState } from "@/components/feedback/empty-state";
 
-import { Document } from "../types";
+import type { DocumentSummary } from "../types";
 import { DocumentCard } from "./document-card";
 
 interface DocumentListProps {
-  documents: Document[];
+  documents: DocumentSummary[];
   workspaceId: string;
   onCreateDocument: () => void;
 }
@@ -41,10 +41,10 @@ export function DocumentList({
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {documents.map((document) => (
         <DocumentCard
-          key={document._id}
+          key={document.id}
           document={document}
           onSelect={(doc) =>
-            router.push(`/workspaces/${workspaceId}/documents/${doc._id}`)
+            router.push(`/workspaces/${workspaceId}/documents/${doc.id}`)
           }
         />
       ))}

@@ -8,7 +8,7 @@ export function WorkspaceList({ workspaces }: WorkspaceListProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {workspaces.map((workspace) => (
-        <WorkspaceCard key={workspace._id} workspace={workspace} />
+        <WorkspaceCard key={workspace.id} workspace={workspace} />
       ))}
     </div>
   );

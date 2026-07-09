@@ -51,3 +51,18 @@ export const useUpdateWorkspace = () => {
     },
   });
 };
+
+
+export const useDeleteWorkspace = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: workspaceApi.deleteWorkspace,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workspaceKeys.all,
+      });
+    },
+  });
+};

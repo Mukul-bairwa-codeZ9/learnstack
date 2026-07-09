@@ -14,7 +14,7 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
   const updatedon = formatDate(workspace.updatedAt);
 
   return (
-    <Link href={`/workspaces/${workspace._id}`} className="group">
+    <Link href={`/workspaces/${workspace.id}`} className="group">
       <Card className="h-full transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
         <CardHeader className="space-y-2">
           <CardTitle className="flex items-center justify-between">

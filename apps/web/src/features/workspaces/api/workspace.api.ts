@@ -1,40 +1,33 @@
 import api from "@/services/api";
 
-import { CreateWorkspaceDto, UpdateWorkspaceDto, Workspace } from "@/features/workspaces";
+import {
+  CreateWorkspaceDto,
+  UpdateWorkspaceDto,
+  Workspace,
+} from "@/features/workspaces";
+import { PaginatedResponse } from "@/types";
 
 export const workspaceApi = {
-  async getWorkspaces(): Promise<Workspace[]> {
-    const { data } = await api.get("/workspaces");
-
-    return data;
+  async getWorkspaces(): Promise<PaginatedResponse<Workspace>> {
+    return api.get<never, PaginatedResponse<Workspace>>("/workspaces");
   },
 
-  async getWorkspace( id: string): Promise<Workspace> {
-    const { data } = await api.get(`/workspaces/${id}`);
-
-    return data;
+  async getWorkspace(id: string): Promise<Workspace> {
+    return api.get<never, Workspace>(`/workspaces/${id}`);
   },
 
-  async createWorkspace(
-    payload: CreateWorkspaceDto,
-  ): Promise<Workspace> {
-    const { data } = await api.post("/workspaces", payload);
-
-    return data;
+  async createWorkspace(payload: CreateWorkspaceDto): Promise<Workspace> {
+    return api.post<never, Workspace>("/workspaces", payload);
   },
 
   async updateWorkspace(
-    id:string,
+    id: string,
     payload: UpdateWorkspaceDto,
   ): Promise<Workspace> {
-    const { data } = await api.patch(`/workspaces/${id}`, payload);
-
-    return data;
+    return api.patch<never, Workspace>(`/workspaces/${id}`, payload);
   },
 
-  async deleteWorkspace(id: string) {
-    const { data } = await api.delete(`/workspaces/${id}`);
-
-    return data;
+  async deleteWorkspace(id: string): Promise<{ deleted: boolean }> {
+    return api.delete<never, { deleted: boolean }>(`/workspaces/${id}`);
   },
 };
