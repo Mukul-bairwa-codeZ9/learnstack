@@ -30,7 +30,7 @@ interface DocumentPageProps {
 }
 
 export function DocumentDetails({ params }: DocumentPageProps) {
-  const { documentId } = use(params);
+  const { documentId ,workspaceId } = use(params);
 
   const { data: document, isLoading } = useDocument(documentId);
 
@@ -73,7 +73,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
 
     try {
       await updateDocumentMutation.mutateAsync({
-        id: document._id,
+        id: document.id,
         payload: {
           content: getContent(),
         },
@@ -95,7 +95,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
         actions={
           <Button asChild>
             <Link
-              href={`/workspaces/${document.workspaceId}/documents/${document._id}/settings`}
+              href={`/workspaces/${workspaceId}/documents/${document.id}/settings`}
             >
               <Settings />
               Settings
@@ -120,7 +120,7 @@ export function DocumentDetails({ params }: DocumentPageProps) {
 
         <div className="flex items-center gap-2">
           <DocumentPublishActions
-            documentId={document._id}
+            documentId={document.id}
             status={document.status}
           />
 

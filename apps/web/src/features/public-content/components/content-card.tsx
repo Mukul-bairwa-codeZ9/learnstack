@@ -19,7 +19,7 @@ interface ContentCardProps {
   document: PublicDocumentSummary;
 }
 
-export function ContentCard({ document }: ContentCardProps) {
+export function ContentCard({document }: ContentCardProps) {
   return (
     <Link href={`/learn/${document.slug}`} className="group block h-full">
       <Card className=" flex flex-col h-full transition-all duration-200 group-hover:shadow-md group-hover:border-primary/30 group-hover:-translate-y-1">

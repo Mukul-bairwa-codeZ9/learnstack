@@ -62,7 +62,7 @@ export function CreateDocumentForm({
       toast.success("Document created successfully");
       reset();
       onSuccess?.();
-      router.push(`/workspaces/${workspaceId}/documents/${document._id}`);
+      router.push(`/workspaces/${workspaceId}/documents/${document.id}`);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to create document";

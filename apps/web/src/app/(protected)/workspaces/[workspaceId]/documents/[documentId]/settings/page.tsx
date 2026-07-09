@@ -4,10 +4,11 @@ export default async function Page({
   params,
 }: {
   params: Promise<{
+    workspaceId: string;
     documentId: string;
   }>;
 }) {
-  const { documentId } = await params;
+  const { workspaceId,documentId } = await params;
 
-  return <DocumentSettings documentId={documentId} />;
+  return <DocumentSettings  workspaceId={workspaceId} documentId={documentId} />;
 }

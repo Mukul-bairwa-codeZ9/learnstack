@@ -12,7 +12,7 @@ export class WorkspaceMapper {
     return plainToInstance(
       WorkspaceResponseDto,
       {
-        id: workspace._id.toString(),
+        id: workspace.id.toString(),
 
         name: workspace.name,
         slug: workspace.slug,

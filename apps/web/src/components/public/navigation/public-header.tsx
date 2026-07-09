@@ -21,7 +21,6 @@ export function PublicHeader() {
 
   const { user, isHydrated } = useAccess();
 
-  console.log(user);
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">

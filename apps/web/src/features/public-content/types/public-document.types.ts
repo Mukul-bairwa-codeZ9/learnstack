@@ -1,4 +1,5 @@
 import type { EditorContent } from "@/features/editor";
+import { PaginationMeta } from "@/types";
 
 export interface SeoMetadata {
   title?: string;
@@ -26,16 +27,10 @@ export interface PublicDocumentSummary {
   updatedAt: string | null;
 }
 
-export interface PublicDocumentsMeta {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
 
 export interface PublicDocumentsResponse {
   items: PublicDocumentSummary[];
-  meta: PublicDocumentsMeta;
+  meta: PaginationMeta;
 }
 
 export interface PublicDocumentsQuery {

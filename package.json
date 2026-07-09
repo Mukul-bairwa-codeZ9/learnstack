@@ -6,6 +6,7 @@
    "dev": "pnpm --filter api --filter web --parallel dev",
     "build": "turbo build",
     "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
     "typecheck": "turbo typecheck",
     "format": "prettier --write ."
   },

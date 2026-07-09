@@ -40,25 +40,28 @@ export function WorkspaceDetails() {
     useWorkspace(workspaceId);
 
   const {
-    data: documents = [],
+    data,
     // isLoading: isDocumentsLoading,
     isFetching: isDocumentsFetching,
   } = useDocuments({
     workspaceId,
     search: debouncedSearch.trim() || undefined,
   });
+  const documents = data?.items;
 
   const documentStats = useMemo(() => {
-    const published = documents.filter(
+    const safeDocs = documents ?? [];
+
+    const published = safeDocs.filter(
       (document) => document.status === DocumentStatus.PUBLISHED,
     ).length;
 
-    const drafts = documents.filter(
+    const drafts = safeDocs.filter(
       (document) => document.status === DocumentStatus.DRAFT,
     ).length;
 
     return {
-      total: documents.length,
+      total: safeDocs.length,
       published,
       drafts,
     };
@@ -130,10 +133,10 @@ export function WorkspaceDetails() {
           title="Create Document"
           description="Create a new document inside this workspace."
         >
-          <CreateDocumentForm workspaceId={workspace._id} />
+          <CreateDocumentForm workspaceId={workspace.id} />
         </AppDialog>
         <DocumentList
-          documents={documents}
+          documents={documents ?? []}
           workspaceId={workspaceId}
           onCreateDocument={createDocumentDialog.openDialog}
         />

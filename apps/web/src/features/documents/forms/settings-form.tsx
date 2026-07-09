@@ -43,7 +43,7 @@ export function DocumentSettingsForm({ document }: DocumentSettingsFormProps) {
   async function onSubmit(data: UpdateDocumentSettingsFormValues) {
     try {
       const updatedDoc = await updateMutation.mutateAsync({
-        id: document._id,
+        id: document.id,
         payload: {
           title: data.title.trim(),
           category: data.category?.trim() || undefined,

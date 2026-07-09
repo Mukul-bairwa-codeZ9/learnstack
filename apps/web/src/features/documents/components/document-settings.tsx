@@ -29,6 +29,7 @@ import { DocumentSettingsForm } from "../forms";
 import { isDocumentEmpty } from "../helpers";
 
 interface Props {
+  workspaceId: string;
   documentId: string;
 }
 
@@ -64,7 +65,7 @@ const SETTINGS_SECTIONS: {
   },
 ];
 
-export function DocumentSettings({ documentId }: Props) {
+export function DocumentSettings({ workspaceId,documentId }: Props) {
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<SettingsTab>("general");
 
@@ -92,16 +93,14 @@ export function DocumentSettings({ documentId }: Props) {
     );
   }
 
-  console.log(data,"test")
-
   const handlePublishToggle = (checked: boolean) => {
     startPublishTransition(async () => {
       try {
         if (checked) {
-          await publishMutation.mutateAsync(data._id);
+          await publishMutation.mutateAsync(data.id);
           toast.success("Document published successfully");
         } else {
-          await unpublishMutation.mutateAsync(data._id);
+          await unpublishMutation.mutateAsync(data.id);
           toast.success("Document unpublished successfully");
         }
       } catch {
@@ -112,7 +111,7 @@ export function DocumentSettings({ documentId }: Props) {
 
   const handleArchive = async () => {
     try {
-      await archiveMutation.mutateAsync(data._id);
+      await archiveMutation.mutateAsync(data.id);
       setDialogAction(null); // Close dialog on success
       toast.success("Document moved to archives");
     } catch {
@@ -122,9 +121,9 @@ export function DocumentSettings({ documentId }: Props) {
 
   const handleDelete = async () => {
     try {
-      await deleteMutation.mutateAsync(data._id);
+      await deleteMutation.mutateAsync(data.id);
       toast.success("Document permanently deleted");
-      router.push(`/workspaces/${data.workspaceId}`);
+      router.push(`/workspaces/${workspaceId}`);
     } catch {
       toast.error("Failed to delete document");
     }

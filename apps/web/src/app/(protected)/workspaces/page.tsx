@@ -3,9 +3,7 @@
 import { FolderKanban, Plus } from "lucide-react";
 
 import { WorkspaceList } from "@/features/workspaces/components";
-import {
-  CreateWorkspaceForm,
-} from "@/features/workspaces";
+import { CreateWorkspaceForm } from "@/features/workspaces";
 
 import { useDialog } from "@/hooks";
 
@@ -19,7 +17,9 @@ import { Button } from "@/components/ui/button";
 
 export default function WorkspacesPage() {
   const createWorkspaceDialog = useDialog();
-  const { data: workspaces = [], isLoading } = useWorkspaces();
+  const { data, isLoading } = useWorkspaces();
+
+  const workspaces = data?.items ?? [];
 
   if (isLoading) {
     return <LoadingState message="Loading workspaces..." />;
