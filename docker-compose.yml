@@ -15,6 +15,10 @@ services:
 
     container_name: learnstack-api
 
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+
     depends_on:
       - mongo
 
@@ -28,6 +32,10 @@ services:
     image: learnstack-web
 
     container_name: learnstack-web
+    
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
 
     depends_on:
       - api
