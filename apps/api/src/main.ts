@@ -7,6 +7,7 @@ import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { appConfig } from './config';
 
 async function bootstrap() {
@@ -18,6 +19,7 @@ async function bootstrap() {
   const appConfiguration = app.get<ConfigType<typeof appConfig>>(appConfig.KEY);
 
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   app.setGlobalPrefix('api');
 

@@ -23,7 +23,7 @@ export default async function LearnHomepage({
 }: LearnHomePageProps) {
   const params = await searchParams;
 
-  const documents = await getPublicDocuments({
+  const publicDocuments  = await getPublicDocuments({
     page: Number(params.page ?? 1),
     search: params.search ?? "",
     sort: (params.sort || "newest") as PublicDocumentsQuery["sort"],
@@ -32,7 +32,7 @@ export default async function LearnHomepage({
   return (
     <PublicContainer className="py-12">
       <Contents
-        documents={documents}
+        documents={publicDocuments }
         search={params.search ?? ""}
         sort={params.sort ?? ""}
       />

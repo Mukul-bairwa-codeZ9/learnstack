@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   DEFAULT_EDITOR_CONTENT,
@@ -11,24 +11,27 @@ import type {
 export function useDocumentEditor(
   initialContent?: EditorContent,
 ) {
-  const [content, setContent] =
-    useState<EditorContent>(
-      initialContent ??
-        DEFAULT_EDITOR_CONTENT,
-    );
+
+  // Use a ref to store the actual content so typing NEVER triggers a re-render
+  const contentRef = useRef<EditorContent>(initialContent ?? DEFAULT_EDITOR_CONTENT);
 
   const [isDirty, setIsDirty] =
     useState(false);
 
-  function handleChange(
-    value: EditorContent,
-  ) {
-    setContent(value);
-    setIsDirty(true);
+ function handleChange(value: EditorContent) {
+    contentRef.current = value;
+    // Only trigger a state change if we weren't already dirty (saves massive re-renders)
+    if (!isDirty) {
+      setIsDirty(true);
+    }
   }
 
+  function setContent(value: EditorContent) {
+    contentRef.current = value;
+  }
   return {
-    content,
+    // Expose a function or the ref directly to read the latest data on Save
+    getContent: () => contentRef.current,
     setContent,
     handleChange,
     isDirty,

@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getApiErrorMessage } from "@/services/api-error";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -44,10 +45,7 @@ export default function SignUpForm() {
 
       router.push("/sign-in");
     } catch (error: unknown) {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      toast.error(
-        apiError.response?.data?.message || "Unable to create account",
-      );
+      toast.error(getApiErrorMessage(error, "Unable to create account"));
     }
   }
 

@@ -34,8 +34,6 @@ export function RouteGuard({
       return;
     }
 
-    console.log(user,"check in role")
-
     if (!user) {
       router.replace(redirectTo);
       return;

@@ -5,21 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
 import {
   createDocumentSchema,
   type CreateDocumentFormValues,
 } from "../schemas";
 
 import { useCreateDocument } from "../hooks";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 interface CreateDocumentFormProps {
   workspaceId: string;
@@ -28,101 +23,95 @@ interface CreateDocumentFormProps {
 
 export function CreateDocumentForm({
   workspaceId,
+  onSuccess,
 }: CreateDocumentFormProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateDocumentFormValues>({
-    resolver: zodResolver(
-      createDocumentSchema,
-    ),
+    resolver: zodResolver(createDocumentSchema),
     defaultValues: {
       title: "",
+      category: "",
+      excerpt: "",
     },
   });
 
-  const createDocumentMutation =
-    useCreateDocument();
+  const createDocumentMutation = useCreateDocument();
 
   const router = useRouter();
 
-  async function onSubmit(
-    data: CreateDocumentFormValues,
-  ) {
+  async function onSubmit(data: CreateDocumentFormValues) {
     try {
-      if (
-        createDocumentMutation.isPending
-      ) {
+      if (createDocumentMutation.isPending) {
         return;
       }
 
-      const document =
-        await createDocumentMutation.mutateAsync(
-          {
-            ...data,
-            workspaceId,
-          },
-        );
+      const payload = {
+        ...data,
+        workspaceId,
+        title: data.title.trim(),
+        category: data.category?.trim(),
+        excerpt: data.excerpt?.trim(),
+      };
 
-      toast.success(
-        "Document created successfully",
-      );
+      const document = await createDocumentMutation.mutateAsync(payload);
 
-      router.push(
-        `/workspaces/${workspaceId}/documents/${document._id}`,
-      );
+      toast.success("Document created successfully");
+      reset();
+      onSuccess?.();
+      router.push(`/workspaces/${workspaceId}/documents/${document.id}`);
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to create document";
+        error instanceof Error ? error.message : "Failed to create document";
 
       toast.error(message);
     }
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          Create Document
-        </CardTitle>
-      </CardHeader>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <Input placeholder="Document Title" {...register("title")} />
 
-      <CardContent>
-        <form
-          onSubmit={handleSubmit(
-            onSubmit,
+          {errors.title && (
+            <p className="mt-1 text-sm text-destructive">
+              {errors.title.message}
+            </p>
           )}
-          className="space-y-4"
-        >
-          <div>
-            <Input
-              placeholder="Document Title"
-              {...register("title")}
-            />
+        </div>
+        <div className="space-y-2">
+          <Input placeholder="Category (optional)" {...register("category")} />
 
-            {errors.title && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.title.message}
-              </p>
-            )}
-          </div>
+          {errors.category && (
+            <p className="text-sm text-destructive">
+              {errors.category.message}
+            </p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Textarea
+            rows={4}
+            placeholder="Short description (optional)"
+            {...register("excerpt")}
+          />
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={
-              createDocumentMutation.isPending
-            }
-          >
-            {createDocumentMutation.isPending
-              ? "Creating..."
-              : "Create Document"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+          {errors.excerpt && (
+            <p className="text-sm text-destructive">{errors.excerpt.message}</p>
+          )}
+        </div>
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={createDocumentMutation.isPending}
+      >
+        {createDocumentMutation.isPending ? "Creating..." : "Create Document"}
+      </Button>
+    </form>
   );
 }

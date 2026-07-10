@@ -1,19 +1,25 @@
 "use client";
 
-import { FolderKanban } from "lucide-react";
+import { FolderKanban, Plus } from "lucide-react";
 
 import { WorkspaceList } from "@/features/workspaces/components";
-import { CreateWorkspaceDialog } from "@/features/workspaces";
+import { CreateWorkspaceForm } from "@/features/workspaces";
 
-import { PageHeader } from "@/components/data-display";
+import { useDialog } from "@/hooks";
+
+import { AppDialog, PageHeader } from "@/components/data-display";
 import { EmptyState, LoadingState } from "@/components/feedback";
 
 import { useWorkspaces } from "@/features/workspaces/hooks";
 
 import { typography } from "@/design-system";
+import { Button } from "@/components/ui/button";
 
 export default function WorkspacesPage() {
-  const { data: workspaces = [], isLoading } = useWorkspaces();
+  const createWorkspaceDialog = useDialog();
+  const { data, isLoading } = useWorkspaces();
+
+  const workspaces = data?.items ?? [];
 
   if (isLoading) {
     return <LoadingState message="Loading workspaces..." />;
@@ -30,7 +36,11 @@ export default function WorkspacesPage() {
           icon={FolderKanban}
           title="No workspaces yet"
           description="Create your first workspace to start organizing documents and collaborating."
-          action={<CreateWorkspaceDialog />}
+          action={
+            <Button onClick={createWorkspaceDialog.openDialog}>
+              <Plus /> New Workspace
+            </Button>
+          }
         />
       </div>
     );
@@ -41,7 +51,11 @@ export default function WorkspacesPage() {
       <PageHeader
         title="Workspaces"
         description="Manage your projects, teams, and knowledge-base documentation panels."
-        actions={<CreateWorkspaceDialog />}
+        actions={
+          <Button onClick={createWorkspaceDialog.openDialog}>
+            <Plus /> New Workspace
+          </Button>
+        }
       />
 
       <div className="space-y-6">
@@ -56,6 +70,14 @@ export default function WorkspacesPage() {
         </div>
         <WorkspaceList workspaces={workspaces} />
       </div>
+      <AppDialog
+        open={createWorkspaceDialog.open}
+        onOpenChange={createWorkspaceDialog.onOpenChange}
+        title="Create Workspace"
+        description="Create a new workspace to organize your documents."
+      >
+        <CreateWorkspaceForm />
+      </AppDialog>
     </div>
   );
 }

@@ -10,11 +10,22 @@ import slugify from 'slugify';
 import { DocumentsRepository } from './repositories/documents.repository';
 import { WorkspaceRepository } from '../workspaces/repositories/workspace.repository';
 
-import { CreateDocumentDto, UpdateDocumentDto } from './dto/document.dto';
+import {
+  CreateDocumentDto,
+  DocumentQueryDto,
+  UpdateDocumentDto,
+} from './dto/document.dto';
 import { WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { CreateDocumentData } from './types/documents.types';
 import { DocumentEntity } from './schemas/document.schema';
 import { DocumentStatus } from './enums/document-status.enum';
+import { isTiptapDocEmpty } from './helpers/documents.helpers';
+import { DocumentMapper } from './mappers/document.mapper';
+import { PaginatedResponseDto } from 'src/common/dto';
+import {
+  DocumentResponseDto,
+  DocumentSummaryResponseDto,
+} from './dto/document-response.dto';
 
 @Injectable()
 export class DocumentsService {
@@ -23,7 +34,10 @@ export class DocumentsService {
     private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
-  async create(userId: string, dto: CreateDocumentDto) {
+  async create(
+    userId: string,
+    dto: CreateDocumentDto,
+  ): Promise<DocumentResponseDto> {
     const workspace = await this.workspaceRepository.findById(dto.workspaceId);
 
     if (!workspace) {
@@ -45,36 +59,60 @@ export class DocumentsService {
       category: dto.category ?? '',
     };
 
-    return this.documentsRepository.create(documentData);
+    const document = await this.documentsRepository.create(documentData);
+    return DocumentMapper.toResponse(document);
   }
 
-  async findAllForUser(userId: string, workspaceId?: string) {
+  async findAllForUser(
+    userId: string,
+    query: DocumentQueryDto,
+  ): Promise<PaginatedResponseDto<DocumentSummaryResponseDto>> {
+    const { workspaceId, search, page, limit, sortBy, sortOrder } = query;
+
+    const filter: Record<string, unknown> = {};
+
     if (workspaceId) {
       const workspace = await this.workspaceRepository.findById(workspaceId);
 
-      if (!workspace) {
-        throw new NotFoundException('Workspace not found');
-      }
+      if (!workspace) throw new NotFoundException('Workspace not found');
 
       this.assertWorkspaceOwnership(workspace, userId);
 
-      return this.documentsRepository.find({
-        workspaceId,
-      });
+      filter.workspaceId = workspaceId;
+    } else {
+      const workspaces = await this.workspaceRepository.findByOwner(userId);
+      filter.workspaceId = { $in: workspaces.map((w) => w._id) };
     }
 
-    const workspaces = await this.workspaceRepository.findByOwner(userId);
+    if (search?.trim()) {
+      filter.search = search.trim();
+    }
 
-    const workspaceIds = workspaces.map((workspace) => workspace._id);
-
-    return this.documentsRepository.find({
-      workspaceId: {
-        $in: workspaceIds,
-      },
+    // Fetch paginated data from repository layer
+    const { items, total } = await this.documentsRepository.findPaginated({
+      filter,
+      page,
+      limit,
+      sortBy,
+      sortOrder,
     });
+    return {
+      items: DocumentMapper.toSummaryList(items),
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
 
-  async findOneForUser(documentId: string, userId: string) {
+  async findOneForUser(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -91,14 +129,14 @@ export class DocumentsService {
 
     this.assertWorkspaceOwnership(workspace, userId);
 
-    return document;
+    return DocumentMapper.toResponse(document);
   }
 
   async updateDocument(
     documentId: string,
     userId: string,
     dto: UpdateDocumentDto,
-  ) {
+  ): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -115,15 +153,35 @@ export class DocumentsService {
 
     this.assertWorkspaceOwnership(workspace, userId);
 
-    const updateData = {
+    const updateData: {
+      title?: string;
+      content?: Record<string, unknown>;
+      slug?: string;
+    } = {
       title: dto.title,
       content: dto.content,
     };
 
-    return this.documentsRepository.update(documentId, updateData);
+    if (dto.title && dto.title !== document.title) {
+      updateData.slug = await this.generateUniqueSlug(
+        dto.title,
+        document.workspaceId.toString(),
+      );
+    }
+    const updatedDocument = await this.documentsRepository.update(
+      documentId,
+      updateData,
+    );
+    if (!updatedDocument) {
+      throw new NotFoundException('Document could not be updated');
+    }
+    return DocumentMapper.toResponse(updatedDocument);
   }
 
-  async deleteDocument(documentId: string, userId: string) {
+  async deleteDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<{ deleted: boolean }> {
     const document = await this.documentsRepository.findById(documentId);
 
     if (!document) {
@@ -143,7 +201,7 @@ export class DocumentsService {
     await this.documentsRepository.delete(documentId);
 
     return {
-      success: true,
+      deleted: true,
     };
   }
 
@@ -151,35 +209,57 @@ export class DocumentsService {
   // Publishing Workflow Lifecycle Methods
   // ==========================================
 
-  async publishDocument(documentId: string, userId: string) {
+  async publishDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
     );
 
     if (document.status === DocumentStatus.PUBLISHED) {
-      return document;
+      return DocumentMapper.toResponse(document);
     }
 
     this.validatePublishableDocument(document);
 
-    return this.documentsRepository.publish(documentId, new Date());
+    const publishedDocument = await this.documentsRepository.publish(
+      documentId,
+      new Date(),
+    );
+
+    if (!publishedDocument) {
+      throw new NotFoundException('Document could not be published');
+    }
+    return DocumentMapper.toResponse(publishedDocument);
   }
 
-  async unpublishDocument(documentId: string, userId: string) {
+  async unpublishDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
     );
 
     if (document.status === DocumentStatus.DRAFT) {
-      return document;
+      return DocumentMapper.toResponse(document);
     }
 
-    return this.documentsRepository.unpublish(documentId);
+    const unpublished = await this.documentsRepository.unpublish(documentId);
+
+    if (!unpublished) {
+      throw new NotFoundException('Document could not be set as draft');
+    }
+    return DocumentMapper.toResponse(unpublished);
   }
 
-  async archiveDocument(documentId: string, userId: string) {
+  async archiveDocument(
+    documentId: string,
+    userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentWithOwnershipCheck(
       documentId,
       userId,
@@ -190,20 +270,28 @@ export class DocumentsService {
     }
 
     if (document.status === DocumentStatus.ARCHIVED) {
-      return document;
+      return DocumentMapper.toResponse(document);
     }
 
-    return this.documentsRepository.archive(documentId, new Date());
+    const archivedDocument = await this.documentsRepository.archive(
+      documentId,
+      new Date(),
+    );
+
+    if (!archivedDocument) {
+      throw new NotFoundException('Document could not be archived');
+    }
+    return DocumentMapper.toResponse(archivedDocument);
   }
 
-  async getPublishedDocumentBySlug(slug: string) {
+  async getPublishedDocumentBySlug(slug: string): Promise<DocumentResponseDto> {
     const document = await this.documentsRepository.findBySlug(slug);
 
     if (!document) {
       throw new NotFoundException('Published document not found');
     }
 
-    return document;
+    return DocumentMapper.toResponse(document);
   }
 
   // ==========================================
@@ -239,7 +327,7 @@ export class DocumentsService {
         'Document title is required for publishing',
       );
     }
-    if (!document.content || Object.keys(document.content).length === 0) {
+    if (isTiptapDocEmpty(document.content)) {
       throw new BadRequestException(
         'Document content cannot be empty when publishing',
       );

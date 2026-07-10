@@ -1,19 +1,20 @@
 import api from "@/services/api";
-import { PublicDocument, PublicDocumentsQuery, PublicDocumentsResponse } from "../types/public-document.types";
+import {
+  PublicDocument,
+  PublicDocumentsQuery,
+  PublicDocumentsResponse,
+} from "../types/public-document.types";
 
-export const getPublicDocument = async (slug: string) : Promise<PublicDocument> => {
-  const response = await api.get(`/public-content/${slug}`);
-
-  return response.data;
+export const getPublicDocument = async (
+  slug: string,
+): Promise<PublicDocument> => {
+  return api.get(`/public-content/${slug}`);
 };
-
 
 export const getPublicDocuments = async (
   query: PublicDocumentsQuery = {},
 ): Promise<PublicDocumentsResponse> => {
-  const response = await api.get("/public-content", {
+  return api.get("/public-content", {
     params: query,
   });
-
-  return response.data;
 };

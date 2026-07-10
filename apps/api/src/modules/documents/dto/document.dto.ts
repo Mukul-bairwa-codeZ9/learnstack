@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
+
 import {
   IsMongoId,
   IsOptional,
@@ -6,7 +7,9 @@ import {
   MinLength,
   IsObject,
   MaxLength,
+  IsIn,
 } from 'class-validator';
+import { PaginationQueryDto } from 'src/common/dto';
 
 export class CreateDocumentDto {
   @IsString()
@@ -34,8 +37,20 @@ export class CreateDocumentDto {
 
 export class UpdateDocumentDto extends PartialType(CreateDocumentDto) {}
 
-export class DocumentQueryDto {
+export class DocumentQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsMongoId()
   workspaceId?: string;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
+
+  @IsOptional()
+  @IsIn(['title', 'createdAt', 'updatedAt'])
+  sortBy: string = 'updatedAt';
+
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  sortOrder: 'asc' | 'desc' = 'desc';
 }

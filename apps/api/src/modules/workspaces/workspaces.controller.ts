@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -21,7 +22,8 @@ import { PermissionsGuard } from '../access/guards/permissions.guard';
 import { Permission } from '../access/enums/permission.enum';
 import { CurrentUser as CurrentUserType } from '../access/interfaces/current-user.interface';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { WorkspaceQueryDto } from './dto';
 
 @Controller('workspaces')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -44,9 +46,18 @@ export class WorkspacesController {
   @ApiOperation({
     summary: 'Get all workspaces for a user',
   })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search string to filter documents by title',
+  })
   @Permissions(Permission.WORKSPACE_VIEW)
-  findAll(@CurrentUser() user: CurrentUserType) {
-    return this.workspacesService.findAllForUser(user.id);
+  findAll(
+    @CurrentUser() user: CurrentUserType,
+    @Query() query: WorkspaceQueryDto,
+  ) {
+    return this.workspacesService.findAllForUser(user.id, query);
   }
 
   @Get(':id')

@@ -1,192 +1,134 @@
 import {
+  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query";
 
-import { documentsApi ,documentQueryKeys } from '../api';
+import { documentsApi, documentQueryKeys } from "../api";
 
 import {
   CreateDocumentDto,
+  DocumentFilters,
   UpdateDocumentDto,
-} from '../types';
+} from "../types";
 
-export function useDocuments(
-  workspaceId?: string,
-) {
+export function useDocuments(filters?: DocumentFilters) {
   return useQuery({
-    queryKey:
-      documentQueryKeys.list(
-        workspaceId,
-      ),
+    queryKey: [...documentQueryKeys.all, filters],
 
-    queryFn: () =>
-      documentsApi.getDocuments(
-        workspaceId,
-      ),
+    queryFn: () => documentsApi.getDocuments(filters),
+    placeholderData: keepPreviousData,
   });
 }
 
-export function useDocument(
-  documentId: string,
-) {
+export function useDocument(documentId: string) {
   return useQuery({
-    queryKey:
-      documentQueryKeys.detail(
-        documentId,
-      ),
+    queryKey: documentQueryKeys.detail(documentId),
 
-    queryFn: () =>
-      documentsApi.getDocument(
-        documentId,
-      ),
+    queryFn: () => documentsApi.getDocument(documentId),
 
     enabled: !!documentId,
   });
 }
 
 export function useCreateDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (
-      payload: CreateDocumentDto,
-    ) =>
-      documentsApi.createDocument(
-        payload,
-      ),
+    mutationFn: (payload: CreateDocumentDto) =>
+      documentsApi.createDocument(payload),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });
 }
 
 export function useUpdateDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: UpdateDocumentDto;
-    }) =>
-      documentsApi.updateDocument(
-        id,
-        payload,
-      ),
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateDocumentDto }) =>
+      documentsApi.updateDocument(id, payload),
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.detail(
-            variables.id,
-          ),
+        queryKey: documentQueryKeys.detail(variables.id),
       });
 
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });
 }
 
 export function useDeleteDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      documentsApi.deleteDocument(
-        id,
-      ),
+    mutationFn: (id: string) => documentsApi.deleteDocument(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });
 }
 
-
 export function usePublishDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      documentsApi.publishDocument(id),
+    mutationFn: (id: string) => documentsApi.publishDocument(id),
 
     onSuccess: (_, documentId) => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.detail(
-            documentId,
-          ),
+        queryKey: documentQueryKeys.detail(documentId),
       });
 
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });
 }
 
 export function useUnpublishDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      documentsApi.unpublishDocument(id),
+    mutationFn: (id: string) => documentsApi.unpublishDocument(id),
 
     onSuccess: (_, documentId) => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.detail(
-            documentId,
-          ),
+        queryKey: documentQueryKeys.detail(documentId),
       });
 
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });
 }
 
-
 export function useArchiveDocument() {
-  const queryClient =
-    useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      documentsApi.archiveDocument(id),
+    mutationFn: (id: string) => documentsApi.archiveDocument(id),
 
     onSuccess: (_, documentId) => {
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.detail(
-            documentId,
-          ),
+        queryKey: documentQueryKeys.detail(documentId),
       });
 
       queryClient.invalidateQueries({
-        queryKey:
-          documentQueryKeys.all,
+        queryKey: documentQueryKeys.all,
       });
     },
   });

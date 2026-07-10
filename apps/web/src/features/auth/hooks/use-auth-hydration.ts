@@ -35,7 +35,6 @@ export function useAuthHydration() {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
           authStorage.clearToken();
           dispatch(logout());
-          console.error("Auth hydration failed", error);
         }
       } finally {
         dispatch(setHydrated());

@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 
 import { PublicContentService } from './public-content.service';
-import { PublicDocumentResponseDto } from './dto/public-document-response.dto';
+import { PublicDocumentResponseDto } from './dto';
 import { PublicDocumentsQueryDto, PublicDocumentsResponseDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 

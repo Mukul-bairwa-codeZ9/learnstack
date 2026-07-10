@@ -7,6 +7,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/services/api-error";
 import { authStorage } from "@/lib/auth-storage";
 
 import { loginRequest } from "../api";
@@ -24,8 +25,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-
 
 type LoginFormData = {
   email: string;
@@ -46,14 +45,12 @@ export default function SignInForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      console.log(data);
       const response = await loginRequest(data);
 
       authStorage.setToken(response.accessToken);
 
       dispatch(
         setCredentials({
-          // accessToken: response.accessToken,
           user: response.user,
         }),
       );
@@ -61,8 +58,8 @@ export default function SignInForm() {
       router.push("/dashboard");
 
       toast.success("Signed in successfully");
-    } catch {
-      toast.error("Unable to sign in");
+    } catch (error: unknown) {
+      toast.error(getApiErrorMessage(error, "Unable to sign in"));
     }
   }
 
@@ -108,7 +105,7 @@ export default function SignInForm() {
           </Button>
 
           <div className={`border-t pt-4 text-center ${typography.muted} `}>
-          Don&apos;t have an account?
+            Don&apos;t have an account?
             <Link
               href="/sign-up"
               className="font-medium text-primary hover:underline"

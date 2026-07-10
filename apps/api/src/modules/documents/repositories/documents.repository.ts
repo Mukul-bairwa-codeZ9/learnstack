@@ -27,6 +27,13 @@ export class DocumentsRepository {
   async find(filter: Record<string, unknown> = {}): Promise<DocumentEntity[]> {
     const queryFilter = { ...filter };
 
+    const search =
+      typeof queryFilter.search === 'string'
+        ? queryFilter.search.trim()
+        : undefined;
+
+    delete queryFilter.search;
+
     // If a string-based workspaceId is provided, safely cast it to a native ObjectId
     if (
       queryFilter.workspaceId &&
@@ -37,6 +44,29 @@ export class DocumentsRepository {
       } catch {
         return []; // Return early if the string format is broken
       }
+    }
+
+    if (search) {
+      queryFilter.$or = [
+        {
+          title: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          category: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          excerpt: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+      ];
     }
 
     const res = await this.documentModel
@@ -191,8 +221,6 @@ export class DocumentsRepository {
               },
               {
                 $project: {
-                  _id: 0, // Exclude the raw original _id object
-                  id: { $toString: '$_id' }, // Safely cast ObjectId to a clean string
                   title: { $ifNull: ['$title', ''] },
                   slug: { $ifNull: ['$slug', ''] },
                   excerpt: { $ifNull: ['$excerpt', ''] },
@@ -215,6 +243,57 @@ export class DocumentsRepository {
     return {
       items: result?.items ?? [],
       total: result?.totalCount?.[0]?.count ?? 0,
+    };
+  }
+
+  async findPaginated({
+    filter,
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+  }: {
+    filter: Record<string, unknown>;
+    page: number;
+    limit: number;
+    sortBy: string;
+    sortOrder: 'asc' | 'desc';
+  }) {
+    const skip = (page - 1) * limit;
+
+    const { search, ...restFilter } = filter;
+
+    const queryFilter = { ...restFilter };
+
+    // Cast workspaceId string to Mongoose ObjectId if it exists in the filter
+    if (
+      queryFilter.workspaceId &&
+      typeof queryFilter.workspaceId === 'string'
+    ) {
+      if (Types.ObjectId.isValid(queryFilter.workspaceId)) {
+        queryFilter.workspaceId = new Types.ObjectId(queryFilter.workspaceId);
+      }
+    }
+
+    if (search && typeof search === 'string') {
+      queryFilter.title = { $regex: search, $options: 'i' };
+    }
+    const [items, total] = await Promise.all([
+      this.documentModel
+        .find(queryFilter)
+        .sort({
+          [sortBy]: sortOrder === 'asc' ? 1 : -1,
+        })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+
+      this.documentModel.countDocuments(queryFilter),
+    ]);
+
+    return {
+      items,
+      total,
     };
   }
 }

@@ -1,21 +1,24 @@
 export enum DocumentStatus {
-  DRAFT = 'DRAFT',
-  PUBLISHED = 'PUBLISHED',
-  ARCHIVED = 'ARCHIVED',
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
+  ARCHIVED = "ARCHIVED",
 }
 
 export interface Document {
-  _id: string;
+  id: string;
+
   title: string;
   slug: string;
-  content?: Record<string, unknown>;
-  workspaceId: string;
-  createdBy: string;
+
+  content: Record<string, unknown>;
+
   status: DocumentStatus;
 
-  publishedAt?: string | null;
-  archivedAt?: string | null;
-  
+  category: string;
+  excerpt: string;
+
+  publishedAt: string | null;
+
   createdAt: string;
   updatedAt: string;
 }
@@ -24,23 +27,57 @@ export interface CreateDocumentDto {
   title: string;
   workspaceId: string;
   content?: Record<string, unknown>;
+  category?: string;
+  excerpt?: string;
 }
 
 export interface UpdateDocumentDto {
   title?: string;
   content?: Record<string, unknown>;
+
+  category?: string;
+  excerpt?: string;
 }
 
-
-
 export interface PublishDocumentResponse {
-  _id: string;
+  id: string;
   slug: string;
   status: DocumentStatus;
-  publishedAt: string;
+  publishedAt: string | null;
 }
 
 export interface DocumentStatusResponse {
-  _id: string;
+  id: string;
   status: DocumentStatus;
 }
+
+export interface DocumentFilters {
+  workspaceId?: string;
+  search?: string;
+
+  page?: number;
+  limit?: number;
+
+  sortBy?: "title" | "createdAt" | "updatedAt";
+  sortOrder?: "asc" | "desc";
+}
+
+export interface DocumentSummary {
+  id: string;
+
+  title: string;
+  slug: string;
+
+  excerpt: string;
+  category: string;
+
+  status: DocumentStatus;
+
+  publishedAt: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type SettingsTab = "general" | "publishing" | "seo" | "danger";
+export type DialogAction = "archive" | "delete" | null;
